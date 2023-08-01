@@ -20,35 +20,7 @@ Window {
         }
     }
 
-    Item{
+    RoundButton {
         id: root
-        property int size: 100
-        property color color: "blue"
-        property alias text: caption.text
-
-        signal clicked()
-
-        width:size
-        height:size
-
-
-        Rectangle{
-            anchors.fill: parent
-            radius: size/2
-
-            Text {
-                id: caption
-                text: qsTr("text")
-                anchors.centerIn: parent
-            }
-            MouseArea{
-                id: mouseArea
-                anchors.fill: parent
-                onClicked: {
-
-                    root.clicked()
-                }
-            }
-        }
     }
 }
