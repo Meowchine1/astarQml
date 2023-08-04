@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>RoundButton.qml</file>
+        <file>BasePage.qml</file>
+        <file>CustomInputField.qml</file>
     </qresource>
 </RCC>
