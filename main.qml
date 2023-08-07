@@ -11,6 +11,17 @@ ApplicationWindow {
     visible: true
     title: qsTr("Graph algorithm")
 
+
+    Connections{
+        target: app
+
+        onSendGraph: {
+
+        }
+
+    }
+
+
     header: ToolBar{
         height: 50
         ToolButton{
@@ -110,6 +121,7 @@ ApplicationWindow {
                 text:"create"
                 onClicked: {
                     // add node to graph
+                    app.createNodeRequest(nodeName.text, xCoord.text, yCoord.text);
                     nodeName.text = ""
                     xCoord.text = ""
                     yCoord.text = ""
@@ -132,7 +144,6 @@ ApplicationWindow {
             id: path
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-
             text:"Path to graph model"
             width: parent.width/2
         }
@@ -147,12 +158,12 @@ ApplicationWindow {
                 }
             }
             Button{
-            anchors.right: parent.left
-            visible: path.text != "Path to graph model"
-            text: "Upload graph model"
-            onClicked: {
-                // go next and graph.readTxt
-            }
+                anchors.right: parent.left
+                visible: path.text != "Path to graph model"
+                text: "Upload graph model"
+                onClicked: {
+                    // go next and graph.readTxt
+                }
             }
         }
 
@@ -173,6 +184,12 @@ ApplicationWindow {
             Qt.quit()
         }
     }
+
+    BasePage{
+
+
+    }
+
 }
 
 
