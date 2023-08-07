@@ -14,9 +14,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
-set(PROJECT_SOURCES
-        main.cpp
-        qml.qrc
+
+set(CPP main.cpp node.cpp graph.cpp astar.cpp main.cpp  appcore.cpp)
+set(HEADER node.h graph.h heuristic.h splitter.h astar.h appcore.h)
+
+set(PROJECT_SOURCES ${CPP}  ${HEADER} qml.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
