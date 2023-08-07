@@ -1,6 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
+#include "appcore.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +18,13 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
+    AppCore appCore;
+
+    QQmlContext *context = engine.rootContext();
+    context->setContextProperty("app", &appCore);
+
+
     engine.load(url);
 
     return app.exec();
