@@ -1,8 +1,6 @@
 #include <algorithm>
 #include <limits.h>
-#include <iostream>
 #include <string>
-#include <QString>
 
 #include "astar.h"
 #include "node.h"
