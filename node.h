@@ -1,7 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
+#include <QString>
+#include <QObject>
 #define UNDEFINED 1435483
-#include<QString>
 
 class Node
 {
@@ -10,13 +11,13 @@ private:
     int x = UNDEFINED, y = UNDEFINED;
     unsigned int distance = 0; // f(v);
 public:
-    QString name;
+    const QString name;
     Node(const QString _name);
-    Node(const QString _name, const int _x, const int _y);
+    Node(const QString _name, int _x, int _y);
     ~Node();
 
-//    Node(const Node&) = delete;
-//    Node& operator=(const Node&) = delete;
+    Node(const Node&) = delete;
+    Node& operator=(const Node&) = delete;
 
     int getX() const {return x;}
     int getY() const {return y;}
@@ -43,7 +44,7 @@ public:
             throw "coordinate 'y' was initialized";
         }
     }
-     void setDistance(const unsigned int value)
+     void setDistance(unsigned int value)
      {
          distance = value;
      }

@@ -1,57 +1,28 @@
+#include "graph.h"
 #include <iostream>
 #include <fstream>
-#include <QString>
+#include <string>
+#include<cstring>
 #include<algorithm>
 #include <bits/stdc++.h>
-
 #include "splitter.h"
-#include "graph.h"
 
-Graph::Graph(QString filePath){readtxt(filePath);}
+Graph::Graph(std::string filePath){readtxt(filePath);}
 Graph::Graph()
 {
     edges_weights = {};
 }
 
+/*************************************************************************************************************************************************/
+
+/*************************************************************************************************************************************************/
+
 void Graph::addNode(Node* node)
 {
-    auto it = std::find_if(nodes.begin(),
-                           nodes.end(), [&](const Node* elem) {
-        return elem->name == node->name;
-    });
-    if(it == nodes.end())
-    {
-        edges_weights[node] =
-                std::unordered_map<Node*, int>();
-        nodes.push_back(node);
-    }
-    else
-    {
-        std::stringstream ss;
-        ss << "Node with name '" << (node->name).toStdString() << "' has already exist.";
-        throw ss;
-    }
-    return;
+    edges_weights[node] =
+            std::unordered_map<Node*, int>();
+
 }
-
-Node* Graph::findNodeByName(QString name){
-
-    auto it = std::find_if(nodes.begin(),
-                           nodes.end(), [&](const Node* elem) {
-        return elem->name == name;
-    });
-    if(it != nodes.end())
-    {
-        return *it;
-    }
-    else
-    {
-        std::stringstream ss;
-        ss << "Node with name '" << name.toStdString() << "'  is't exist.";
-        throw ss;
-    }
-}
-
 
 int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 {
@@ -66,15 +37,15 @@ int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
         }
         else
         {
-            std::stringstream ss;
-            ss << "Realtions between " << (keyNode->name).toStdString() << " and " << (childNode->name).toStdString()
-               << " aren't exist.";
+            QString ss;
+            ss + "Realtions between " + keyNode->name + " and " + childNode->name
+                    + " aren't exist.";
             throw ss;
         }
     } else
     {
-        std::stringstream ss;
-        ss << "The node" << (keyNode->name).toStdString() << " is't exists.";
+        QString ss;
+        ss + "The node" + keyNode->name + " unexists.";
         throw ss;
     }
 }
@@ -95,7 +66,6 @@ void Graph::set_relation(Node *from, Node *to, int weight)
         edges_weights[from] = std::unordered_map<Node*, int>();
         edges_weights[from][to] = weight;
     }
-    return;
 }
 
 Graph::~Graph()
@@ -107,7 +77,7 @@ Graph::~Graph()
     edges_weights.clear();
 }
 
-void Graph::readtxt(QString filePath)
+void Graph::readtxt(std::string filePath)
 {
     std::string line;
     char lineSeparator = '\n';
@@ -116,10 +86,10 @@ void Graph::readtxt(QString filePath)
 
     int i;
     size_t pos = 0;
-    std::ifstream in(filePath.toStdString());
+    std::ifstream in(filePath);
     std::cout<<std::endl;
 
-    //std::vector<Node*> nodes;
+    std::vector<Node*> nodes;
 
     if (in.is_open())
     {
@@ -155,11 +125,10 @@ void Graph::readtxt(QString filePath)
                     }
                     else // if uninitialized node
                     {
-                        // Node node =
                         ptrMainNode = new Node(nodename, x, y);
-                        nodes.push_back(ptrMainNode);
                         edges_weights[ptrMainNode] =
                                 std::unordered_map<Node*, int>();
+                        nodes.push_back(ptrMainNode);
                     }
                 }
                 else{
@@ -191,7 +160,9 @@ void Graph::readtxt(QString filePath)
         }
         std::cout << std::endl;
     }
+
     in.close();
+
     return;
 }
 
@@ -200,14 +171,16 @@ void Graph::printGraph()
     for (auto& pair : edges_weights) {
         const Node* keyNode = pair.first;
         std::unordered_map<Node*, int>& innerMap = pair.second;
-        std::cout<<"Vertex is "<< (keyNode->name).toStdString() << " coordinates("
-                <<keyNode->getX()<<";"<<keyNode->getY()<<")\t neighbors: ";
+        QString message = "Vertex is " + keyNode->name + " coordinates("
+                + keyNode->getX() + ";" + keyNode->getY() + ")\t neighbors: ";
+        std::cout<< message.toStdString();
         for (auto& innerPair : innerMap) {
             const Node* childNode = innerPair.first;
             int value = innerPair.second;
-            std::cout<< "name:" << (childNode->name).toStdString() << " coordinates("
-                     << childNode->getX() << ";" << childNode->getY() <<
-                        ") " << " weight = " << value << "\n";
+            message = "name:" + childNode->name + " coordinates("
+                    + childNode->getX() + ";" + childNode->getY() +
+                    ") " + " weight = " + value + "\n";
+            std::cout<< message.toStdString();
 
         }
     }
