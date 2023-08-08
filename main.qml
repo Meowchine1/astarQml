@@ -15,12 +15,11 @@ ApplicationWindow {
     Connections{
         target: app
 
-        onSendGraph: {
+        onSendNodes: {
 
         }
 
     }
-
 
     header: ToolBar{
         height: 50
@@ -126,6 +125,12 @@ ApplicationWindow {
                     xCoord.text = ""
                     yCoord.text = ""
                 }
+            }
+
+            ListModel{
+
+
+
             }
         }
     }
