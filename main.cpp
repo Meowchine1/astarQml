@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    AppCore appCore;
+    //AppCore appCore;
 
-    QQmlContext *context = engine.rootContext();
-    context->setContextProperty("app", &appCore);
+//    QQmlContext *context = engine.rootContext();
+//    context->setContextProperty("app", &appCore);
 
 
     engine.load(url);

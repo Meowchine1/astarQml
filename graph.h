@@ -2,7 +2,6 @@
 #define GRAPH_H
 #include <unordered_map>
 #include "node.h"
-#include <string>
 #include <QObject>
 typedef std::unordered_map<Node*, std::unordered_map<Node*, int>> specified_map;
 typedef std::unordered_map<Node*, int> inner_map;
@@ -16,7 +15,7 @@ private:
     specified_map edges_weights;
 
 public:
-    Graph(std::string filePath);
+    Graph(QString filePath);
     Graph();
     specified_map get_edges_weights(){return edges_weights;}
     inner_map get_edges_weights(Node* keyNode)
@@ -24,7 +23,7 @@ public:
         return edges_weights[keyNode];
     }
 
-    void readtxt(std::string filePath);
+    void readtxt(QString filePath);
     void addNode(Node* node);
     void set_relation(Node* from, Node* to, int weight);
     int get_edge_weight(const Node* keyNode, const Node* childNode);

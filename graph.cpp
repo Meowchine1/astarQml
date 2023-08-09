@@ -1,13 +1,11 @@
 #include "graph.h"
 #include <iostream>
 #include <fstream>
-#include <string>
-#include<cstring>
 #include<algorithm>
 #include <bits/stdc++.h>
 #include "splitter.h"
 
-Graph::Graph(std::string filePath){readtxt(filePath);}
+Graph::Graph(QString filePath){ readtxt(filePath);}
 Graph::Graph()
 {
     edges_weights = {};
@@ -77,7 +75,7 @@ Graph::~Graph()
     edges_weights.clear();
 }
 
-void Graph::readtxt(std::string filePath)
+void Graph::readtxt(QString filePath)
 {
     std::string line;
     char lineSeparator = '\n';
@@ -86,7 +84,7 @@ void Graph::readtxt(std::string filePath)
 
     int i;
     size_t pos = 0;
-    std::ifstream in(filePath);
+    std::ifstream in(filePath.toStdString());
     std::cout<<std::endl;
 
     std::vector<Node*> nodes;
