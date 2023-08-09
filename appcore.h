@@ -10,23 +10,24 @@
 class AppCore  : public QObject
 {
     Q_OBJECT
-   // Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
+
+    Q_PROPERTY( filepath READ filepath WRITE setPath NOTIFY nodesChange)
 
 
 public:
     AppCore();
     Graph graph;
     QStringList getNodes();
+    QString filepath;
+    void setPath(){}
 
+signals:
+    void nodesChange(QStringList nodes);
 
-
-//signals:
-//    void sendNodes(QStringList nodes);
-
-//public slots:
-//    void createNodeRequest(QString name, QString x, QString y);
-//    void readGraphFromTxtRequest(QString path);
-//    void addRelationsRequest(QString from, QString to, int weight);
+public slots:
+    void createNodeRequest(QString name, QString x, QString y);
+    void readGraphFromTxtRequest(QString path);
+    void addRelationsRequest(QString from, QString to, int weight);
 };
 
 #endif // APPCORE_H

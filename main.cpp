@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "appcore.h"
+#include "datatable.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,10 +19,7 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    //AppCore appCore;
-
-//    QQmlContext *context = engine.rootContext();
-//    context->setContextProperty("app", &appCore);
+    qmlRegisterType<DataTable>("TableParser", 1, 0, "Parser");
 
 
     engine.load(url);
