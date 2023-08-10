@@ -5,9 +5,8 @@
 
 class DataTable : public QObject {
     Q_OBJECT
-
-
-public slots:
+public:
+    //DataTable();
     void setTableData(const QVariantList& data);
 };
 

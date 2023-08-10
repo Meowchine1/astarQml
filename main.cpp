@@ -2,7 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "datatable.h"
+#include "graph.h"
+#include "nodetablemodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,9 +20,12 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<DataTable>("TableParser", 1, 0, "Parser");
+    qmlRegisterType<Graph>("Graph", 1, 0, "Graph");
 
+    qmlRegisterType<NodeTableModel>("TableModel", 1, 0, "TableModel");
+    NodeTableModel* model = new NodeTableModel();
 
+    engine.rootContext()->setContextProperty("myModel", model);
     engine.load(url);
 
     return app.exec();

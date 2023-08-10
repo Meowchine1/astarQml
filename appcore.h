@@ -11,7 +11,7 @@ class AppCore  : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY( filepath READ filepath WRITE setPath NOTIFY nodesChange)
+    //Q_PROPERTY( filepath READ filepath WRITE setPath NOTIFY nodesChange)
 
 
 public:

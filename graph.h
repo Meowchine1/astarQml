@@ -15,8 +15,10 @@ private:
     specified_map edges_weights;
 
 public:
+    std::vector<Node*> nodes;
     Graph(QString filePath);
     Graph();
+    Node* findNodeByName(QString name);
     specified_map get_edges_weights(){return edges_weights;}
     inner_map get_edges_weights(Node* keyNode)
     {
@@ -25,6 +27,7 @@ public:
 
     void readtxt(QString filePath);
     void addNode(Node* node);
+    void addNode(QString name, QString x, QString y);
     void set_relation(Node* from, Node* to, int weight);
     int get_edge_weight(const Node* keyNode, const Node* childNode);
     void printGraph();

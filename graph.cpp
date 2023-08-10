@@ -22,6 +22,14 @@ void Graph::addNode(Node* node)
 
 }
 
+
+void Graph::addNode(QString name, QString x, QString y){
+
+    Node node(name, x.toInt(), y.toInt());
+    edges_weights[&node] =
+            std::unordered_map<Node*, int>();
+}
+
 int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 {
     auto it = edges_weights.find(const_cast<Node*>(keyNode));
@@ -44,6 +52,24 @@ int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
     {
         QString ss;
         ss + "The node" + keyNode->name + " unexists.";
+        throw ss;
+    }
+}
+
+Node* Graph::findNodeByName(QString name){
+
+    auto it = std::find_if(nodes.begin(),
+                           nodes.end(), [&](const Node* elem) {
+        return elem->name == name;
+    });
+    if(it != nodes.end())
+    {
+        return *it;
+    }
+    else
+    {
+        std::stringstream ss;
+        ss << "Node with name '" << name.toStdString() << "'  is't exist.";
         throw ss;
     }
 }

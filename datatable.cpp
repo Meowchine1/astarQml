@@ -1,6 +1,3 @@
 #include "datatable.h"
 
-DataTable::DataTable()
-{
-
-}
+void setTableData(const QVariantList& data){}

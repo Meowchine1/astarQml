@@ -10,14 +10,16 @@ void AppCore::createNodeRequest(QString name, QString x, QString y)
     // to do проверка полей x y
     Node node(name, x.toInt(),y.toInt());
     graph.addNode(&node);
-    emit sendNodes(getNodes());
+    emit nodesChange(getNodes());
 }
 
 void AppCore::readGraphFromTxtRequest(QString path)
 {
     this->graph.readtxt(path);
-    emit sendNodes(getNodes());
+    emit nodesChange(getNodes());
 }
+
+
 
 void AppCore::addRelationsRequest(QString from, QString to, int weight)
 {
