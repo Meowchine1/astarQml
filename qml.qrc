@@ -4,5 +4,15 @@
         <file>RoundButton.qml</file>
         <file>BasePage.qml</file>
         <file>CustomInputField.qml</file>
+        <file>qml/StyleSettings/qmldir</file>
+        <file>qml/StyleSettings/Style.qml</file>
+        <file>qml/AppModule/Base/qmldir</file>
+        <file>qml/AppModule/Impl/qmldir</file>
+        <file>qml/AppModule/qmldir</file>
+        <file>qml/AppModule/Base/BaseListView.qml</file>
+        <file>qml/AppModule/Base/BaseListDelegate.qml</file>
+        <file>qml/AppModule/Base/BaseText.qml</file>
+        <file>qml/AppModule/Impl/AppView.qml</file>
+        <file>qml/AppModule/Impl/AppDelegate.qml</file>
     </qresource>
 </RCC>

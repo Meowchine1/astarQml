@@ -1,11 +1,14 @@
-import QtQuick 2.5
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.15 // HorizontalHeaderView
+import QtQuick 2.12  //tableview
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
+import QtQml.Models 2.2
 
 import Graph 1.0
 import TableModel 1.0
+import StyleSettings 1.0
+import AppModule.Impl 1.0
+
 
 ApplicationWindow {
     id: win
@@ -47,10 +50,16 @@ ApplicationWindow {
     StackView{
         id: stackView
         anchors.fill: parent
-        initialItem: mainPage
+        initialItem: custom
+    }
+
+    AppView{
+        id: custom
+
     }
 
     BasePage {
+
         id: mainPage
         title: "Main page"
         backgroundColor: "blue"
@@ -99,18 +108,15 @@ ApplicationWindow {
 
         TableModel {
             id: tableModel
+
         }
+
+
 
         TableView {
             id: tableView
             anchors.fill: parent
             model: tableModel
-
-            // Добавляем колонки
-            Component.onCompleted: {
-                tableView.addColumn("Column 1")
-                tableView.addColumn("Column 2")
-            }
 
             // Отображаем ячейки с данными
             delegate: Item {
