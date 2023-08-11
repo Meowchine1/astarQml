@@ -11,6 +11,21 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Make Qt Creator aware of where the QML modules live
+set (_QML_IMPORT_PATHS "")
+
+## Add new module paths here.
+list (APPEND _QML_IMPORT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/qml)
+
+set (
+    QML_IMPORT_PATH
+    ${_QML_IMPORT_PATHS}
+    CACHE
+    STRING
+    "Path used to locate CMake modules by Qt Creator"
+    FORCE
+)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
