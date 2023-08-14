@@ -16,7 +16,7 @@ class AppCore  : public QObject
 
 public:
     AppCore();
-    Graph graph;
+    Graph* graph = Graph::getInstance();
     QStringList getNodes();
     QString filepath;
     void setPath(){}

@@ -1,3 +1,5 @@
 module Impl
 AppView 1.0 AppView.qml
 AppDelegate 1.0 AppDelegate.qml
+AppTableDelegate 1.0 AppTableDelegate.qml
+AppTableView 1.0 AppTableView.qml

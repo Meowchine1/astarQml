@@ -30,8 +30,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
 
-set(CPP main.cpp node.cpp graph.cpp astar.cpp main.cpp  appcore.cpp datatable.cpp nodetablemodel.cpp)
-set(HEADER node.h graph.h heuristic.h splitter.h astar.h appcore.h datatable.h nodetablemodel.h)
+set(CPP main.cpp node.cpp graph.cpp astar.cpp main.cpp appcore.cpp tablemodel.cpp)
+set(HEADER node.h graph.h heuristic.h splitter.h astar.h appcore.h tablemodel.h)
 
 set(PROJECT_SOURCES ${CPP}  ${HEADER} qml.qrc
 )

@@ -2,8 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "graph.h"
-#include "nodetablemodel.h"
+#include "appcore.h"
+#include "tablemodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<Graph>("Graph", 1, 0, "Graph");
+    qmlRegisterType<AppCore>("Graph", 1, 0, "Graph");
 
-    qmlRegisterType<NodeTableModel>("TableModel", 1, 0, "TableModel");
-    NodeTableModel* model = new NodeTableModel();
+    qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
+    TableModel* model = new TableModel();
 
     engine.rootContext()->setContextProperty("myModel", model);
     engine.load(url);

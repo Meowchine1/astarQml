@@ -3,12 +3,11 @@ import QtQuick 2.12  //tableview
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
+import Qt.labs.qmlmodels 1.0
 
-import Graph 1.0
 import TableModel 1.0
-import StyleSettings 1.0
 import AppModule.Impl 1.0
-
+import Graph 1.0
 
 ApplicationWindow {
     id: win
@@ -16,8 +15,9 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
+
     Graph{
-        id: graph
+    id: graph
     }
 
     header: ToolBar{
@@ -50,12 +50,7 @@ ApplicationWindow {
     StackView{
         id: stackView
         anchors.fill: parent
-        initialItem: custom
-    }
-
-    AppView{
-        id: custom
-
+        initialItem: mainPage
     }
 
     BasePage {
@@ -96,6 +91,11 @@ ApplicationWindow {
         }
     }
 
+
+    AppView{
+        id: custom
+    }
+
     BasePage {
         id: manualCreatingPage
         title: "Manual creating"
@@ -105,38 +105,75 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
+        Rectangle{
 
-        TableModel {
-            id: tableModel
+            width: parent.width / 1.3
+            height: parent.height / 1.3
+            anchors.centerIn: parent
 
-        }
+            TableView{
+                id: tableview
+                anchors.fill: parent
+                columnSpacing: 1
+                rowSpacing: 1
+                clip: true
 
+                model: TableModel{
+                   id: tableModel
+                }
 
-
-        TableView {
-            id: tableView
-            anchors.fill: parent
-            model: tableModel
-
-            // Отображаем ячейки с данными
-            delegate: Item {
-                height: 30
-                Row {
-                    spacing: 10
-                    Repeater {
-                        model: tableView.columnCount
-                        Text {
-                            text: tableView.model.data(index, Qt.EditRole)
-                        }
+                delegate: Rectangle{
+                    border.color: "black"
+                    border.width: 2
+                    implicitWidth: 100
+                    implicitHeight: 50
+                    color: (heading == true)? "grey" : "white"
+                    Text{
+                        anchors.centerIn: parent
+                        text: tabledata
                     }
                 }
             }
         }
 
-        Button {
-            text: "Add Row"
-            onClicked: {
-                tableModel.insertRows(tableModel.rowCount, 1)
+        Rectangle{
+            id: createNodeBtn
+            width: parent.width / 3
+            height: parent.height / 2
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.margins: defMargin
+
+            ColumnLayout{
+
+                CustomInputField{
+                    id: nameField
+                    name: "Node name"
+                }
+                CustomInputField{
+                    id: coordinateX
+                    name: "Coordinate X"
+                }
+                CustomInputField{
+                    id: coordinateY
+                    name: "Coordinate Y"
+                }
+            }
+
+
+            Button {
+                text: "Add node to graph"
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                onClicked: {
+                    //graph.addNode(nameField, coordinateX, coordinateY)
+                    graph.createNodeRequest(nameField.text, coordinateX.text, coordinateY.text)
+                    //update table
+                    tableModel.updateData()
+                    nameField.text = ""
+                    coordinateX.text = ""
+                    coordinateY.text = ""
+                }
             }
         }
 

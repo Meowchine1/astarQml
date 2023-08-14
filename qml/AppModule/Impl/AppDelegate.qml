@@ -5,25 +5,24 @@ BaseListDelegate {
     id: root
 
     Column{
-        
-        
         anchors.verticalCenter: root.verticalCenter
         anchors.left: root.left
         anchors.leftMargin: 20
         Row{
 
-            spacing: 12
+            spacing: 19
             BaseText{
 
                 text: name
             }
             BaseText{
 
-                text: x
+
+                text: x_coord
             }
             BaseText{
 
-                text: y
+                text: y_coord
             }
         }
     }

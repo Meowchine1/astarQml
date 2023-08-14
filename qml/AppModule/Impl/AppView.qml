@@ -6,13 +6,13 @@ BaseListView{
     model: ListModel{
         ListElement{
             name: "Test1"
-            x: "21"
-            y: "36"
+            x_coord: 22
+            y_coord: 36
         }
         ListElement{
             name: "Test2"
-            x: "2"
-            y: "+3"
+            x_coord: 0
+            y_coord: 7
         }
 
     }

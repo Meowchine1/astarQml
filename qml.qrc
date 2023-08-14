@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>RoundButton.qml</file>
         <file>BasePage.qml</file>
         <file>CustomInputField.qml</file>
         <file>qml/StyleSettings/qmldir</file>
@@ -14,5 +13,9 @@
         <file>qml/AppModule/Base/BaseText.qml</file>
         <file>qml/AppModule/Impl/AppView.qml</file>
         <file>qml/AppModule/Impl/AppDelegate.qml</file>
+        <file>qml/AppModule/Base/BaseTableView.qml</file>
+        <file>qml/AppModule/Base/BaseTableDelegate.qml</file>
+        <file>qml/AppModule/Impl/AppTableView.qml</file>
+        <file>qml/AppModule/Impl/AppTableDelegate.qml</file>
     </qresource>
 </RCC>

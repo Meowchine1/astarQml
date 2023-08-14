@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 
 Rectangle{
 
-    property alias fieldName: fieldName.text
+    property alias name: fieldName.text
     property alias placeholderText: innerText.placeholderText
     property alias text: innerText.text
 
