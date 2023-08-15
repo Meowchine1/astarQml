@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     qmlRegisterType<AppCore>("Graph", 1, 0, "Graph");
+    AppCore* core = new AppCore();
+    engine.rootContext()->setContextProperty("appCore", core);
 
     qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
     TableModel* model = new TableModel();

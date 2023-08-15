@@ -91,11 +91,6 @@ ApplicationWindow {
         }
     }
 
-
-    AppView{
-        id: custom
-    }
-
     BasePage {
         id: manualCreatingPage
         title: "Manual creating"
@@ -160,13 +155,11 @@ ApplicationWindow {
                 }
             }
 
-
             Button {
                 text: "Add node to graph"
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 onClicked: {
-                    //graph.addNode(nameField, coordinateX, coordinateY)
                     graph.createNodeRequest(nameField.text, coordinateX.text, coordinateY.text)
                     //update table
                     tableModel.updateData()
