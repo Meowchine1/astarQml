@@ -11,13 +11,6 @@
 
 Astar::Astar(){}
 
-/*
-    std::priority_queue<Node*, std::vector<Node*>, std::greater<Node*>> queue;
-    std::vector<Node> visited;
-    std::unordered_map<Node*, Node*> parent;
-    std::unordered_map<Node*, int> minWay;
-*/
-
 void fillMax(std::unordered_map<Node*, int>& minWay, Graph& graph)
 {
     for (auto& pair : graph.get_edges_weights())
@@ -71,12 +64,11 @@ QString Astar::run(Node* start, Node* goal, Graph& graph)
                     parent[child] = currentptr;
                     minWay[child] = minWay[currentptr] + pathWeight;
                     unsigned int heuristic =
-                            heuristic_Manhattan(child, goal); // попробовать делегат
+                            heuristic_Manhattan(child, goal);
                     child->setDistance(heuristic + pathWeight);
 
                     auto it = std::find(queue.begin(), queue.end(), child);
                     if (it != queue.end()) { // нужно перестроить вектор тк существующий в векторе узел изменился
-                        // попробовать с очередью приоритетов
 
                         std::make_heap(queue.begin(), queue.end());
                     }

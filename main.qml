@@ -3,11 +3,10 @@ import QtQuick 2.12  //tableview
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
-import Qt.labs.qmlmodels 1.0
 
 import TableModel 1.0
 import AppModule.Impl 1.0
-import Graph 1.0
+import AppCore 1.0
 
 ApplicationWindow {
     id: win
@@ -15,10 +14,6 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
-
-    Graph{
-    id: graph
-    }
 
     header: ToolBar{
         height: 50
@@ -160,9 +155,9 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 onClicked: {
-                    graph.createNodeRequest(nameField.text, coordinateX.text, coordinateY.text)
-                    //update table
-                    tableModel.updateData()
+                    appCore.createNodeRequest(nameField.text,
+                                              coordinateX.text,
+                                              coordinateY.text)
                     nameField.text = ""
                     coordinateX.text = ""
                     coordinateY.text = ""

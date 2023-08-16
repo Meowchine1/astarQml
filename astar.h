@@ -10,7 +10,7 @@ class Astar
 public:
     Astar();
     QString run(Node* start, Node* goal, Graph& graph);
-    QString restorePath(Node* start, Node* goal);
+
 
 private:
     std::vector<Node*> queue;
@@ -18,6 +18,7 @@ private:
     std::unordered_map<Node*, Node*> parent;
     std::unordered_map<Node*, int> minWay;
 
+    QString restorePath(Node* start, Node* goal);\
 };
 
 #endif // ASTAR_H

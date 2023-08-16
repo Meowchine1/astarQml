@@ -24,8 +24,6 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-
-
 signals:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 

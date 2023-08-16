@@ -11,14 +11,12 @@ class AppCore  : public QObject
 {
     Q_OBJECT
 
-    //Q_PROPERTY( filepath READ filepath WRITE setPath NOTIFY nodesChange)
-
-
 public:
     AppCore();
     Graph* graph = Graph::getInstance();
     QStringList getNodes();
     QString filepath;
+
     void setPath(){}
 
 signals:

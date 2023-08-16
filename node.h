@@ -9,7 +9,8 @@ class Node
 
 private:
     int x = UNDEFINED, y = UNDEFINED;
-    unsigned int distance = 0; // f(v);
+    unsigned int distance = 0;
+
 public:
     const QString name;
     Node(const QString _name);

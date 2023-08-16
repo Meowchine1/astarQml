@@ -25,23 +25,17 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     switch(role){
     case TableDataRole:
     {
-
         return table.at(index.row()).at(index.column());
     }
     case HeadingRole:
     {
-
         if(index.row() == 0){
             return true;
         }else{
             return false;
         }
     }
-    default:
-    {
-        break;
-
-    }
+    default:{ break; }
     }
     return QVariant();
 }
@@ -56,11 +50,12 @@ QHash<int, QByteArray> TableModel::roleNames() const
 
 void TableModel::updateData()
 {
+    table.clear();
     table = graph->getNodes();
-    beginResetModel();
+   // beginResetModel();
 
-    emit dataChanged(index(0,0), index(table.size(), table.at(0).size()));
-    endResetModel();
+    emit dataChanged(index(0,0), index(table.size() - 1, table.at(0).size() - 1));
+    //endResetModel();
 
 }
 

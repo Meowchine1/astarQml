@@ -9,7 +9,13 @@ void AppCore::createNodeRequest(QString name, QString x, QString y)
 {
     // to do проверка полей x y
     Node node(name, x.toInt(),y.toInt());
-    graph->addNode(&node);
+    try{
+        graph->addNode(&node);
+    }
+    catch(const char* error_message){
+
+        std::cout << error_message << std::endl;
+    }
     emit nodesChange(getNodes());
 }
 
@@ -22,16 +28,15 @@ void AppCore::readGraphFromTxtRequest(QString path)
 void AppCore::addRelationsRequest(QString from, QString to, int weight)
 {
     try{
-    Node* fromNode = graph->findNodeByName(from);
-    Node* toNode = graph->findNodeByName(to);
-    graph->set_relation(fromNode, toNode, weight);
+        Node* fromNode = graph->findNodeByName(from);
+        Node* toNode = graph->findNodeByName(to);
+        graph->set_relation(fromNode, toNode, weight);
     }
     catch(const char* error_message){
 
         std::cout << error_message << std::endl;
     }
 }
-
 
 QStringList AppCore::getNodes(){
 
@@ -43,5 +48,4 @@ QStringList AppCore::getNodes(){
         result.append(tmp);
     }
     return result;
-
 }
