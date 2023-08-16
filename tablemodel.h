@@ -25,7 +25,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 signals:
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    //void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 public slots:
     void updateData();

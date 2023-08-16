@@ -53,7 +53,6 @@ void TableModel::updateData()
     table.clear();
     table = graph->getNodes();
    // beginResetModel();
-
     emit dataChanged(index(0,0), index(table.size() - 1, table.at(0).size() - 1));
     //endResetModel();
 
