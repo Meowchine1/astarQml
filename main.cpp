@@ -21,15 +21,17 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    qmlRegisterType<AppCore>("Graph", 1, 0, "Graph");
+    qmlRegisterType<AppCore>("AppCore", 1, 0, "AppCore");
     AppCore* core = new AppCore();
     engine.rootContext()->setContextProperty("appCore", core);
 
     qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
     TableModel* model = new TableModel();
-
     engine.rootContext()->setContextProperty("myModel", model);
     engine.load(url);
+
+    QObject::connect(core, SIGNAL(nodesChange(QStringList)),
+                         model, SLOT(updateData()));
 
     return app.exec();
 }
