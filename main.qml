@@ -97,14 +97,18 @@ ApplicationWindow {
         }
         Rectangle{
 
-            width: parent.width / 1.3
-            height: parent.height / 1.3
-            anchors.centerIn: parent
+            id: rect
+            width: parent.width / 2
+            height: parent.height / 2
+            //anchors.fill: parent
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: defMargin
 
             TableView{
                 id: tableview
-                anchors.fill: parent
-                columnSpacing: 1
+                anchors.fill: parent // не заполняет родителя
+                columnSpacing: 3 // увеличить
                 rowSpacing: 1
                 clip: true
 
@@ -113,12 +117,20 @@ ApplicationWindow {
                 delegate: Rectangle{
                     border.color: "black"
                     border.width: 2
-                    implicitWidth: 100
+                    implicitWidth: rect.width / 3
                     implicitHeight: 50
                     color: (heading == true)? "grey" : "white"
                     Text{
                         anchors.centerIn: parent
                         text: tabledata
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AsNeeded
+                    active: true
+                    onActiveChanged: {
+                        if (!active)
+                            active = true;
                     }
                 }
             }
@@ -131,9 +143,9 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: defMargin
+            color: "pink"
 
             ColumnLayout{
-
                 CustomInputField{
                     id: nameField
                     name: "Node name"
@@ -146,37 +158,33 @@ ApplicationWindow {
                     id: coordinateY
                     name: "Coordinate Y"
                 }
-            }
 
-            Button {
-                text: "Add node to graph"
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                onClicked: {
-                    appCore.createNodeRequest(nameField.text,
-                                              coordinateX.text,
-                                              coordinateY.text)
-                    nameField.text = ""
-                    coordinateX.text = ""
-                    coordinateY.text = ""
+                Button {
+                    text: "Add node to graph"
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    onClicked: {
+                        appCore.createNodeRequest(nameField.text,
+                                                  coordinateX.text,
+                                                  coordinateY.text)
+                        nameField.text = ""
+                        coordinateX.text = ""
+                        coordinateY.text = ""
+                    }
                 }
             }
+
+
         }
 
     Button{
-        id: createGraph
-        text: "CREATE GRAPH"
+        text: "NEXT STEP"
         anchors.bottom: parent.bottom;
         anchors.right: parent.right
         anchors.margins: defMargin
         onClicked: {
-            for (var row = 0; row < dataModel.rowCount; ++row) {
-                var rowData = []
-                var name = dataModel.get(row, 0).value
-                var x = dataModel.get(row, 1).value
-                var y = dataModel.get(row, 2).value
-                graph.addNode(name, x, y);
-            }
+            stackView.push(relationsPage)
+            appCore.nodeNamesRequest()
         }
     }
 }
@@ -212,7 +220,7 @@ BasePage {
             visible: path.text != "Path to graph model"
             text: "Upload graph model"
             onClicked: {
-                // go next and graph.readTxt
+                StackView.push(relationsPage)
             }
         }
     }
@@ -230,6 +238,16 @@ FileDialog {
     onRejected: {
         console.log("Canceled")
         Qt.quit()
+    }
+}
+
+BasePage{
+
+    id:relationsPage
+    visible: false
+    ComboBox {
+        width: 200
+        model: tableModel
     }
 }
 
