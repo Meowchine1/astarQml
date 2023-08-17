@@ -1,8 +1,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include <unordered_map>
-#include "node.h"
 #include <QObject>
+
+#include "node.h"
 
 typedef std::unordered_map<Node*, std::unordered_map<Node*, int>> specified_map;
 typedef std::unordered_map<Node*, int> inner_map;

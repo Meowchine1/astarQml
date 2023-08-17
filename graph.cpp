@@ -68,7 +68,6 @@ int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 QVector<QVector<QString>> Graph::getNodes()
 {
     QVector<QVector<QString>> result;
-    result.append({"Node name", "Coordinate X", "Coordinate Y"});
     for(Node* node: nodes){
         result.append({node->name, QString::number(node->getX()), QString::number(node->getY())});
     }
