@@ -25,6 +25,7 @@ signals:
 
 public slots:
     void createNodeRequest(QString name, QString x, QString y);
+    void nodeNamesRequest();
     void readGraphFromTxtRequest(QString path);
     void addRelationsRequest(QString from, QString to, int weight);
 };

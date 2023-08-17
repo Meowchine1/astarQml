@@ -33,6 +33,11 @@ void AppCore::createNodeRequest(QString name, QString x, QString y)
 
 }
 
+void AppCore::nodeNamesRequest()
+{
+  emit nodesChange(graph->getNodesNames());
+}
+
 void AppCore::readGraphFromTxtRequest(QString path)
 {
     this->graph->readtxt(path);
