@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     QObject::connect(core, SIGNAL(nodesChange(QVector<QVector<QString>>)),
                      model, SLOT(updateData(QVector<QVector<QString>>)));
 
-    QObject::connect(core, SIGNAL(nodesChange(QVector<QVector<QString>>)),
+    QObject::connect(core, SIGNAL(sendNodeNames(QVector<QString>)),
                      listModel, SLOT(loadList(QVector<QString>)));
 
 
