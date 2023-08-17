@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
     TableModel* model = new TableModel();
-    engine.rootContext()->setContextProperty("myModel", model);
+    engine.rootContext()->setContextProperty("tableModel", model);
     engine.load(url);
 
     QObject::connect(core, SIGNAL(nodesChange(QVector<QString>)),
