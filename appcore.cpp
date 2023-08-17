@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QString>
+
 #include "appcore.h"
 #include "node.h"
 
@@ -7,16 +8,26 @@ AppCore::AppCore(){}
 
 void AppCore::createNodeRequest(QString name, QString x, QString y)
 {
-    // to do проверка полей x y
-    Node node(name, x.toInt(),y.toInt());
-    try{
-        graph->addNode(&node);
-    }
-    catch(const char* error_message){
+    QRegExp consistFromDidgits("\\d*");
 
-        std::cout << error_message << std::endl;
+    if(consistFromDidgits.exactMatch(x) && consistFromDidgits.exactMatch(y)){
+
+        Node* node = new Node (name, x.toInt(),y.toInt());
+        try{
+            graph->addNode(node);
+        }
+        catch(const char* error_message){
+
+            std::cout << error_message << std::endl;
+        }
+        emit nodesChange(getNodes());
     }
-    emit nodesChange(getNodes());
+    else{
+
+        //to do error message
+        //
+    }
+
 }
 
 void AppCore::readGraphFromTxtRequest(QString path)
@@ -38,14 +49,7 @@ void AppCore::addRelationsRequest(QString from, QString to, int weight)
     }
 }
 
-QStringList AppCore::getNodes(){
+QVector<QVector<QString>> AppCore::getNodes(){
 
-    QStringList result;
-
-    for (auto elem : graph->nodes){
-        QString tmp = elem->name +
-                " x=" + QString::number(elem->getX()) + " y=" + QString::number(elem->getY());
-        result.append(tmp);
-    }
-    return result;
+    return graph->getNodes();
 }
