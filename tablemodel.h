@@ -4,8 +4,6 @@
 #include <qqml.h>
 #include <QAbstractTableModel>
 
-#include "graph.h"
-
 class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -28,10 +26,9 @@ signals:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 public slots:
-    void updateData();
+    void updateData(QVector<QVector<QString>> nodes);
 
 private:
-    Graph* graph = Graph::getInstance();
     QVector<QVector<QString>> table;
 };
 #endif // TABLEMODEL_H

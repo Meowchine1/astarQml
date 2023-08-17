@@ -3,10 +3,9 @@
 
 TableModel::TableModel()
 {
-    table = graph->getNodes();
-//    table.append({"A", QString::number(4), QString::number(45)});
-//    table.append({"B", QString::number(66), QString::number(8)});
-//    table.append({"C", QString::number(-8), QString::number(1)});
+    table.append({"A", QString::number(4), QString::number(45)});
+    table.append({"B", QString::number(66), QString::number(8)});
+    table.append({"C", QString::number(-8), QString::number(1)});
 }
 
 
@@ -48,10 +47,11 @@ QHash<int, QByteArray> TableModel::roleNames() const
     return roles;
 }
 
-void TableModel::updateData()
+
+void TableModel::updateData(QVector<QVector<QString>> nodes)
 {
     table.clear();
-    table = graph->getNodes();
+    table = nodes;
    // beginResetModel();
     emit dataChanged(index(0,0), index(table.size() - 1, table.at(0).size() - 1));
     //endResetModel();

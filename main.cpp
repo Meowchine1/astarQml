@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("myModel", model);
     engine.load(url);
 
-    QObject::connect(core, SIGNAL(nodesChange(QStringList)),
-                         model, SLOT(updateData()));
+    QObject::connect(core, SIGNAL(nodesChange(QVector<QVector<QString>>)),
+                     model, SLOT(updateData(QVector<QVector<QString>>)));
 
     return app.exec();
 }

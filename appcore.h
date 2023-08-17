@@ -14,13 +14,13 @@ class AppCore  : public QObject
 public:
     AppCore();
     Graph* graph = Graph::getInstance();
-    QStringList getNodes();
+    QVector<QVector<QString>> getNodes();
     QString filepath;
 
     void setPath(){}
 
 signals:
-    void nodesChange(QStringList nodes);
+    void nodesChange(QVector<QVector<QString>> nodes);
 
 public slots:
     void createNodeRequest(QString name, QString x, QString y);
