@@ -20,6 +20,7 @@ public:
     void setPath(){}
 
 signals:
+    void nodesChange(QVector<QString> nodes);
     void nodesChange(QVector<QVector<QString>> nodes);
 
 public slots:

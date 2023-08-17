@@ -20,7 +20,10 @@ void AppCore::createNodeRequest(QString name, QString x, QString y)
 
             std::cout << error_message << std::endl;
         }
-        emit nodesChange(getNodes());
+
+        emit nodesChange({node->name,
+                          QString::number(node->getX()),
+                          QString::number(node->getY())});
     }
     else{
 
