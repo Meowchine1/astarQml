@@ -108,9 +108,7 @@ ApplicationWindow {
                 rowSpacing: 1
                 clip: true
 
-                model: TableModel{
-                   id: tableModel
-                }
+                model: tableModel
 
                 delegate: Rectangle{
                     border.color: "black"
