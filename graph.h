@@ -36,6 +36,7 @@ public:
     void set_relation(Node* from, Node* to, int weight);
     void printGraph();
 
+    QVector<QString> getNodesNames();
 };
 
 #endif // GRAPH_H

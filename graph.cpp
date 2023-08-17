@@ -74,6 +74,15 @@ QVector<QVector<QString>> Graph::getNodes()
     return result;
 }
 
+QVector<QString> Graph::getNodesNames()
+{
+    QVector<QString> result;
+    for(Node* node: nodes){
+        result.append(node->name);
+    }
+    return result;
+}
+
 Node* Graph::findNodeByName(QString name){
 
     auto it = std::find_if(nodes.begin(),
