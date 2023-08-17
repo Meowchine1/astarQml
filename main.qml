@@ -7,6 +7,7 @@ import QtQml.Models 2.2
 import TableModel 1.0
 import AppModule.Impl 1.0
 import AppCore 1.0
+import ListModel 1.0
 
 ApplicationWindow {
     id: win
@@ -173,83 +174,96 @@ ApplicationWindow {
                     }
                 }
             }
-
-
         }
 
-    Button{
-        text: "NEXT STEP"
-        anchors.bottom: parent.bottom;
-        anchors.right: parent.right
-        anchors.margins: defMargin
-        onClicked: {
-            stackView.push(relationsPage)
-            appCore.nodeNamesRequest()
-        }
-    }
-}
-
-BasePage {
-    id: readGraphPage
-    title: "Read graph"
-    visible: false
-    backgroundColor: "green"
-    buttonText: "Back"
-    onButtonClicked: {
-        stackView.pop(mainPage);
-    }
-    Text{
-        id: path
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        text:"Path to graph model"
-        width: parent.width/2
-    }
-    ColumnLayout{
-        spacing: 100
-        anchors.centerIn: parent
-        Button {
-            anchors.right: parent.left
-            text: "Open File Manager"
-            onClicked: {
-                fileDialog.open();
-            }
-        }
         Button{
-            anchors.right: parent.left
-            visible: path.text != "Path to graph model"
-            text: "Upload graph model"
+            text: "NEXT STEP"
+            anchors.bottom: parent.bottom;
+            anchors.right: parent.right
+            anchors.margins: defMargin
             onClicked: {
-                StackView.push(relationsPage)
+                stackView.push(relationsPage)
+                appCore.nodeNamesRequest()
             }
         }
     }
-}
 
-FileDialog {
-    id: fileDialog
-    title: "Please choose a file"
-    folder: shortcuts.home
-    nameFilters: [ "Txt files (*.txt )"]
-    onAccepted: {
-        path.text = this.fileUrl
-        //передать путь c++
+    BasePage {
+        id: readGraphPage
+        title: "Read graph"
+        visible: false
+        backgroundColor: "green"
+        buttonText: "Back"
+        onButtonClicked: {
+            stackView.pop(mainPage);
+        }
+        Text{
+            id: path
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            text:"Path to graph model"
+            width: parent.width/2
+        }
+        ColumnLayout{
+            spacing: 100
+            anchors.centerIn: parent
+            Button {
+                anchors.right: parent.left
+                text: "Open File Manager"
+                onClicked: {
+                    fileDialog.open();
+                }
+            }
+            Button{
+                anchors.right: parent.left
+                visible: path.text != "Path to graph model"
+                text: "Upload graph model"
+                onClicked: {
+                    StackView.push(relationsPage)
+                }
+            }
+        }
     }
-    onRejected: {
-        console.log("Canceled")
-        Qt.quit()
-    }
-}
 
-BasePage{
-
-    id:relationsPage
-    visible: false
-    ComboBox {
-        width: 200
-        model: tableModel
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        folder: shortcuts.home
+        nameFilters: [ "Txt files (*.txt )"]
+        onAccepted: {
+            path.text = this.fileUrl
+            //передать путь c++
+        }
+        onRejected: {
+            console.log("Canceled")
+            Qt.quit()
+        }
     }
-}
+
+    BasePage{
+        id:relationsPage
+        visible: false
+
+        ColumnLayout{
+            anchors.fill: parent
+            Text{
+                text: combobox1.modeldata
+            }
+            ComboBox {
+                id:combobox1
+                width: 200
+                anchors.centerIn: parent
+                model: listModel
+                delegate:Rectangle{
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: modeldata
+                    }
+                }
+            }
+        }
+    }
 
 
 
