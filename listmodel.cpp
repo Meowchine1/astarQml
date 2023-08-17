@@ -11,6 +11,13 @@ QVariant ListModel::headerData(int section, Qt::Orientation orientation, int rol
     return "";
 }
 
+QHash<int, QByteArray> ListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[DataRole] = "modeldata";
+    return roles;
+}
+
 int ListModel::rowCount(const QModelIndex &parent) const
 {
     return list.size();
@@ -18,7 +25,10 @@ int ListModel::rowCount(const QModelIndex &parent) const
 
 QVariant ListModel::data(const QModelIndex &index, int role) const
 {
-    return list.at(index.row());
+    if (role == DataRole) {
+          return list.at(index.row());
+      }
+      return QVariant();
 }
 
 void ListModel::loadList(QVector<QString> nodesNames)
