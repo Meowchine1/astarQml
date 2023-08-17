@@ -1,12 +1,7 @@
 #include "tablemodel.h"
 
 
-TableModel::TableModel()
-{
-    table.append({"A", QString::number(4), QString::number(45)});
-    table.append({"B", QString::number(66), QString::number(8)});
-    table.append({"C", QString::number(-8), QString::number(1)});
-}
+TableModel::TableModel(){}
 
 
 int TableModel::rowCount(const QModelIndex &) const
@@ -47,15 +42,20 @@ QHash<int, QByteArray> TableModel::roleNames() const
     return roles;
 }
 
-
-void TableModel::updateData(QVector<QVector<QString>> nodes)
+void TableModel::updateData(QVector<QString> node)
 {
-    table.clear();
-    table = nodes;
    // beginResetModel();
+    table.append(node);
+   // endResetModel();
     emit dataChanged(index(0,0), index(table.size() - 1, table.at(0).size() - 1));
-    //endResetModel();
+}
 
+void TableModel::updateData(QVector<QVector<QString> > node)
+{
+    beginResetModel();
+    table.append(node);
+    endResetModel();
+    emit dataChanged(index(0,0), index(table.size() - 1, table.at(0).size() - 1));
 }
 
 

@@ -22,13 +22,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-signals:
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
 public slots:
-    void updateData(QVector<QVector<QString>> nodes);
+    void updateData(QVector<QString> node);
+    void updateData(QVector<QVector<QString>> node);
 
 private:
-    QVector<QVector<QString>> table;
+    QVector<QVector<QString>> table = {{"Node name", "Coordinate X", "Coordinate Y"}};
 };
 #endif // TABLEMODEL_H
