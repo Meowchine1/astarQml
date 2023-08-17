@@ -22,6 +22,7 @@ public:
 signals:
     void nodesChange(QVector<QString> nodes);
     void nodesChange(QVector<QVector<QString>> nodes);
+    void sendNodeNames(QVector<QString> nodes);
 
 public slots:
     void createNodeRequest(QString name, QString x, QString y);
