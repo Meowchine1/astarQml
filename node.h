@@ -12,7 +12,7 @@ private:
     unsigned int distance = 0;
 
 public:
-    const QString name;
+    const QString name; // unique
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
     ~Node();
