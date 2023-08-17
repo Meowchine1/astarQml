@@ -4,6 +4,7 @@
 
 #include "appcore.h"
 #include "tablemodel.h"
+#include "listmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,12 @@ int main(int argc, char *argv[])
     qmlRegisterType<TableModel>("TableModel", 1, 0, "TableModel");
     TableModel* model = new TableModel();
     engine.rootContext()->setContextProperty("tableModel", model);
+
+    qmlRegisterType<ListModel>("ListModel", 1, 0, "ListModel");
+    ListModel* listModel = new ListModel();
+    engine.rootContext()->setContextProperty("listModel", listModel);
+
+
     engine.load(url);
 
     QObject::connect(core, SIGNAL(nodesChange(QVector<QString>)),
@@ -35,6 +42,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(core, SIGNAL(nodesChange(QVector<QVector<QString>>)),
                      model, SLOT(updateData(QVector<QVector<QString>>)));
+
+    QObject::connect(core, SIGNAL(nodesChange(QVector<QVector<QString>>)),
+                     listModel, SLOT(loadList(QVector<QString>)));
+
 
     return app.exec();
 }
