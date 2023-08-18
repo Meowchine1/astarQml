@@ -44,9 +44,9 @@ QHash<int, QByteArray> TableModel::roleNames() const
 
 void TableModel::updateData(QVector<QString> node)
 {
-    beginResetModel();
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
     table.append(node);
-    endResetModel();
+    endInsertRows();
 }
 
 void TableModel::updateData(QVector<QVector<QString> > node)
