@@ -17,5 +17,6 @@
         <file>qml/AppModule/Base/BaseTableDelegate.qml</file>
         <file>qml/AppModule/Impl/AppTableView.qml</file>
         <file>qml/AppModule/Impl/AppTableDelegate.qml</file>
+        <file>test.qml</file>
     </qresource>
 </RCC>
