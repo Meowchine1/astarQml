@@ -243,28 +243,125 @@ ApplicationWindow {
     BasePage{
         id:relationsPage
         visible: false
-
-        ColumnLayout{
-            anchors.fill: parent
-            Text{
-                text: combobox1.modeldata
-            }
-            ComboBox {
-                id:combobox1
-                width: 200
+        Rectangle{
+            width: parent.width/ 2
+            height: parent.height/ 2
+            anchors.left: parent.left
+            anchors.top: parent.top
+            RowLayout{
                 anchors.centerIn: parent
-                model: listModel
-                delegate:Rectangle{
+                spacing: 20
+                ComboBox {
+                    id:comboboxFrom
+                    width: 200
+                    model: listModel
+                    textRole: "name"
+                    Label{
+                        text:"from"
+                        anchors.bottom: parent.top
+                    }
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: modeldata
+                }
+                ComboBox {
+                    id:comboboxTo
+                    width: 200
+                    model: listModel
+                    textRole: "name"
+                    Label{
+                        text:"to"
+                        anchors.bottom: parent.top
                     }
                 }
             }
         }
+        Rectangle{
+            width: parent.width/ 2
+            height: parent.height/ 2
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 200
+            ColumnLayout{
+                anchors.top: parent.top
+                spacing: 20
+                CustomInputField{
+                    id: weight
+                    name: "Enter edge weight"
+                }
+                Button{
+                    text: "Add relation"
+                    onClicked: {
+                        appCore.addRelationsRequest(comboboxFrom, comboboxTo, weight)
+
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            width: parent.width/ 2
+            height: parent.height/ 1.2
+            anchors.right: parent.right
+            anchors.top: parent.top
+            color: "red"
+            opacity: 0.5
+
+            RowLayout{
+                spacing: parent.width / 1.5
+                anchors.top: parent.horizontalCenter
+
+                ColumnLayout{
+                    // Отображение узлов графа
+                    anchors.margins: defMargin
+                    Repeater {
+                        model: listModel
+                        delegate: Rectangle {
+
+                            width: 50
+                            height: 50
+                            radius: width*0.5
+                            color: "black"
+                            Text{
+                            anchors.centerIn: parent
+                            text: model["name"]
+                            }
+
+                        }
+                    }
+                }
+
+                ColumnLayout{
+                    // Отображение узлов графа
+                    Repeater {
+                        model: listModel
+                        delegate: Rectangle {
+
+                            width: 50
+                            height: 50
+                            radius: width*0.5
+                            color: "black"
+                            Text{
+                            anchors.centerIn: parent
+                            text: model["name"]
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        Button{
+            text: "NEXT STEP"
+            anchors.bottom: parent.bottom;
+            anchors.right: parent.right
+            anchors.margins: defMargin
+            onClicked: {
+                stackView.push()
+
+            }
+        }
     }
-
-
 
 }
