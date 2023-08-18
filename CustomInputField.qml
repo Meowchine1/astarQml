@@ -19,5 +19,6 @@ Rectangle{
     }
     TextField{
         id: innerText
+        anchors.margins: defMargin
     }
 }
