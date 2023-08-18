@@ -14,7 +14,7 @@ QVariant ListModel::headerData(int section, Qt::Orientation orientation, int rol
 QHash<int, QByteArray> ListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[DataRole] = "modeldata";
+    roles[DataRole] = "name";
     return roles;
 }
 
@@ -33,5 +33,7 @@ QVariant ListModel::data(const QModelIndex &index, int role) const
 
 void ListModel::loadList(QVector<QString> nodesNames)
 {
+    beginResetModel();
     list = nodesNames;
+    endResetModel();
 }
