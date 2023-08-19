@@ -1,13 +1,16 @@
+import QtQuick 2.15
 import QtQuick.Controls 2.15 // HorizontalHeaderView
 import QtQuick 2.12  //tableview
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
+import QtQuick.Shapes 1.12
 
 import TableModel 1.0
 import AppModule.Impl 1.0
 import AppCore 1.0
 import ListModel 1.0
+
 
 ApplicationWindow {
     id: win
@@ -15,6 +18,10 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
+    property var repeaterFromNodes: []
+    property var repeaterToNodes: []
+
+
 
     header: ToolBar{
         height: 50
@@ -235,9 +242,57 @@ ApplicationWindow {
             //передать путь c++
         }
         onRejected: {
-            console.log("Canceled")
+            console.warn("Canceled")
             Qt.quit()
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*                                               NEW PAGE                                                    */
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function findFromNodeByText(text) {
+        console.warn("FROM: ", text)
+        for (var i = 0; i < win.repeaterFromNodes.length; i++) {
+            if (win.repeaterFromNodes[i].text === text) {
+                return win.repeaterFromNodes[i].item
+            }
+        }
+        return null
+    }
+
+    function findToNodeByText(text) {
+
+        console.warn("TO: ", text)
+        for (var i = 0; i < win.repeaterToNodes.length; i++) {
+            if (win.repeaterToNodes[i].text === text) {
+                return win.repeaterToNodes[i].item
+            }
+        }
+        return null
+    }
+
+
+    function getCoordinatesFromNodeByText(text) {
+        var item = findFromNodeByText(text)
+        if (item !== null) {
+            var itemPosition = item.mapToItem(graphWin, 0, 0)
+            console.warn("FROM X = ", itemPosition.x)
+            console.warn("FROM Y = ", itemPosition.y)
+            return {x: itemPosition.x + item.width / 2, y: itemPosition.y + item.height / 2}
+        }
+        return null
+    }
+
+    function getCoordinatesToNodeByText(text) {
+        var item = findToNodeByText(text)
+        if (item !== null) {
+            var itemPosition = item.mapToItem(graphWin, 0, 0)
+            console.warn("TO X = ", itemPosition.x + item.width / 2)
+            console.warn("TO Y = ", itemPosition.y + item.height / 2)
+            return {x: itemPosition.x  + item.width / 2  , y: itemPosition.y + item.height / 2 }
+        }
+        return null
     }
 
     BasePage{
@@ -290,68 +345,92 @@ ApplicationWindow {
                 Button{
                     text: "Add relation"
                     onClicked: {
-                        appCore.addRelationsRequest(comboboxFrom, comboboxTo, weight)
+                        var from = comboboxFrom.currentText
+                        var to = comboboxTo.currentText
+                        var fromCoordinates = getCoordinatesFromNodeByText(from)
+                        var toCoordinates = getCoordinatesToNodeByText(to)
+                        appCore.addRelationsRequest(from, to, weight.text)
+                        if (fromCoordinates && toCoordinates) {
 
+                            arrowModel.insert({ x: fromCoordinates.x, y: fromCoordinates.y,
+                                            xTarget: toCoordinates.x, yTarget: toCoordinates.y })
+
+//                            arrowModel: [
+//                            { x: fromCoordinates.x, y: fromCoordinates.y,
+//                                xTarget: toCoordinates.x, yTarget: toCoordinates.y }
+//                            ]
+                        }
                     }
                 }
             }
         }
-
         Rectangle {
+            id: graphWin
             width: parent.width/ 2
             height: parent.height/ 1.2
             anchors.right: parent.right
             anchors.top: parent.top
             color: "red"
             opacity: 0.5
-
             RowLayout{
                 spacing: parent.width / 1.5
                 anchors.top: parent.horizontalCenter
-
-                ColumnLayout{
-                    // Отображение узлов графа
+                ColumnLayout{ // Отображение узлов графа
                     anchors.margins: defMargin
                     Repeater {
+                        id: fromNodes
                         model: listModel
                         delegate: Rectangle {
-
                             width: 50
                             height: 50
                             radius: width*0.5
                             color: "black"
                             Text{
-                            anchors.centerIn: parent
-                            text: model["name"]
+                                anchors.centerIn: parent
+                                text: model["name"]
+                                Component.onCompleted: {
+                                    // Сохраняем элементы Repeater
+                                    win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
+                                }
                             }
-
                         }
                     }
                 }
-
-                ColumnLayout{
-                    // Отображение узлов графа
+                ColumnLayout{ // Отображение узлов графа
                     Repeater {
+                        id: toNodes
                         model: listModel
                         delegate: Rectangle {
-
                             width: 50
                             height: 50
                             radius: width*0.5
                             color: "black"
                             Text{
-                            anchors.centerIn: parent
-                            text: model["name"]
+                                anchors.centerIn: parent
+                                text: model["name"]
+                                Component.onCompleted: {
+                                    win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
+                                }
                             }
-
                         }
                     }
                 }
-
+                ListModel {  // Список стрелок графа
+                    id: arrowModel
+                }
+                Repeater { // Отображение стрелок графа
+                    model: arrowModel
+                    delegate:
+                        Shape {
+                        ShapePath {
+                            strokeColor: "black";
+                            startX: model.x; startY: model.y
+                            PathLine { x: model.xTarget; y: model.yTarget }
+                        }
+                    }
+                }
             }
-
         }
-
         Button{
             text: "NEXT STEP"
             anchors.bottom: parent.bottom;
@@ -363,5 +442,4 @@ ApplicationWindow {
             }
         }
     }
-
 }
