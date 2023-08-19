@@ -44,17 +44,20 @@ void AppCore::readGraphFromTxtRequest(QString path)
     emit nodesChange(getNodes());
 }
 
-void AppCore::addRelationsRequest(QString from, QString to, int weight)
+bool AppCore::addRelationsRequest(QString from, QString to, int weight)
 {
     try{
         Node* fromNode = graph->findNodeByName(from);
         Node* toNode = graph->findNodeByName(to);
         graph->set_relation(fromNode, toNode, weight);
+        return true;
     }
     catch(const char* error_message){
 
         std::cout << error_message << std::endl;
+        return false;
     }
+
 }
 
 QVector<QVector<QString>> AppCore::getNodes(){
