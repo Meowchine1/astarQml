@@ -18,5 +18,7 @@
         <file>qml/AppModule/Impl/AppTableView.qml</file>
         <file>qml/AppModule/Impl/AppTableDelegate.qml</file>
         <file>test.qml</file>
+        <file>NodesTable.qml</file>
+        <file>NodeCreationArea.qml</file>
     </qresource>
 </RCC>
