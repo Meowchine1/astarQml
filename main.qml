@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
+import QtQuick.Controls.Material 2.12
 
 import TableModel 1.0
 import AppModule.Impl 1.0
@@ -18,6 +19,9 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
+    Material.theme: Material.Dark
+    Material.accent: Material.Purple
+
     property var repeaterFromNodes: []
     property var repeaterToNodes: []
 
@@ -103,84 +107,12 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
-        Rectangle{
-
+        NodesTable {
             id: rect
-            width: parent.width / 2
-            height: parent.height / 2
-            //anchors.fill: parent
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: defMargin
-
-            TableView{
-                id: tableview
-                anchors.fill: parent // не заполняет родителя
-                columnSpacing: 3 // увеличить
-                rowSpacing: 1
-                clip: true
-
-                model: tableModel
-
-                delegate: Rectangle{
-                    border.color: "black"
-                    border.width: 2
-                    implicitWidth: rect.width / 3
-                    implicitHeight: 50
-                    color: (heading == true)? "grey" : "white"
-                    Text{
-                        anchors.centerIn: parent
-                        text: tabledata
-                    }
-                }
-                ScrollBar.vertical: ScrollBar {
-                    policy: ScrollBar.AsNeeded
-                    active: true
-                    onActiveChanged: {
-                        if (!active)
-                            active = true;
-                    }
-                }
-            }
         }
 
-        Rectangle{
+        NodeCreationArea {
             id: createNodeBtn
-            width: parent.width / 3
-            height: parent.height / 2
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.margins: defMargin
-            color: "pink"
-
-            ColumnLayout{
-                CustomInputField{
-                    id: nameField
-                    name: "Node name"
-                }
-                CustomInputField{
-                    id: coordinateX
-                    name: "Coordinate X"
-                }
-                CustomInputField{
-                    id: coordinateY
-                    name: "Coordinate Y"
-                }
-
-                Button {
-                    text: "Add node to graph"
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    onClicked: {
-                        appCore.createNodeRequest(nameField.text,
-                                                  coordinateX.text,
-                                                  coordinateY.text)
-                        nameField.text = ""
-                        coordinateX.text = ""
-                        coordinateY.text = ""
-                    }
-                }
-            }
         }
 
         Button{
@@ -226,7 +158,9 @@ ApplicationWindow {
                 visible: path.text != "Path to graph model"
                 text: "Upload graph model"
                 onClicked: {
-                    StackView.push(relationsPage)
+                    appCore.readGraphFromTxtRequest(path.text)
+                    stackView.push(relationsPage)
+                    appCore.nodeNamesRequest()
                 }
             }
         }
@@ -239,7 +173,6 @@ ApplicationWindow {
         nameFilters: [ "Txt files (*.txt )"]
         onAccepted: {
             path.text = this.fileUrl
-            //передать путь c++
         }
         onRejected: {
             console.warn("Canceled")
@@ -352,13 +285,13 @@ ApplicationWindow {
                         appCore.addRelationsRequest(from, to, weight.text)
                         if (fromCoordinates && toCoordinates) {
 
-                            arrowModel.insert({ x: fromCoordinates.x, y: fromCoordinates.y,
-                                            xTarget: toCoordinates.x, yTarget: toCoordinates.y })
+                            arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
+                                                  xTarget: toCoordinates.x, yTarget: toCoordinates.y })
 
-//                            arrowModel: [
-//                            { x: fromCoordinates.x, y: fromCoordinates.y,
-//                                xTarget: toCoordinates.x, yTarget: toCoordinates.y }
-//                            ]
+                            //                            arrowModel: [
+                            //                            { x: fromCoordinates.x, y: fromCoordinates.y,
+                            //                                xTarget: toCoordinates.x, yTarget: toCoordinates.y }
+                            //                            ]
                         }
                     }
                 }
@@ -437,9 +370,68 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.margins: defMargin
             onClicked: {
-                stackView.push()
+                stackView.push(astarPage)
 
             }
         }
+    }
+
+    BasePage{
+        id: astarPage
+        visible: false
+        Rectangle{
+            color: "purple"
+            anchors.fill: parent
+
+            Rectangle{
+                width: parent.width / 2
+                height: parent.height / 2
+                anchors.centerIn: parent
+                color: "yellow"
+
+                RowLayout{
+                    anchors.centerIn: parent
+                    spacing: 20
+                    ComboBox {
+                        id:startNode
+                        width: 200
+                        model: listModel
+                        textRole: "name"
+                        Label{
+                            text:"from"
+                            anchors.bottom: parent.top
+                        }
+
+                    }
+                    ComboBox {
+                        id:finishNode
+                        width: 200
+                        model: listModel
+                        textRole: "name"
+                        Label{
+                            text:"to"
+                            anchors.bottom: parent.top
+                        }
+                    }
+                }
+
+                Text {
+                    id: minWay
+                    text: qsTr("Algorithm's work result")
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                }
+
+                Button{
+                    text: "Start alrgorithm"
+                    onClicked: {
+                        var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
+                        minWay.text = shortestWay
+
+                    }
+                }
+            }
+        }
+
     }
 }
