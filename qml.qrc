@@ -20,5 +20,6 @@
         <file>test.qml</file>
         <file>NodesTable.qml</file>
         <file>NodeCreationArea.qml</file>
+        <file>NodesColumn.qml</file>
     </qresource>
 </RCC>
