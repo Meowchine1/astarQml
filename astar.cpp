@@ -11,9 +11,9 @@
 
 Astar::Astar(){}
 
-void fillMax(std::unordered_map<Node*, int>& minWay, Graph& graph)
+void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph)
 {
-    for (auto& pair : graph.get_edges_weights())
+    for (auto& pair : graph->get_edges_weights())
     {
         minWay[pair.first] = INT_MAX;
     }
@@ -31,10 +31,10 @@ QString Astar::restorePath(Node* start, Node* goal)
         ptrNode = ptrtemp;
     }
     path = start->name + " -> " + path;
-    return path;
+    return path.remove(path.size() - 3, path.size());
 }
 
-QString Astar::run(Node* start, Node* goal, Graph& graph)
+QString Astar::run(Node* start, Node* goal, Graph* graph)
 {
     queue.push_back(start);
     fillMax(minWay, graph);
@@ -49,10 +49,10 @@ QString Astar::run(Node* start, Node* goal, Graph& graph)
        }
 
        visited.push_back(currentptr);
-       auto it = graph.get_edges_weights().find(const_cast<Node*>(currentptr));
-       if(it != graph.get_edges_weights().end())
+       auto it = graph->get_edges_weights().find(const_cast<Node*>(currentptr));
+       if(it != graph->get_edges_weights().end())
        {
-            for(auto& pair : graph.get_edges_weights(currentptr))
+            for(auto& pair : graph->get_edges_weights(currentptr))
             {
                 Node* child = pair.first;
                 int pathWeight = pair.second;

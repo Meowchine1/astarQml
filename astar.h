@@ -11,7 +11,7 @@ class Astar
 {
 public:
     Astar();
-    QString run(Node* start, Node* goal, Graph& graph);
+    QString run(Node* start, Node* goal, Graph* graph);
 
 private:
     std::vector<Node*> queue;
