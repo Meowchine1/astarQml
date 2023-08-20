@@ -40,7 +40,9 @@ void AppCore::nodeNamesRequest()
 
 void AppCore::readGraphFromTxtRequest(QString path)
 {
-    this->graph->readtxt(path);
+    std::cout << path.split("file://").at(1).toStdString();
+
+    this->graph->readtxt(path.split("file://").at(1));
     emit nodesChange(getNodes());
 }
 
@@ -58,6 +60,21 @@ bool AppCore::addRelationsRequest(QString from, QString to, int weight)
         return false;
     }
 
+}
+
+QString AppCore::startAlgorithmRequest(QString from, QString to)
+{
+    try{
+        Node* fromNode = graph->findNodeByName(from);
+        Node* toNode = graph->findNodeByName(to);
+        QString minway = astar->run(fromNode, toNode, graph);
+        return  minway;
+    }
+    catch(const char* error_message){
+
+        std::cout << error_message << std::endl;
+        return "null";
+    }
 }
 
 QVector<QVector<QString>> AppCore::getNodes(){

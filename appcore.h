@@ -6,6 +6,7 @@
 
 #include "node.h"
 #include "graph.h"
+#include "astar.h"
 
 class AppCore  : public QObject
 {
@@ -14,6 +15,7 @@ class AppCore  : public QObject
 public:
     AppCore();
     Graph* graph = Graph::getInstance();
+    Astar* astar = new Astar();
     QVector<QVector<QString>> getNodes();
     QString filepath;
 
@@ -31,6 +33,7 @@ public slots:
     void nodeNamesRequest();
     void readGraphFromTxtRequest(QString path);
     bool addRelationsRequest(QString from, QString to, int weight);
+    QString startAlgorithmRequest(QString from, QString to);
 
 };
 
