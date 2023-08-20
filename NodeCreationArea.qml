@@ -14,13 +14,6 @@ import ListModel 1.0
 
 Rectangle{
     id: createNodeBtn
-    width: parent.width / 3
-    height: parent.height / 2
-    anchors.right: parent.right
-    anchors.top: parent.top
-    anchors.margins: defMargin
-    color: "pink"
-
     ColumnLayout{
         CustomInputField{
             id: nameField
