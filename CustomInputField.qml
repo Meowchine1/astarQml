@@ -15,10 +15,12 @@ Rectangle{
     Label{
         id: fieldName
         anchors.right: innerText.left
-        anchors.margins: defMargin
+        anchors.rightMargin: defMargin
+        anchors.verticalCenter: innerText.verticalCenter
+
+
     }
     TextField{
         id: innerText
-        anchors.margins: defMargin
     }
 }
