@@ -13,11 +13,7 @@ import ListModel 1.0
 Rectangle{
 
     id: rect
-    width: parent.width / 2
-    height: parent.height / 2
-    anchors.left: parent.left
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.leftMargin: defMargin
+
 
     TableView{
         id: tableview
