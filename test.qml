@@ -31,7 +31,8 @@ ApplicationWindow {
             for (var i = 0; i < 5; i++) {
                 nodeModel.append({
                                      x: Math.random() * width,
-                                     y: Math.random() * height
+                                     y: Math.random() * height,
+
                                  });
             }
         }
@@ -49,8 +50,8 @@ ApplicationWindow {
                 MouseArea {
                     anchors.fill: parent
                     onClicked:{ arrowModel.append(
-                                    {x: parent.x + parent.width / 2,
-                                        y: parent.y + parent.height / 2
+                                    { x: parent.x + parent.width / 2, y: parent.y + parent.height / 2,
+                                        targetX: Math.random() * width, targetY: Math.random() * height
                                     })
                     }
                 }
@@ -70,7 +71,8 @@ ApplicationWindow {
                      ShapePath {
                          strokeColor: "red"; // it works :)
                          startX: model.x; startY: model.y
-                         PathLine { x: 640; y: 480 }
+                         PathLine {  x: model.targetX
+                             y: model.targetY }
                      }
             }
         }
