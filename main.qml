@@ -14,6 +14,7 @@ import ListModel 1.0
 
 
 ApplicationWindow {
+
     id: win
     width: 800
     height: 480
@@ -24,6 +25,11 @@ ApplicationWindow {
 
     property var repeaterFromNodes: []
     property var repeaterToNodes: []
+
+    property int defMargin: 10
+    property int defSpacing: 100
+
+    property int middleMargin: 50
 
 
 
@@ -45,14 +51,7 @@ ApplicationWindow {
         }
     }
 
-
-    property int defMargin: 10
-    property int defSpacing: 100
-
-    function popPage(){
-
-        stackView.pop();
-    }
+    function popPage(){ stackView.pop(); }
 
     StackView{
         id: stackView
@@ -61,16 +60,13 @@ ApplicationWindow {
     }
 
     BasePage {
-
         id: mainPage
         title: "Main page"
-        backgroundColor: "blue"
 
         Rectangle{
             anchors.centerIn: parent
             width: parent.width / 2
             height: parent.height / 2
-            color: mainPage.backgroundColor
 
             ColumnLayout{
                 id: btnLayout
@@ -102,17 +98,26 @@ ApplicationWindow {
         id: manualCreatingPage
         title: "Manual creating"
         visible: false
-        backgroundColor: "pink"
-        buttonText: "Back"
         onButtonClicked: {
             stackView.pop(mainPage);
         }
         NodesTable {
             id: rect
+            anchors.left: parent.left
+            anchors.top: parent.top
+            width: parent.width / 2
+            height: parent.height / 2
+            anchors.topMargin: middleMargin
+            anchors.leftMargin: middleMargin
         }
 
         NodeCreationArea {
             id: createNodeBtn
+            width: parent.width / 3
+            height: parent.height / 2
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.topMargin: middleMargin
         }
 
         Button{
@@ -131,30 +136,61 @@ ApplicationWindow {
         id: readGraphPage
         title: "Read graph"
         visible: false
-        backgroundColor: "green"
         buttonText: "Back"
         onButtonClicked: {
             stackView.pop(mainPage);
         }
-        Text{
-            id: path
+
+        Rectangle{
+            width: parent.width / 2
+            height: parent.height / 2
+            anchors.left: parent.left
             anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            text:"Path to graph model"
-            width: parent.width/2
-        }
-        ColumnLayout{
-            spacing: 100
-            anchors.centerIn: parent
+
             Button {
-                anchors.right: parent.left
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.leftMargin: middleMargin
+                anchors.topMargin: middleMargin
                 text: "Open File Manager"
                 onClicked: {
                     fileDialog.open();
                 }
             }
+        }
+
+        Rectangle{
+            width: parent.width / 2
+            height: parent.height / 2
+            anchors.right: parent.right
+            anchors.top: parent.top
+
+            CustomInputField{
+                id: path
+                name: "Path to graph model"
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.topMargin: middleMargin
+            }
+            //            Text{
+            //                id: path
+            //                anchors.left: parent.left
+            //                anchors.top: parent.top
+            //                anchors.topMargin: middleMargin
+            //                text:"Path to graph model"
+
+            //            }
+
+        }
+
+        Rectangle{
+
+            width: parent.width
+            height: parent.height / 2
+            anchors.bottom: parent.bottom
             Button{
-                anchors.right: parent.left
+                anchors.centerIn: parent
+                anchors.topMargin: defMargin
                 visible: path.text != "Path to graph model"
                 text: "Upload graph model"
                 onClicked: {
@@ -163,6 +199,7 @@ ApplicationWindow {
                     appCore.nodeNamesRequest()
                 }
             }
+
         }
     }
 
@@ -204,7 +241,6 @@ ApplicationWindow {
         }
         return null
     }
-
 
     function getCoordinatesFromNodeByText(text) {
         var item = findFromNodeByText(text)
@@ -267,7 +303,7 @@ ApplicationWindow {
             height: parent.height/ 2
             anchors.left: parent.left
             anchors.bottom: parent.bottom
-            anchors.leftMargin: 200
+            anchors.leftMargin: middleMargin
             ColumnLayout{
                 anchors.top: parent.top
                 spacing: 20
@@ -303,50 +339,12 @@ ApplicationWindow {
             height: parent.height/ 1.2
             anchors.right: parent.right
             anchors.top: parent.top
-            color: "red"
-            opacity: 0.5
             RowLayout{
                 spacing: parent.width / 1.5
                 anchors.top: parent.horizontalCenter
-                ColumnLayout{ // Отображение узлов графа
-                    anchors.margins: defMargin
-                    Repeater {
-                        id: fromNodes
-                        model: listModel
-                        delegate: Rectangle {
-                            width: 50
-                            height: 50
-                            radius: width*0.5
-                            color: "black"
-                            Text{
-                                anchors.centerIn: parent
-                                text: model["name"]
-                                Component.onCompleted: {
-                                    // Сохраняем элементы Repeater
-                                    win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
-                                }
-                            }
-                        }
-                    }
+                NodesColumn {
                 }
-                ColumnLayout{ // Отображение узлов графа
-                    Repeater {
-                        id: toNodes
-                        model: listModel
-                        delegate: Rectangle {
-                            width: 50
-                            height: 50
-                            radius: width*0.5
-                            color: "black"
-                            Text{
-                                anchors.centerIn: parent
-                                text: model["name"]
-                                Component.onCompleted: {
-                                    win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
-                                }
-                            }
-                        }
-                    }
+                NodesColumn {
                 }
                 ListModel {  // Список стрелок графа
                     id: arrowModel
@@ -380,17 +378,16 @@ ApplicationWindow {
         id: astarPage
         visible: false
         Rectangle{
-            color: "purple"
             anchors.fill: parent
 
             Rectangle{
-                width: parent.width / 2
-                height: parent.height / 2
+                width: parent.width / 1.3
+                height: parent.height / 1.3
                 anchors.centerIn: parent
-                color: "yellow"
 
                 RowLayout{
-                    anchors.centerIn: parent
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
                     spacing: 20
                     ComboBox {
                         id:startNode
@@ -401,7 +398,6 @@ ApplicationWindow {
                             text:"from"
                             anchors.bottom: parent.top
                         }
-
                     }
                     ComboBox {
                         id:finishNode
@@ -414,22 +410,28 @@ ApplicationWindow {
                         }
                     }
                 }
-
-                Text {
-                    id: minWay
-                    text: qsTr("Algorithm's work result")
-                    anchors.left: parent.left
+                RowLayout{
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
-                }
+                    spacing: 20
+                    Button{
+                        text: "Start alrgorithm"
+                        onClicked: {
+                            var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
+                            minWay.text = shortestWay
 
-                Button{
-                    text: "Start alrgorithm"
-                    onClicked: {
-                        var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
-                        minWay.text = shortestWay
-
+                        }
                     }
+                    Text {
+                        id: minWay
+                        text: qsTr("Algorithm's work result: ")
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                    }
+
                 }
+
+
             }
         }
 
