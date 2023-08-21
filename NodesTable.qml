@@ -6,9 +6,7 @@ import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 
 import TableModel 1.0
-import AppModule.Impl 1.0
-import AppCore 1.0
-import ListModel 1.0
+
 
 Rectangle{
 
