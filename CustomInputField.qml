@@ -8,6 +8,7 @@ Rectangle{
     property alias name: fieldName.text
     property alias placeholderText: innerText.placeholderText
     property alias text: innerText.text
+    property alias readonly: innerText.readOnly
 
     Layout.preferredWidth: 40
     Layout.preferredHeight: 40
