@@ -6,30 +6,21 @@
 
 AppCore::AppCore(){}
 
-void AppCore::createNodeRequest(QString name, QString x, QString y)
+bool AppCore::createNodeRequest(QString name, QString x, QString y)
 {
-    QRegExp consistFromDidgits("\\d*");
-
-    if(consistFromDidgits.exactMatch(x) && consistFromDidgits.exactMatch(y)){
-
         Node* node = new Node (name, x.toInt(),y.toInt());
         try{
             graph->addNode(node);
-        }
-        catch(const char* error_message){
 
-            std::cout << error_message << std::endl;
+        }
+        catch(...){
+            return false;
         }
 
         emit nodesChange({node->name,
                           QString::number(node->getX()),
                           QString::number(node->getY())});
-    }
-    else{
-
-        //to do error message
-        //
-    }
+        return true;
 
 }
 
@@ -54,9 +45,7 @@ bool AppCore::addRelationsRequest(QString from, QString to, int weight)
         graph->set_relation(fromNode, toNode, weight);
         return true;
     }
-    catch(const char* error_message){
-
-        std::cout << error_message << std::endl;
+    catch(...){
         return false;
     }
 
@@ -70,9 +59,7 @@ QString AppCore::startAlgorithmRequest(QString from, QString to)
         QString minway = astar->run(fromNode, toNode, graph);
         return  minway;
     }
-    catch(const char* error_message){
-
-        std::cout << error_message << std::endl;
+    catch(...){
         return "null";
     }
 }
