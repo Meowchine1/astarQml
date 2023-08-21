@@ -29,7 +29,7 @@ signals:
     void sendNodeNames(QVector<QString> nodes);
 
 public slots:
-    void createNodeRequest(QString name, QString x, QString y);
+    bool createNodeRequest(QString name, QString x, QString y);
     void nodeNamesRequest();
     void readGraphFromTxtRequest(QString path);
     bool addRelationsRequest(QString from, QString to, int weight);
