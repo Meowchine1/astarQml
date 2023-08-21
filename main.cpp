@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     TableModel* model = new TableModel();
     engine.rootContext()->setContextProperty("tableModel", model);
 
-    qmlRegisterType<ListModel>("ListModel", 1, 0, "ListModel");
+    qmlRegisterType<ListModel>("CustomListModel", 1, 0, "CustomListModel");
     ListModel* listModel = new ListModel();
     engine.rootContext()->setContextProperty("listModel", listModel);
 

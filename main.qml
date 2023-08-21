@@ -6,11 +6,13 @@ import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 import QtQuick.Controls.Material 2.12
+//import Qt.labs.platform 1.1   мешает File Dialog
+
 
 import TableModel 1.0
 import AppModule.Impl 1.0
 import AppCore 1.0
-import ListModel 1.0
+import CustomListModel 1.0
 
 
 ApplicationWindow {
@@ -31,8 +33,21 @@ ApplicationWindow {
 
     property int middleMargin: 50
 
+//    ListModel {  // Список стрелок графа
+//        id: arrowModel
 
 
+//    }
+
+    function isInt(input) {
+        var intRegex = /^\d{1,10}$/
+        return intRegex.test(input)
+    }
+
+    function isEmpty(input) {
+        var emptyRegex = /^\s*$/
+        return emptyRegex.test(input)
+    }
     header: ToolBar{
         height: 50
         ToolButton{
@@ -40,7 +55,8 @@ ApplicationWindow {
             text: "<"
             visible: stackView.depth > 1
             anchors.verticalCenter: parent.verticalCenter
-            onClicked: {
+            onClicked:
+            {
                 popPage();
             }
         }
@@ -101,6 +117,7 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
+
         NodesTable {
             id: rect
             anchors.left: parent.left
@@ -167,31 +184,22 @@ ApplicationWindow {
 
             CustomInputField{
                 id: path
-                name: "Path to graph model"
+                readonly: true
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.topMargin: middleMargin
+                placeholderText: "Path to graph model"
             }
-            //            Text{
-            //                id: path
-            //                anchors.left: parent.left
-            //                anchors.top: parent.top
-            //                anchors.topMargin: middleMargin
-            //                text:"Path to graph model"
-
-            //            }
-
         }
 
         Rectangle{
-
             width: parent.width
             height: parent.height / 2
             anchors.bottom: parent.bottom
             Button{
                 anchors.centerIn: parent
                 anchors.topMargin: defMargin
-                visible: path.text != "Path to graph model"
+                visible: path.text != ""
                 text: "Upload graph model"
                 onClicked: {
                     appCore.readGraphFromTxtRequest(path.text)
@@ -234,6 +242,8 @@ ApplicationWindow {
     function findToNodeByText(text) {
 
         console.warn("TO: ", text)
+
+        console.warn("len: ", win.repeaterToNodes.length)
         for (var i = 0; i < win.repeaterToNodes.length; i++) {
             if (win.repeaterToNodes[i].text === text) {
                 return win.repeaterToNodes[i].item
@@ -260,6 +270,9 @@ ApplicationWindow {
             console.warn("TO X = ", itemPosition.x + item.width / 2)
             console.warn("TO Y = ", itemPosition.y + item.height / 2)
             return {x: itemPosition.x  + item.width / 2  , y: itemPosition.y + item.height / 2 }
+        }
+        else{
+        console.warn("Null")
         }
         return null
     }
@@ -298,15 +311,32 @@ ApplicationWindow {
                 }
             }
         }
+
+
         Rectangle{
+
             width: parent.width/ 2
             height: parent.height/ 2
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             anchors.leftMargin: middleMargin
+
+            DialogItem {
+                id: messageDialog
+                z:1
+                visible: false
+                buttons: ['Ok']
+                dialog_width: parent.width / 2
+                dialog_height: parent.height / 2
+                anchors.centerIn: parent
+                color: "grey"
+                onClicked: visible = false
+            }
+
             ColumnLayout{
                 anchors.top: parent.top
                 spacing: 20
+                anchors.centerIn: parent
                 CustomInputField{
                     id: weight
                     name: "Enter edge weight"
@@ -314,20 +344,27 @@ ApplicationWindow {
                 Button{
                     text: "Add relation"
                     onClicked: {
-                        var from = comboboxFrom.currentText
-                        var to = comboboxTo.currentText
-                        var fromCoordinates = getCoordinatesFromNodeByText(from)
-                        var toCoordinates = getCoordinatesToNodeByText(to)
-                        appCore.addRelationsRequest(from, to, weight.text)
-                        if (fromCoordinates && toCoordinates) {
+                        if(isInt(weight.text)){
 
-                            arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
-                                                  xTarget: toCoordinates.x, yTarget: toCoordinates.y })
+                            var from = comboboxFrom.currentText
+                            var to = comboboxTo.currentText
+                            var fromCoordinates = getCoordinatesFromNodeByText(from)
+                            var toCoordinates = getCoordinatesToNodeByText(to)
+                            appCore.addRelationsRequest(from, to, weight.text)
+                            if (fromCoordinates && toCoordinates) {
 
-                            //                            arrowModel: [
-                            //                            { x: fromCoordinates.x, y: fromCoordinates.y,
-                            //                                xTarget: toCoordinates.x, yTarget: toCoordinates.y }
-                            //                            ]
+                                arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
+                                                      xTarget: toCoordinates.x, yTarget: toCoordinates.y })
+
+                                // arrowModel: [
+                                //{ x: fromCoordinates.x, y: fromCoordinates.y,
+                                // xTarget: toCoordinates.x, yTarget: toCoordinates.y }
+                                // ]
+                            }
+                        }
+                        else{
+                            messageDialog.text = 'Weight should be an Integer value'
+                            messageDialog.visible = true
                         }
                     }
                 }
@@ -342,10 +379,53 @@ ApplicationWindow {
             RowLayout{
                 spacing: parent.width / 1.5
                 anchors.top: parent.horizontalCenter
-                NodesColumn {
+                ColumnLayout{ // Отображение узлов графа
+                    anchors.margins: defMargin
+                    Repeater {
+                        id: fromNodes
+                        model: listModel
+                        delegate: Rectangle {
+                            width: 50
+                            height: 50
+                            radius: width*0.5
+                            color: "black"
+                            opacity: 0.5
+                            Text{
+                                anchors.centerIn: parent
+                                text: model["name"]
+                                Component.onCompleted: {
+                                    // Сохраняем элементы Repeater
+                                    win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
+                                }
+                            }
+                        }
+                    }
                 }
-                NodesColumn {
+
+
+                ColumnLayout{ // Отображение узлов графа
+                    anchors.margins: defMargin
+                    Repeater {
+                        id: toNodes
+                        model: listModel
+                        delegate: Rectangle {
+                            width: 50
+                            height: 50
+                            radius: width*0.5
+                            color: "black"
+                            opacity: 0.5
+                            Text{
+                                anchors.centerIn: parent
+                                text: model["name"]
+                                Component.onCompleted: {
+                                    // Сохраняем элементы Repeater
+                                    win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
+                                }
+                            }
+                        }
+                    }
                 }
+
                 ListModel {  // Список стрелок графа
                     id: arrowModel
                 }
@@ -362,6 +442,7 @@ ApplicationWindow {
                 }
             }
         }
+
         Button{
             text: "NEXT STEP"
             anchors.bottom: parent.bottom;
@@ -383,11 +464,12 @@ ApplicationWindow {
             Rectangle{
                 width: parent.width / 1.3
                 height: parent.height / 1.3
-                anchors.centerIn: parent
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.margins: middleMargin
 
                 RowLayout{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.top
+                    id: topRow
                     spacing: 20
                     ComboBox {
                         id:startNode
@@ -411,9 +493,9 @@ ApplicationWindow {
                     }
                 }
                 RowLayout{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
+                    anchors.top: topRow.bottom
                     spacing: 20
+                    anchors.margins: middleMargin
                     Button{
                         text: "Start alrgorithm"
                         onClicked: {
@@ -425,8 +507,7 @@ ApplicationWindow {
                     Text {
                         id: minWay
                         text: qsTr("Algorithm's work result: ")
-                        anchors.left: parent.left
-                        anchors.bottom: parent.bottom
+
                     }
 
                 }
