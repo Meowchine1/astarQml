@@ -44,6 +44,43 @@ void Graph::addNode(QString name, QString x, QString y){
     }
 }
 
+void Graph::deleteNode(QString name)
+{
+    //   std::unordered_map<Node*, std::unordered_map<Node*, int>>
+
+
+    Node* deleteNode = findNodeByName(name);
+
+
+    auto nodesIt = std::find_if(nodes.begin(),
+                                nodes.end(), [&](const Node* elem){
+        return elem->name == name;
+    });
+
+
+    auto edgesIt = edges_weights.find(const_cast<Node*>(deleteNode));
+
+
+    if(nodesIt != nodes.end()){
+        nodes.erase(nodesIt);
+
+}
+     if(edgesIt != edges_weights.end()){
+           edges_weights.erase(edgesIt);
+
+     }
+
+
+    for(auto row: edges_weights){
+
+        auto childIt = row.second.find(const_cast<Node*>(deleteNode));
+        row.second.erase(childIt);
+    }
+
+    deleteNode->~Node();
+
+}
+
 int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 {
     auto it = edges_weights.find(const_cast<Node*>(keyNode));
@@ -135,8 +172,8 @@ void Graph::readtxt(QString filePath)
     edges_weights.clear();
     std::string line;
     char lineSeparator = '\n',
-         innerSeparator = ' ',
-         coordinateSeparator = '(';
+            innerSeparator = ' ',
+            coordinateSeparator = '(';
 
     int i;
     size_t pos = 0;

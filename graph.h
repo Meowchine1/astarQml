@@ -33,6 +33,8 @@ public:
     void readtxt(QString filePath);
     void addNode(Node* node);
     void addNode(QString name, QString x, QString y);
+    void deleteNode(QString name);
+
     void set_relation(Node* from, Node* to, int weight);
     void printGraph();
 
