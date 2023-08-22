@@ -30,14 +30,7 @@ ApplicationWindow {
 
     property int defMargin: 10
     property int defSpacing: 100
-
     property int middleMargin: 50
-
-//    ListModel {  // Список стрелок графа
-//        id: arrowModel
-
-
-//    }
 
     function isInt(input) {
         var intRegex = /^\d{1,10}$/
@@ -127,6 +120,7 @@ ApplicationWindow {
             anchors.topMargin: middleMargin
             anchors.leftMargin: middleMargin
         }
+
 
         NodeCreationArea {
             id: createNodeBtn
@@ -258,7 +252,7 @@ ApplicationWindow {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
             console.warn("FROM X = ", itemPosition.x)
             console.warn("FROM Y = ", itemPosition.y)
-            return {x: itemPosition.x + item.width / 2, y: itemPosition.y + item.height / 2}
+            return {x: itemPosition.x + item.width /* / 2 */, y: itemPosition.y + item.height / 2 }
         }
         return null
     }
@@ -269,10 +263,10 @@ ApplicationWindow {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
             console.warn("TO X = ", itemPosition.x + item.width / 2)
             console.warn("TO Y = ", itemPosition.y + item.height / 2)
-            return {x: itemPosition.x  + item.width / 2  , y: itemPosition.y + item.height / 2 }
+            return {x: itemPosition.x /* + item.width  / 2 */  , y: itemPosition.y + item.height  / 2 }
         }
         else{
-        console.warn("Null")
+            console.warn("Null")
         }
         return null
     }
@@ -314,7 +308,6 @@ ApplicationWindow {
 
 
         Rectangle{
-
             width: parent.width/ 2
             height: parent.height/ 2
             anchors.left: parent.left
@@ -354,12 +347,7 @@ ApplicationWindow {
                             if (fromCoordinates && toCoordinates) {
 
                                 arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
-                                                      xTarget: toCoordinates.x, yTarget: toCoordinates.y })
-
-                                // arrowModel: [
-                                //{ x: fromCoordinates.x, y: fromCoordinates.y,
-                                // xTarget: toCoordinates.x, yTarget: toCoordinates.y }
-                                // ]
+                                                      targetX: toCoordinates.x, targetY: toCoordinates.y })
                             }
                         }
                         else{
@@ -409,6 +397,7 @@ ApplicationWindow {
                         id: toNodes
                         model: listModel
                         delegate: Rectangle {
+                            z:1
                             width: 50
                             height: 50
                             radius: width*0.5
@@ -432,11 +421,27 @@ ApplicationWindow {
                 Repeater { // Отображение стрелок графа
                     model: arrowModel
                     delegate:
-                        Shape {
-                        ShapePath {
-                            strokeColor: "black";
-                            startX: model.x; startY: model.y
-                            PathLine { x: model.xTarget; y: model.yTarget }
+
+                        Item {
+
+                        Canvas {
+                            id: canvas
+                            antialiasing: true
+                            width: win.width
+                            height: win.height
+                            onPaint: {
+                                var ctx = canvas.getContext('2d')
+                                ctx.strokeStyle = "#000000"
+                                ctx.lineCap = "round"
+                                ctx.lineWidth = canvas.height * 0.009
+                                ctx.beginPath()
+                                ctx.moveTo(model.x, model.y)
+                                ctx.lineTo(model.targetX, model.targetY)
+                                ctx.stroke()
+                                ctx.moveTo(model.targetX, model.targetY)
+                                ctx.arc(model.targetX, model.targetY, 10, 0, 2 * Math.PI)
+                                ctx.fill();
+                            }
                         }
                     }
                 }
@@ -454,6 +459,9 @@ ApplicationWindow {
             }
         }
     }
+
+
+
 
     BasePage{
         id: astarPage
