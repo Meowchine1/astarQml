@@ -4,7 +4,7 @@ import QtQuick 2.12  //tableview
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
-import QtQuick.Shapes 1.12
+import QtQuick.Shapes 1.15
 
 ApplicationWindow {
     id: win
@@ -12,9 +12,6 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
-
-
-
 
     Rectangle {
         anchors.fill: parent
@@ -66,15 +63,40 @@ ApplicationWindow {
         Repeater {
             model: arrowModel
             delegate:
+                Item {
+                    Canvas {
+                        id: canvas
+                        antialiasing: true
+                        width: win.width
+                        height: win.height
+                        onPaint: {
+                            var ctx = canvas.getContext('2d')
 
-                Shape {
-                     ShapePath {
-                         strokeColor: "red"; // it works :)
-                         startX: model.x; startY: model.y
-                         PathLine {  x: model.targetX
-                             y: model.targetY }
-                     }
-            }
+                            ctx.strokeStyle = "#808080"
+                            ctx.lineWidth = canvas.height * 0.009
+                            ctx.beginPath()
+                            ctx.moveTo(model.x, model.y)
+                            ctx.lineTo(model.targetX, model.targetY)
+                            ctx.lineTo(model.targetX * 0.9, model.targetY * 0.9)
+                            ctx.lineTo(model.targetX * 0.9, model.targetY * 1.1)
+
+                            ctx.stroke()
+                        }
+                    }
+                }
+
+//                Shape {
+//                     ShapePath {
+//                         strokeColor: "red"; // it works :)
+//                         startX: model.x; startY: model.y
+//                         PathLine {  x: model.targetX
+//                             y: model.targetY }
+//                     }
+
+
+//            }
         }
+
+
     }
 }
