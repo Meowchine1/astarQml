@@ -30,10 +30,13 @@ signals:
 
 public slots:
     bool createNodeRequest(QString name, QString x, QString y);
+    void deleteNode(QString name);
     void nodeNamesRequest();
     void readGraphFromTxtRequest(QString path);
     bool addRelationsRequest(QString from, QString to, int weight);
     QString startAlgorithmRequest(QString from, QString to);
+
+
 
 };
 

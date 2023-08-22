@@ -24,6 +24,14 @@ bool AppCore::createNodeRequest(QString name, QString x, QString y)
 
 }
 
+void AppCore::deleteNode(QString name)
+{
+
+    graph->deleteNode(name);
+
+ emit nodesChange(getNodes());
+}
+
 void AppCore::nodeNamesRequest()
 {
   emit sendNodeNames(graph->getNodesNames());
