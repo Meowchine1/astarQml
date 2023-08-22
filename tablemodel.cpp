@@ -42,6 +42,11 @@ QHash<int, QByteArray> TableModel::roleNames() const
     return roles;
 }
 
+QString TableModel::getProperty(const QModelIndex &index)
+{
+    return table.at(index.row()).at(index.column());
+}
+
 void TableModel::updateData(QVector<QString> node)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -51,8 +56,23 @@ void TableModel::updateData(QVector<QString> node)
 
 void TableModel::updateData(QVector<QVector<QString> > node)
 {
+
+    int tlast = table.size() - 1;
     beginResetModel();
-    table.append(node);
+
+    if (tlast > 1)
+    {
+         table.remove(1,  tlast);
+    }
+    else {
+
+        table.remove(1);
+    }
+
+    if(!node.empty()){
+
+        table.append(node);
+    }
     endResetModel();
 }
 

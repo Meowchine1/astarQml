@@ -54,21 +54,17 @@ void Graph::deleteNode(QString name)
 
     auto nodesIt = std::find_if(nodes.begin(),
                                 nodes.end(), [&](const Node* elem){
-        return elem->name == name;
+        return elem == deleteNode;
     });
 
 
     auto edgesIt = edges_weights.find(const_cast<Node*>(deleteNode));
 
 
-    if(nodesIt != nodes.end()){
+    if(nodesIt != nodes.end() && edgesIt != edges_weights.end()){
         nodes.erase(nodesIt);
-
-}
-     if(edgesIt != edges_weights.end()){
-           edges_weights.erase(edgesIt);
-
-     }
+        edges_weights.erase(edgesIt);
+    }
 
 
     for(auto row: edges_weights){
@@ -104,7 +100,7 @@ int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
 
 QVector<QVector<QString>> Graph::getNodes()
 {
-    QVector<QVector<QString>> result;
+    QVector<QVector<QString>> result;// = {{}};
     for(Node* node: nodes){
         result.append({node->name, QString::number(node->getX()), QString::number(node->getY())});
     }

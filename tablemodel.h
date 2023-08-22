@@ -22,11 +22,16 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    Q_INVOKABLE
+    QString getProperty(const QModelIndex &index);
+
 public slots:
     void updateData(QVector<QString> node);
     void updateData(QVector<QVector<QString>> node);
 
+
 private:
     QVector<QVector<QString>> table = {{"Node name", "Coordinate X", "Coordinate Y"}};
+    QString name;
 };
 #endif // TABLEMODEL_H

@@ -30,12 +30,11 @@ Rectangle{
             implicitWidth: rect.width / 3
             implicitHeight: 50
             color: (row !== 0 && row === tableview.currentRow) ? "blue" : (row % 2 === 0 ? "#F0F0F0" : "#FFFFFF")
-            //color: cellColor
+
             Text{
                 anchors.centerIn: parent
                 text: tabledata
             }
-
             MouseArea{
                 id:mouseArea
                 anchors.fill: parent
@@ -45,8 +44,6 @@ Rectangle{
                 }
             }
         }
-
-
         ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AsNeeded
             active: true
@@ -56,8 +53,6 @@ Rectangle{
             }
         }
     }
-
-
     Button{
 
         id:deleteNode
@@ -69,9 +64,10 @@ Rectangle{
         ToolTip.text: qsTr("Click on node row")
 
         onClicked: {
-            var selectedRow = tableview.currentRow;
-            var firstCell = tableModel.data(tableModel.index(selectedRow, 0));
-            appCore.deleteNode(firstCell);
+
+            var nodeName = tableModel.getProperty(tableview.model.index(tableview.currentRow, 0))
+
+            appCore.deleteNode(nodeName);
         }
 
 
