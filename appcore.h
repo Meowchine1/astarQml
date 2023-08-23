@@ -16,13 +16,14 @@ public:
     AppCore();
     Graph* graph = Graph::getInstance();
     Astar* astar = new Astar();
-    QVector<QVector<QString>> getNodes();
+
     QString filepath;
 
     void setPath(){}
 
-    Q_INVOKABLE
+    QVector<QString> getNodes();
     QVector<QVector<QString>> getRelations();
+    void deleteRelation(QString from, QString to);
 
 signals:
     void nodesChange(QVector<QString> nodes);
