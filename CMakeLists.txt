@@ -36,7 +36,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 set(CPP main.cpp node.cpp graph.cpp astar.cpp
     main.cpp appcore.cpp tablemodel.cpp listmodel.cpp)
 set(HEADER node.h graph.h heuristic.h
-    splitter.h astar.h appcore.h tablemodel.h listmodel.h)
+    splitter.h astar.h appcore.h tablemodel.h listmodel.h NodeException.h)
 
 set(PROJECT_SOURCES ${CPP}  ${HEADER} qml.qrc
 )
