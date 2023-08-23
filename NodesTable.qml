@@ -38,7 +38,6 @@ Rectangle{
             MouseArea{
                 id:mouseArea
                 anchors.fill: parent
-                hoverEnabled: true
                 onClicked: {
                      tableview.currentRow = row
                 }
