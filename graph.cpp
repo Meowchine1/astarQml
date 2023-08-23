@@ -5,6 +5,7 @@
 
 #include "splitter.h"
 #include "graph.h"
+#include "NodeException.h"
 
 Graph* Graph::instance = nullptr;
 
@@ -121,7 +122,17 @@ void Graph::deleteRelation(QString from, QString to)
     Node* fromNode = findNodeByName(from);
     Node* toNode = findNodeByName(to);
 
-   // for(auto& pair: e)
+    for(auto& pair: edges_weights){
+        const Node* parent = pair.first;
+        inner_map innerMap = pair.second;
+        auto childIt = innerMap.find(const_cast<Node*>(toNode));
+
+        if(childIt != innerMap.end()){
+            innerMap.erase(childIt);
+        }
+
+
+    }
 
 }
 
@@ -140,19 +151,27 @@ Node* Graph::findNodeByName(QString name){
     }
 }
 
-void Graph::set_relation(Node *from, Node *to, int weight)
+void Graph::set_relation(QString from, QString to, int weight)
 {
-    auto it = std::find_if(edges_weights.begin(),
-                           edges_weights.end(), [&](const auto& elem) {
-        return elem.first == from;
+    Node* fromNode = findNodeByName(from);
+    Node* toNode = findNodeByName(to);
+    /// if find
+
+    auto itFrom = std::find_if(edges_weights.begin(),
+                               edges_weights.end(), [&](const auto& elem) {
+        return elem.first == fromNode;
     });
-    if(it != edges_weights.end())
-    {
-        edges_weights[from][to] = weight;
-    }else{
-        edges_weights[from] = std::unordered_map<Node*, int>();
-        edges_weights[from][to] = weight;
+
+    const std::unordered_map<Node*, int>& innerMap = itFrom->second;
+    auto relationIt = innerMap.find(const_cast<Node*>(toNode));
+
+    if(relationIt == innerMap.end()){
+        edges_weights[fromNode][toNode] = weight;
     }
+    else{
+        throw (NodeException("Relation already exist"));
+    }
+
 }
 
 Graph::~Graph()

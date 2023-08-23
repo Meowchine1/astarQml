@@ -37,7 +37,7 @@ public:
     void addNode(QString name, QString x, QString y);
     void deleteNode(QString name);
 
-    void set_relation(Node* from, Node* to, int weight);
+    void set_relation(QString from, QString to, int weight);
     void printGraph();
 
     QVector<QVector<QString> > getRelations();
