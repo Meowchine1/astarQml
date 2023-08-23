@@ -121,7 +121,6 @@ ApplicationWindow {
             anchors.leftMargin: middleMargin
         }
 
-
         NodeCreationArea {
             id: createNodeBtn
             width: parent.width / 3
@@ -254,6 +253,15 @@ ApplicationWindow {
                             text:"from"
                             anchors.bottom: parent.top
                         }
+
+                        ScrollBar.vertical: ScrollBar {
+                            policy: ScrollBar.AsNeeded
+                            active: true
+                            onActiveChanged: {
+                                if (!active)
+                                    active = true;
+                            }
+                        }
                     }
                     ComboBox {
                         id:finishNode
@@ -263,6 +271,15 @@ ApplicationWindow {
                         Label{
                             text:"to"
                             anchors.bottom: parent.top
+                        }
+
+                        ScrollBar.vertical: ScrollBar {
+                            policy: ScrollBar.AsNeeded
+                            active: true
+                            onActiveChanged: {
+                                if (!active)
+                                    active = true;
+                            }
                         }
                     }
                 }
