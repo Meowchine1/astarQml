@@ -16,10 +16,6 @@ Rectangle {
 
     signal clicked(int index);
 
-   // width: 200;  height: 200
-
-    MouseArea{ anchors.fill: parent }
-
     Text {
         id: message
         anchors{
