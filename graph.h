@@ -22,6 +22,8 @@ public:
     static Graph* getInstance();
     ~Graph();
 
+
+
     Graph(Graph& other) = delete;
     void operator=(Graph& other) = delete;
 
@@ -37,6 +39,8 @@ public:
 
     void set_relation(Node* from, Node* to, int weight);
     void printGraph();
+
+    QVector<QVector<QString> > getRelations();
 
     QVector<QString> getNodesNames();
 };

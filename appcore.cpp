@@ -76,3 +76,8 @@ QVector<QVector<QString>> AppCore::getNodes(){
 
     return graph->getNodes();
 }
+
+QVector<QVector<QString> > AppCore::getRelations()
+{
+    return getRelations();
+}

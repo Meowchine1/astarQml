@@ -246,12 +246,15 @@ void Graph::readtxt(QString filePath)
 void Graph::printGraph()
 {
     for (auto& pair : edges_weights) {
+
         const Node* keyNode = pair.first;
         std::unordered_map<Node*, int>& innerMap = pair.second;
         QString message = "Vertex is " + keyNode->name + " coordinates("
                 + keyNode->getX() + ";" + keyNode->getY() + ")\t neighbors: ";
         std::cout<< message.toStdString();
+
         for (auto& innerPair : innerMap) {
+
             const Node* childNode = innerPair.first;
             int value = innerPair.second;
             message = "name:" + childNode->name + " coordinates("
@@ -262,3 +265,30 @@ void Graph::printGraph()
         }
     }
 }
+
+QVector<QVector<QString> > Graph::getRelations()
+{
+
+    QVector<QVector<QString> > result;
+    for(auto& pair : edges_weights){
+
+        const Node* keyNode = pair.first;
+        inner_map innerMap = pair.second;
+
+        for (auto& innerPair : innerMap) {
+
+            const Node* childNode = innerPair.first;
+            result.append({keyNode->name, childNode->name});
+        }
+    }
+
+    return result;
+
+}
+
+
+
+
+
+
+

@@ -21,7 +21,8 @@ public:
 
     void setPath(){}
 
-
+    Q_INVOKABLE
+    QVector<QVector<QString>> getRelations();
 
 signals:
     void nodesChange(QVector<QString> nodes);
