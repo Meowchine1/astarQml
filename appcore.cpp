@@ -3,24 +3,25 @@
 
 #include "appcore.h"
 #include "node.h"
+#include "NodeException.h"
 
 AppCore::AppCore(){}
 
 bool AppCore::createNodeRequest(QString name, QString x, QString y)
 {
-        Node* node = new Node (name, x.toInt(),y.toInt());
-        try{
-            graph->addNode(node);
+    Node* node = new Node (name, x.toInt(),y.toInt());
+    try{
+        graph->addNode(node);
 
-        }
-        catch(...){
-            return false;
-        }
+    }
+    catch(...){
+        return false;
+    }
 
-        emit nodesChange({node->name,
-                          QString::number(node->getX()),
-                          QString::number(node->getY())});
-        return true;
+    emit nodesChange({node->name,
+                      QString::number(node->getX()),
+                      QString::number(node->getY())});
+    return true;
 
 }
 
@@ -29,12 +30,12 @@ void AppCore::deleteNode(QString name)
 
     graph->deleteNode(name);
 
- emit nodesChange(getNodes());
+    emit nodesChange(getNodes());
 }
 
 void AppCore::nodeNamesRequest()
 {
-  emit sendNodeNames(graph->getNodesNames());
+    emit sendNodeNames(graph->getNodesNames());
 }
 
 void AppCore::readGraphFromTxtRequest(QString path)
@@ -48,15 +49,14 @@ void AppCore::readGraphFromTxtRequest(QString path)
 bool AppCore::addRelationsRequest(QString from, QString to, int weight)
 {
     try{
-        Node* fromNode = graph->findNodeByName(from);
-        Node* toNode = graph->findNodeByName(to);
-        graph->set_relation(fromNode, toNode, weight);
+        graph->set_relation(from, to, weight);
         return true;
     }
-    catch(...){
+    catch(NodeException& ex){
+        std::cout<<"CATCH";
+        qDebug();
         return false;
     }
-
 }
 
 QString AppCore::startAlgorithmRequest(QString from, QString to)
@@ -77,9 +77,20 @@ QVector<QString> AppCore::getNodes(){
     return graph->getNodesNames();
 }
 
-QVector<QVector<QString> > AppCore::getRelations()
+QVariantList AppCore::getRelations()
 {
-    return graph->getRelations();
+    QVector<QVector<QString> > relations =  graph->getRelations();
+    QVariantList result;
+
+    for (const auto& row : relations) {
+        QVariantList rowData;
+        for (const auto& cell : row) {
+            result.append(cell);
+        }
+    }
+
+    return result;
+
 }
 
 void AppCore::deleteRelation(QString from, QString to)

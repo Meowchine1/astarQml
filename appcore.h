@@ -21,8 +21,11 @@ public:
 
     void setPath(){}
 
+    Q_INVOKABLE
     QVector<QString> getNodes();
-    QVector<QVector<QString>> getRelations();
+    Q_INVOKABLE
+    QVariantList getRelations();
+    Q_INVOKABLE
     void deleteRelation(QString from, QString to);
 
 signals:
@@ -38,8 +41,8 @@ public slots:
     bool addRelationsRequest(QString from, QString to, int weight);
     QString startAlgorithmRequest(QString from, QString to);
 
-
-
 };
 
 #endif // APPCORE_H
+
+
