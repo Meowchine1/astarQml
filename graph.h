@@ -43,6 +43,7 @@ public:
     QVector<QVector<QString> > getRelations();
 
     QVector<QString> getNodesNames();
+    void deleteRelation(QString from, QString to);
 };
 
 #endif // GRAPH_H

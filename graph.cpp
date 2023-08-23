@@ -116,6 +116,15 @@ QVector<QString> Graph::getNodesNames()
     return result;
 }
 
+void Graph::deleteRelation(QString from, QString to)
+{
+    Node* fromNode = findNodeByName(from);
+    Node* toNode = findNodeByName(to);
+
+   // for(auto& pair: e)
+
+}
+
 Node* Graph::findNodeByName(QString name){
 
     auto it = std::find_if(nodes.begin(),
