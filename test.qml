@@ -96,7 +96,12 @@ ApplicationWindow {
 
 //            }
         }
+    }
 
-
+    Rectangle {
+        Component.onCompleted: console.warn("Completed Running!")
+        Rectangle {
+            Component.onCompleted: console.warn("Nested Completed Running!")
+        }
     }
 }
