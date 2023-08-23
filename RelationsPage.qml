@@ -34,6 +34,14 @@ BasePage{
                     text:"from"
                     anchors.bottom: parent.top
                 }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AsNeeded
+                    active: true
+                    onActiveChanged: {
+                        if (!active)
+                            active = true;
+                    }
+                }
             }
             ComboBox {
                 id:comboboxTo
@@ -43,6 +51,14 @@ BasePage{
                 Label{
                     text:"to"
                     anchors.bottom: parent.top
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AsNeeded
+                    active: true
+                    onActiveChanged: {
+                        if (!active)
+                            active = true;
+                    }
                 }
             }
         }
@@ -58,7 +74,7 @@ BasePage{
             z:1
             visible: false
             buttons: ['Ok']
-            dialog_width: parent.width / 2
+            dialog_width: parent.width / 2  // TO DO change parent to win?
             dialog_height: parent.height / 2
             anchors.centerIn: parent
             color: "grey"
@@ -80,10 +96,15 @@ BasePage{
                         var to = comboboxTo.currentText
                         var fromCoordinates = getCoordinatesFromNodeByText(from)
                         var toCoordinates = getCoordinatesToNodeByText(to)
-                        appCore.addRelationsRequest(from, to, weight.text)
-                        if (fromCoordinates && toCoordinates) {
-                            arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
-                                                  targetX: toCoordinates.x, targetY: toCoordinates.y })
+                        if(appCore.addRelationsRequest(from, to, weight.text)){
+                            if (fromCoordinates && toCoordinates) {
+                                arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
+                                                      targetX: toCoordinates.x, targetY: toCoordinates.y })
+                            }
+                        }
+                        else{
+                            messageDialog.text = 'Relation between ' + from + ' and ' + to + " already exist";
+                            messageDialog.visible = true
                         }
                     }
                     else{
@@ -104,10 +125,34 @@ BasePage{
 
                 }
             }
+
+            Button{
+
+                text:"Загрузить отношения"
+                onClicked: {
+
+                    var relations = appCore.getRelations();
+                    for(var i = 0; i < relations.length; i+=2){
+                        var from = relations[i]
+                        var to = relations[i+1]
+
+                        console.warn("from", from)
+                        console.warn("to", to)
+
+                        var fromCoordinates = getCoordinatesFromNodeByText(from)
+                        var toCoordinates = getCoordinatesToNodeByText(to)
+
+                        console.warn("fromCoordinates", fromCoordinates.x)
+                        console.warn("toCoordinates", toCoordinates.x)
+
+                        arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
+                                              targetX: toCoordinates.x, targetY: toCoordinates.y })
+
+                    }
+                }
+            }
         }
     }
-
-    Component{
 
     Rectangle {
         id: graphWin
@@ -132,8 +177,6 @@ BasePage{
                         radius: width*0.5
                         color: "black"
                         opacity: 0.5
-//                        ToolTip.visible: hovered
-//                        ToolTip.text: model["name"]
                         Text{
                             anchors.centerIn: parent
                             text: model["name"]
@@ -160,8 +203,6 @@ BasePage{
                         radius: width*0.5
                         color: "black"
                         opacity: 0.5
-//                        ToolTip.visible: hovered
-//                        ToolTip.text: model["name"]
 
                         Text{
                             id: nodeText
@@ -179,33 +220,8 @@ BasePage{
 
             ListModel {  // Список стрелок графа
                 id: arrowModel
-
-                Component.onCompleted: {
-                    console.warn("hello")
-                    var relations = appCore.getRelations();
-                    for(var i = 0; i< relations.size(); i++){
-                        var innerPair = relations.at(i);
-                        for(var j = 0; j < innerPair.size(); j++){
-                            var value = innerVector.at(j);
-
-                            var from = value[0]
-                            var to = value[1]
-
-                            console.warn("from", from)
-                            console.warn("to", to)
-
-                            var fromCoordinates = getCoordinatesFromNodeByText(from)
-                            var toCoordinates = getCoordinatesToNodeByText(to)
-
-                            console.warn("fromCoordinates", fromCoordinates)
-                            console.warn("toCoordinates", toCoordinates)
-
-                            arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
-                                                  targetX: toCoordinates.x, targetY: toCoordinates.y })
-                        }
-                    }
-                }
             }
+
             Repeater { // Отображение стрелок графа
                 model: arrowModel
                 delegate:
@@ -232,9 +248,35 @@ BasePage{
                 }
             }
 
+            //            Component.onCompleted: {
+            //                console.warn("hello")
+            //                var relations = appCore.getRelations();
+            //                for(var i = 0; i< relations.size(); i++){
+            //                    var innerPair = relations.at(i);
+            //                    for(var j = 0; j < innerPair.size(); j++){
+            //                        var value = innerVector.at(j);
+
+            //                        var from = value[0]
+            //                        var to = value[1]
+
+            //                        console.warn("from", from)
+            //                        console.warn("to", to)
+
+            //                        var fromCoordinates = getCoordinatesFromNodeByText(from)
+            //                        var toCoordinates = getCoordinatesToNodeByText(to)
+
+            //                        console.warn("fromCoordinates", fromCoordinates)
+            //                        console.warn("toCoordinates", toCoordinates)
+
+            //                        arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
+            //                                              targetX: toCoordinates.x, targetY: toCoordinates.y })
+            //                    }
+            //                }
+            //            }
+
         }
     }
-}
+
     Button{
         text: "NEXT STEP"
         anchors.bottom: parent.bottom;
