@@ -13,13 +13,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(QT ${QT_VERSION_MAJOR} widgets)
 
+
 # Make Qt Creator aware of where the QML modules live
 set (_QML_IMPORT_PATHS "")
 
 ## Add new module paths here.
 list (APPEND _QML_IMPORT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/qml)
-
-
 
 set (
     QML_IMPORT_PATH
@@ -33,8 +32,10 @@ set (
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
+
+
 set(CPP main.cpp node.cpp graph.cpp astar.cpp
-    main.cpp appcore.cpp tablemodel.cpp listmodel.cpp)
+     appcore.cpp tablemodel.cpp listmodel.cpp)
 set(HEADER node.h graph.h heuristic.h
     splitter.h astar.h appcore.h tablemodel.h listmodel.h NodeException.h)
 
@@ -66,6 +67,9 @@ endif()
 
 target_link_libraries(AstarGraphicApp
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS QuickControls2)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::QuickControls2)
 
 set_target_properties(AstarGraphicApp PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
