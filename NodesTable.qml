@@ -5,9 +5,7 @@ import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 
-
 import TableModel 1.0
-
 
 Rectangle{
     id: rect
@@ -69,6 +67,7 @@ Rectangle{
 
             var nodeName = tableModel.getProperty(tableview.model.index(tableview.currentRow, 0))
 
+            tableview.currentRow = 0
             appCore.deleteNode(nodeName);
         }
     }
