@@ -110,7 +110,7 @@ QVector<QVector<QString>> Graph::getNodes()
 
 QVector<QString> Graph::getNodesNames()
 {
-    QVector<QString> result;
+    QVector<QString> result {};
     for(Node* node: nodes){
         result.append(node->name);
     }
