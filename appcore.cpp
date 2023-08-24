@@ -12,7 +12,6 @@ bool AppCore::createNodeRequest(QString name, QString x, QString y)
     Node* node = new Node (name, x.toInt(),y.toInt());
     try{
         graph->addNode(node);
-
     }
     catch(...){
         return false;
@@ -22,14 +21,11 @@ bool AppCore::createNodeRequest(QString name, QString x, QString y)
                       QString::number(node->getX()),
                       QString::number(node->getY())});
     return true;
-
 }
 
 void AppCore::deleteNode(QString name)
 {
-
     graph->deleteNode(name);
-
     emit nodesChange(getNodes());
 }
 
@@ -40,7 +36,6 @@ void AppCore::nodeNamesRequest()
 
 void AppCore::readGraphFromTxtRequest(QString path)
 {
-
     QString correctPath = path.split("file://").at(1);
     this->graph->readtxt(correctPath);
     emit nodesChange(getNodes());
@@ -77,8 +72,8 @@ QVector<QString> AppCore::getNodes(){
     return graph->getNodesNames();
 }
 
-QVariantList AppCore::getRelations()
-{
+QVariantList AppCore::getRelations(){
+
     QVector<QVector<QString> > relations =  graph->getRelations();
     QVariantList result;
 
@@ -90,7 +85,6 @@ QVariantList AppCore::getRelations()
     }
 
     return result;
-
 }
 
 void AppCore::deleteRelation(QString from, QString to)
