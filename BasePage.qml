@@ -6,14 +6,8 @@ import QtQuick.Layouts 1.3
 
 Page {
      id: root
-     property alias backgroundColor: backgroundRect.color
      property alias buttonText: navButton.text
      signal buttonClicked();
-
-     background: Rectangle {
-        id: backgroundRect
-     }
-
      Button {
          id: navButton
          visible: text.length > 0 // скрытие кнопки
