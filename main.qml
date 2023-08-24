@@ -18,7 +18,6 @@ ApplicationWindow {
     Material.accent: Material.Pink
     Material.primary: Material.Grey
     Material.foreground: Material.Pink
-
     property color grey: "#dadada"
 // COLOR END
 
