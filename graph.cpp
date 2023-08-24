@@ -145,33 +145,35 @@ Node* Graph::findNodeByName(QString name){
     if(it != nodes.end())
     {
         return *it;
+
     }else{
-        QString ss = "Node with name '" + name + "'  is't exist.";
-        throw ss;
+
+        throw NodeException("Node with name '" + name + "'  is't exist.");
     }
 }
 
 void Graph::set_relation(QString from, QString to, int weight)
 {
-    Node* fromNode = findNodeByName(from);
-    Node* toNode = findNodeByName(to);
-    /// if find
+    try{
+        Node* fromNode = findNodeByName(from);
+        Node* toNode = findNodeByName(to);
+        auto itFrom = std::find_if(edges_weights.begin(),
+                                   edges_weights.end(), [&](const auto& elem) {
+            return elem.first == fromNode;
+        });
 
-    auto itFrom = std::find_if(edges_weights.begin(),
-                               edges_weights.end(), [&](const auto& elem) {
-        return elem.first == fromNode;
-    });
+        const std::unordered_map<Node*, int>& innerMap = itFrom->second;
+        auto relationIt = innerMap.find(const_cast<Node*>(toNode));
 
-    const std::unordered_map<Node*, int>& innerMap = itFrom->second;
-    auto relationIt = innerMap.find(const_cast<Node*>(toNode));
+        if(relationIt == innerMap.end()){
+            edges_weights[fromNode][toNode] = weight;
+        }
+        else{
+            throw (NodeException("Relation already exist"));
+        }
 
-    if(relationIt == innerMap.end()){
-        edges_weights[fromNode][toNode] = weight;
     }
-    else{
-        throw (NodeException("Relation already exist"));
-    }
-
+    catch(NodeException ex){ } //TO DO
 }
 
 Graph::~Graph()
@@ -259,8 +261,6 @@ void Graph::readtxt(QString filePath)
                 i++;
             }
             std::cout << std::endl;std::cout << std::endl;
-            //            delete ptrMainNode;
-            //            delete ptrNeighborNode;
 
         }
         std::cout << std::endl;
