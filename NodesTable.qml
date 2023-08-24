@@ -5,12 +5,13 @@ import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 
+
 import TableModel 1.0
 
 
 Rectangle{
-
     id: rect
+    radius: 5
 
     TableView{
         id: tableview
@@ -19,19 +20,19 @@ Rectangle{
         rowSpacing: 1
         clip: true
         model: tableModel
-
         property int currentRow
-
         delegate: Rectangle{
-            id: tableCell
 
-            border.color: "black"
+            id: tableCell
+            radius: 10
+            border.color: grey
             border.width: 2
             implicitWidth: rect.width / 3
             implicitHeight: 50
-            color: (row !== 0 && row === tableview.currentRow) ? "blue" : (row % 2 === 0 ? "#F0F0F0" : "#FFFFFF")
+            color: (heading !== true && row === tableview.currentRow) ? Qt.lighter(grey) : (heading === true)? Qt.darker(grey) : grey
 
             Text{
+                font.pixelSize: middlefontSize
                 anchors.centerIn: parent
                 text: tabledata
             }
@@ -39,9 +40,11 @@ Rectangle{
                 id:mouseArea
                 anchors.fill: parent
                 onClicked: {
-                     tableview.currentRow = row
+                    tableview.currentRow = row
                 }
             }
+
+
         }
         ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AsNeeded
@@ -53,10 +56,10 @@ Rectangle{
         }
     }
     Button{
-
         id:deleteNode
         anchors.top: rect.bottom
         anchors.left: rect.left
+        font.pixelSize: middlefontSize
         anchors.topMargin: middleMargin
         text: "Delete"
         ToolTip.visible: hovered
@@ -68,8 +71,6 @@ Rectangle{
 
             appCore.deleteNode(nodeName);
         }
-
-
     }
 }
 

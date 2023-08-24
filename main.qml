@@ -6,24 +6,31 @@ import QtQuick.Dialogs 1.3
 import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 import QtQuick.Controls.Material 2.12
-//import Qt.labs.platform 1.1   мешает File Dialog
-
 
 import TableModel 1.0
-import AppModule.Impl 1.0
 import AppCore 1.0
 import CustomListModel 1.0
 
-
 ApplicationWindow {
 
+// COLOR START
+    Material.theme: Material.Dark
+    Material.accent: Material.Pink
+    Material.primary: Material.Grey
+    Material.foreground: Material.Pink
+
+    property color grey: "#dadada"
+// COLOR END
+
+
+    property int nodeSize: 50
+    property int comboboxSize: 400
+
     id: win
-    width: 800
+    width: 1000
     height: 480
     visible: true
     title: qsTr("Graph algorithm")
-    Material.theme: Material.Dark
-    Material.accent: Material.Purple
 
     property var repeaterFromNodes: []
     property var repeaterToNodes: []
@@ -31,6 +38,11 @@ ApplicationWindow {
     property int defMargin: 10
     property int defSpacing: 100
     property int middleMargin: 50
+
+    property int btnWidth: 400
+
+    property int fontSize: 25
+    property int middlefontSize: 18
 
     function isInt(input) {
         var intRegex = /^\d{1,10}$/
@@ -46,6 +58,7 @@ ApplicationWindow {
         ToolButton{
             id: btnBack
             text: "<"
+            font.pixelSize: 20
             visible: stackView.depth > 1
             anchors.verticalCenter: parent.verticalCenter
             onClicked:
@@ -71,36 +84,43 @@ ApplicationWindow {
     BasePage {
         id: mainPage
         title: "Main page"
-
-        Rectangle{
-            anchors.centerIn: parent
-            width: parent.width / 2
-            height: parent.height / 2
-
             ColumnLayout{
                 id: btnLayout
-                spacing: defSpacing
-                anchors.fill: parent
+                anchors.centerIn: parent
+
                 Button{
                     id: manualbtn
-                    text: "Manual creating"
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.preferredWidth: btnWidth
+                    font.pixelSize: fontSize
+                    text: "Manual creating"
+
                     onClicked: {
                         stackView.push(manualCreatingPage)
                     }
                 }
                 Button{
                     id: readbtn
-                    text: "Read txt file"
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.preferredWidth: btnWidth
+                    font.pixelSize: fontSize
+                    text: "Read txt file"
                     onClicked: {
                         stackView.push(readGraphPage)
                     }
                 }
+
+                Button{
+                    id: exitbtn
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: btnWidth
+                    font.pixelSize: fontSize
+                    text: "Exit"
+                    onClicked: {
+                        win.close()
+                    }
+                }
             }
-        }
     }
 
     BasePage {
@@ -125,16 +145,13 @@ ApplicationWindow {
             id: createNodeBtn
             width: parent.width / 3
             height: parent.height / 2
-            anchors.right: parent.right
             anchors.top: parent.top
             anchors.topMargin: middleMargin
+            anchors.leftMargin: middleMargin
+            anchors.left: rect.right
         }
 
-        Button{
-            text: "NEXT STEP"
-            anchors.bottom: parent.bottom;
-            anchors.right: parent.right
-            anchors.margins: defMargin
+        NextBtn {
             onClicked: {
                 stackView.push(relationsPage)
                 appCore.nodeNamesRequest()
@@ -146,22 +163,22 @@ ApplicationWindow {
         id: readGraphPage
         title: "Read graph"
         visible: false
-        buttonText: "Back"
         onButtonClicked: {
             stackView.pop(mainPage);
         }
 
-        Rectangle{
+        Item{
             width: parent.width / 2
             height: parent.height / 2
             anchors.left: parent.left
             anchors.top: parent.top
-
             Button {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.leftMargin: middleMargin
                 anchors.topMargin: middleMargin
+                implicitWidth: 300
+                font.pixelSize: 25
                 text: "Open File Manager"
                 onClicked: {
                     fileDialog.open();
@@ -169,7 +186,7 @@ ApplicationWindow {
             }
         }
 
-        Rectangle{
+        Item{
             width: parent.width / 2
             height: parent.height / 2
             anchors.right: parent.right
@@ -182,16 +199,20 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.topMargin: middleMargin
                 placeholderText: "Path to graph model"
+                implicitWidth: 300
+              //  font.pixelSize: 25
             }
         }
 
-        Rectangle{
+        Item{
             width: parent.width
             height: parent.height / 2
             anchors.bottom: parent.bottom
             Button{
                 anchors.centerIn: parent
                 anchors.topMargin: defMargin
+                implicitWidth: 400
+                font.pixelSize: 20
                 visible: path.text != ""
                 text: "Upload graph model"
                 onClicked: {
@@ -231,26 +252,28 @@ ApplicationWindow {
     BasePage{
         id: astarPage
         visible: false
-        Rectangle{
+        title: "A* algorithm"
+        Item{
             anchors.fill: parent
 
             Rectangle{
                 width: parent.width / 1.3
                 height: parent.height / 1.3
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.margins: middleMargin
+                anchors.centerIn: parent
+                radius: 5
+                color: grey
 
                 RowLayout{
+                    anchors.left: parent.left
+                    anchors.leftMargin: middleMargin
                     id: topRow
-                    spacing: 20
                     ComboBox {
                         id:startNode
-                        width: 200
+                        width: comboboxSize
                         model: listModel
                         textRole: "name"
-                        Label{
-                            text:"from"
+                        CustomLabel{
+                            labelText: "from"
                             anchors.bottom: parent.top
                         }
 
@@ -265,11 +288,11 @@ ApplicationWindow {
                     }
                     ComboBox {
                         id:finishNode
-                        width: 200
+                        width: comboboxSize
                         model: listModel
                         textRole: "name"
-                        Label{
-                            text:"to"
+                        CustomLabel{
+                            labelText:"to"
                             anchors.bottom: parent.top
                         }
 
@@ -286,13 +309,14 @@ ApplicationWindow {
                 RowLayout{
                     anchors.top: topRow.bottom
                     spacing: 20
-                    anchors.margins: middleMargin
+                    anchors.left: parent.left
+                    anchors.leftMargin: middleMargin
                     Button{
                         text: "Start alrgorithm"
+                        font.pixelSize: 18
                         onClicked: {
                             var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
-                            minWay.text = shortestWay
-
+                            minWay.text = minWay.text + shortestWay
                         }
                     }
                     Text {

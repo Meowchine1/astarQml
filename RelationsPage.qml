@@ -8,88 +8,74 @@ import QtQuick.Shapes 1.12
 import QtQuick.Controls.Material 2.12
 
 import TableModel 1.0
-import AppModule.Impl 1.0
 import AppCore 1.0
 import CustomListModel 1.0
 
 BasePage{
     id: relationsPage
     visible: false
-
-
-    Rectangle{
+    title: "Create node relations"
+    Item{
         width: parent.width/ 2
         height: parent.height/ 2
         anchors.left: parent.left
         anchors.top: parent.top
         RowLayout{
             anchors.centerIn: parent
-            spacing: 20
             ComboBox {
                 id:comboboxFrom
-                width: 200
+                width: comboboxSize
                 model: listModel
                 textRole: "name"
-                Label{
-                    text:"from"
+
+                CustomLabel {
                     anchors.bottom: parent.top
+                    labelText: "from"
                 }
-                ScrollBar.vertical: ScrollBar {
-                    policy: ScrollBar.AsNeeded
-                    active: true
-                    onActiveChanged: {
-                        if (!active)
-                            active = true;
-                    }
-                }
+
             }
             ComboBox {
                 id:comboboxTo
-                width: 200
+                width: comboboxSize
                 model: listModel
                 textRole: "name"
-                Label{
-                    text:"to"
+                CustomLabel {
+                    labelText: "to"
                     anchors.bottom: parent.top
-                }
-                ScrollBar.vertical: ScrollBar {
-                    policy: ScrollBar.AsNeeded
-                    active: true
-                    onActiveChanged: {
-                        if (!active)
-                            active = true;
-                    }
                 }
             }
         }
     }
-    Rectangle{
+    Item{
         width: parent.width/ 2
         height: parent.height/ 2
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.leftMargin: middleMargin
+        //anchors.leftMargin: middleMargin
+        anchors.bottomMargin: middleMargin
         DialogItem {
             id: messageDialog
             z:1
             visible: false
             buttons: ['Ok']
-            dialog_width: parent.width / 2  // TO DO change parent to win?
-            dialog_height: parent.height / 2
+            dialog_width: parent.width  // TO DO change parent to win?
+            dialog_height: parent.height
             anchors.centerIn: parent
             color: "grey"
             onClicked: visible = false
         }
         ColumnLayout{
             anchors.top: parent.top
-            spacing: 20
             anchors.centerIn: parent
             CustomInputField{
                 id: weight
-                name: "Enter edge weight"
+                fieldWidth: 200
+                placeholderText: "Enter edge weight"
             }
             Button{
                 text: "Add relation"
+                implicitWidth: 200
+                font.pixelSize: middlefontSize
                 onClicked: {
                     if(isInt(weight.text)){
                         var from = comboboxFrom.currentText
@@ -118,6 +104,8 @@ BasePage{
 
                 id: deleteRelation
                 text:"Delete relation"
+                implicitWidth: 200
+                font.pixelSize: middlefontSize
                 onClicked: {
                     var from = comboboxFrom.currentText
                     var to = comboboxTo.currentText
@@ -127,7 +115,8 @@ BasePage{
             }
 
             Button{
-
+                implicitWidth: 200
+                font.pixelSize: 12
                 text:"Загрузить отношения"
                 onClicked: {
 
@@ -142,11 +131,16 @@ BasePage{
                         var fromCoordinates = getCoordinatesFromNodeByText(from)
                         var toCoordinates = getCoordinatesToNodeByText(to)
 
-                        console.warn("fromCoordinates", fromCoordinates.x)
-                        console.warn("toCoordinates", toCoordinates.x)
+                        console.warn("fromCoordinates X", fromCoordinates.x)
+                        console.warn("fromCoordinates Y", fromCoordinates.y)
+
+                        console.warn("toCoordinates X", toCoordinates.x)
+                        console.warn("toCoordinates Y", toCoordinates.y)
 
                         arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
                                               targetX: toCoordinates.x, targetY: toCoordinates.y })
+
+
 
                     }
                 }
@@ -154,7 +148,7 @@ BasePage{
         }
     }
 
-    Rectangle {
+    Item {
         id: graphWin
         width: parent.width/ 2
         height: parent.height/ 1.2
@@ -162,61 +156,62 @@ BasePage{
         anchors.top: parent.top
 
         RowLayout{
-            spacing: parent.width / 1.5
-            anchors.top: parent.horizontalCenter
+                  spacing: parent.width / 1.5
+                  anchors.top: parent.horizontalCenter
+                  anchors.margins: middleMargin
 
-            ColumnLayout{ // Отображение узлов графа
-                anchors.margins: defMargin
+                  ColumnLayout{ // Отображение узлов графа
+                      Repeater {
+                          id: fromNodes
+                          model: listModel
+                          delegate: Rectangle {
+                              width: nodeSize
+                              height: nodeSize
+                              radius: width*0.5
+                              color: grey
+                              opacity: 0.5
+                              Text{
+                                  anchors.centerIn: parent
+                                  text: model["name"]
+                                  color: Qt.lighter(grey)
+                                  elide: Text.ElideRight
+                                  width: parent.width
+                                  Component.onCompleted: {
+                                      win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
+                                  }
+                              }
+                          }
+                      }
 
-                Repeater {
-                    id: fromNodes
-                    model: listModel
-                    delegate: Rectangle {
-                        width: 50
-                        height: 50
-                        radius: width*0.5
-                        color: "black"
-                        opacity: 0.5
-                        Text{
-                            anchors.centerIn: parent
-                            text: model["name"]
-                            elide: Text.ElideRight
-                            width: parent.width
-                            Component.onCompleted: {
-                                win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
-                            }
-                        }
-                    }
-                }
+                  }
 
-            }
+                  ColumnLayout{ // Отображение узлов графа
+                      anchors.margins: defMargin
 
-            ColumnLayout{ // Отображение узлов графа
-                anchors.margins: defMargin
+                      Repeater {
+                          id: toNodes
+                          model: listModel
+                          delegate: Rectangle {
+                              width: nodeSize
+                              height: nodeSize
+                              radius: width*0.5
+                              color: grey
+                              opacity: 0.5
 
-                Repeater {
-                    id: toNodes
-                    model: listModel
-                    delegate: Rectangle {
-                        width: 50
-                        height: 50
-                        radius: width*0.5
-                        color: "black"
-                        opacity: 0.5
-
-                        Text{
-                            id: nodeText
-                            anchors.centerIn: parent
-                            text: model["name"]
-                            elide: Text.ElideRight
-                            width: parent.width
-                            Component.onCompleted: {
-                                win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
-                            }
-                        }
-                    }
-                }
-            }
+                              Text{
+                                  id: nodeText
+                                  anchors.centerIn: parent
+                                  text: model["name"]
+                                  color: Qt.lighter(grey)
+                                  elide: Text.ElideRight
+                                  width: parent.width
+                                  Component.onCompleted: {
+                                      win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
+                                  }
+                              }
+                          }
+                      }
+                  }
 
             ListModel {  // Список стрелок графа
                 id: arrowModel
@@ -247,48 +242,16 @@ BasePage{
                     }
                 }
             }
-
-            //            Component.onCompleted: {
-            //                console.warn("hello")
-            //                var relations = appCore.getRelations();
-            //                for(var i = 0; i< relations.size(); i++){
-            //                    var innerPair = relations.at(i);
-            //                    for(var j = 0; j < innerPair.size(); j++){
-            //                        var value = innerVector.at(j);
-
-            //                        var from = value[0]
-            //                        var to = value[1]
-
-            //                        console.warn("from", from)
-            //                        console.warn("to", to)
-
-            //                        var fromCoordinates = getCoordinatesFromNodeByText(from)
-            //                        var toCoordinates = getCoordinatesToNodeByText(to)
-
-            //                        console.warn("fromCoordinates", fromCoordinates)
-            //                        console.warn("toCoordinates", toCoordinates)
-
-            //                        arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
-            //                                              targetX: toCoordinates.x, targetY: toCoordinates.y })
-            //                    }
-            //                }
-            //            }
-
         }
     }
 
-    Button{
-        text: "NEXT STEP"
-        anchors.bottom: parent.bottom;
-        anchors.right: parent.right
-        anchors.margins: defMargin
+    NextBtn{
         onClicked: {
             stackView.push(astarPage)
         }
     }
 
     function findFromNodeByText(text) {
-        console.warn("FROM: ", text)
         for (var i = 0; i < win.repeaterFromNodes.length; i++) {
             if (win.repeaterFromNodes[i].text === text) {
                 return win.repeaterFromNodes[i].item
@@ -298,10 +261,6 @@ BasePage{
     }
 
     function findToNodeByText(text) {
-
-        console.warn("TO: ", text)
-
-        console.warn("len: ", win.repeaterToNodes.length)
         for (var i = 0; i < win.repeaterToNodes.length; i++) {
             if (win.repeaterToNodes[i].text === text) {
                 return win.repeaterToNodes[i].item

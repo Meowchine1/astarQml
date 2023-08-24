@@ -7,29 +7,35 @@ import QtQml.Models 2.2
 import QtQuick.Shapes 1.12
 import Qt.labs.platform 1.1
 
-Rectangle {
+
+Item {
     id: createNodeBtn
-    width: 200
-    height: 200
 
     ColumnLayout {
+       // anchors.fill:parent
+
         CustomInputField {
             id: nameField
-            name: "Node name"
+            placeholderText: "Node name"
+            //name: "Node name"
+
         }
         CustomInputField {
             id: coordinateX
-            name: "Coordinate X"
+            placeholderText: "Coordinate X"
+            //name: "Coordinate X"
         }
         CustomInputField {
             id: coordinateY
-            name: "Coordinate Y"
+            placeholderText: "Coordinate Y"
+            //name: "Coordinate Y"
         }
 
         Button {
             text: "Add node to graph"
             anchors.bottom: parent.bottom
             anchors.right: parent.right
+            font.pixelSize: middlefontSize
             onClicked: {
 
                 if(isEmpty(nameField.text) | isEmpty(coordinateX.text) | isEmpty(coordinateY.text))
