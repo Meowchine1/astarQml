@@ -22,13 +22,12 @@ public:
     void setPath(){}
 
     Q_INVOKABLE
-    QVector<QVector<QString> > getNodes();
+    QVector<QString> getNodes();
     Q_INVOKABLE
     QVariantList getRelations();
     Q_INVOKABLE
     void deleteRelation(QString from, QString to);
 
-    QVector<QString> getNodesNames();
 signals:
     void nodesChange(QVector<QString> nodes);
     void nodesChange(QVector<QVector<QString>> nodes);

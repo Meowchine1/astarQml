@@ -1,0 +1,4 @@
+module Base
+CustomInputField 1.0 CustomInputField.qml
+CustomLabel 1.0 CustomLabel.qml
+DialogItem 1.0 DialogItem.qml
