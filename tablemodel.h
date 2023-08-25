@@ -4,8 +4,7 @@
 #include <qqml.h>
 #include <QAbstractTableModel>
 
-class TableModel : public QAbstractTableModel
-{
+class TableModel : public QAbstractTableModel{
     Q_OBJECT
     QML_ELEMENT
     QML_ADDED_IN_MINOR_VERSION(1)
@@ -28,8 +27,6 @@ public:
 public slots:
     void updateData(QVector<QString> node);
     void updateData(QVector<QVector<QString>> node);
-
-
 private:
     QVector<QVector<QString>> table = {{"Node name", "Coordinate X", "Coordinate Y"}};
     QString name;

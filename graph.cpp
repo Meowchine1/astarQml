@@ -9,8 +9,7 @@
 
 Graph* Graph::instance = nullptr;
 
-void Graph::addNode(Node* node)
-{
+void Graph::addNode(Node* node){
     auto it = std::find_if(nodes.begin(),
                            nodes.end(), [&](const Node* elem) {
         return elem->name == node->name;
@@ -21,14 +20,11 @@ void Graph::addNode(Node* node)
         nodes.push_back(node);
     }
     else{
-
-        QString ss = "Node already exist.";
-        throw ss;
+        throw NodeException("Node already exist.");
     }
 }
 
 void Graph::addNode(QString name, QString x, QString y){
-
     auto it = std::find_if(nodes.begin(),
                            nodes.end(), [&](const Node* elem) {
         return elem->name == name;
@@ -40,76 +36,54 @@ void Graph::addNode(QString name, QString x, QString y){
         nodes.push_back(&node);
     }
     else{
-        QString ss = "Node already exist.";
-        throw ss;
+        throw NodeException("Node already exist.");
     }
 }
 
-void Graph::deleteNode(QString name)
-{
-    //   std::unordered_map<Node*, std::unordered_map<Node*, int>>
-
-
+void Graph::deleteNode(QString name){
     Node* deleteNode = findNodeByName(name);
-
-
     auto nodesIt = std::find_if(nodes.begin(),
                                 nodes.end(), [&](const Node* elem){
         return elem == deleteNode;
     });
-
-
     auto edgesIt = edges_weights.find(const_cast<Node*>(deleteNode));
-
-
     if(nodesIt != nodes.end() && edgesIt != edges_weights.end()){
         nodes.erase(nodesIt);
         edges_weights.erase(edgesIt);
     }
-
-
     for(auto row: edges_weights){
-
         auto childIt = row.second.find(const_cast<Node*>(deleteNode));
         row.second.erase(childIt);
     }
-
     deleteNode->~Node();
-
 }
 
-int Graph::get_edge_weight(const Node* keyNode, const Node* childNode)
-{
+int Graph::get_edge_weight(const Node* keyNode, const Node* childNode){
     auto it = edges_weights.find(const_cast<Node*>(keyNode));
     if (it != edges_weights.end()) {
         const std::unordered_map<Node*, int>& innerMap = it->second;
-
         auto innerIt = innerMap.find(const_cast<Node*>(childNode));
         if (innerIt != innerMap.end())
         {
             return innerIt->second;
         }else{
-            QString ss = "Realtions between " + keyNode->name + " and " + childNode->name
-                    + " aren't exist.";
-            throw ss;
+            throw NodeException("Realtions between " + keyNode->name + " and " + childNode->name
+                                + " aren't exist.");
         }
     }else{
-        QString ss = "Node" + keyNode->name + " unexists.";
-        throw ss;
+        throw NodeException("Node" + keyNode->name + " unexists.");
     }
 }
 
-QVector<QVector<QString>> Graph::getNodes()
-{
-    QVector<QVector<QString>> result;// = {{}};
+QVector<QVector<QString>> Graph::getNodes(){
+    QVector<QVector<QString>> result {{}};
     for(Node* node: nodes){
         result.append({node->name, QString::number(node->getX()), QString::number(node->getY())});
     }
     return result;
 }
 
-QVector<QString> Graph::getNodesNames()
-{
+QVector<QString> Graph::getNodesNames(){
     QVector<QString> result {};
     for(Node* node: nodes){
         result.append(node->name);
@@ -117,27 +91,20 @@ QVector<QString> Graph::getNodesNames()
     return result;
 }
 
-void Graph::deleteRelation(QString from, QString to)
-{
+void Graph::deleteRelation(QString from, QString to){
     Node* fromNode = findNodeByName(from);
     Node* toNode = findNodeByName(to);
-
     for(auto& pair: edges_weights){
         const Node* parent = pair.first;
         inner_map innerMap = pair.second;
         auto childIt = innerMap.find(const_cast<Node*>(toNode));
-
         if(childIt != innerMap.end()){
             innerMap.erase(childIt);
         }
-
-
     }
-
 }
 
 Node* Graph::findNodeByName(QString name){
-
     auto it = std::find_if(nodes.begin(),
                            nodes.end(), [&](const Node* elem) {
         return elem->name == name;
@@ -145,15 +112,12 @@ Node* Graph::findNodeByName(QString name){
     if(it != nodes.end())
     {
         return *it;
-
     }else{
-
         throw NodeException("Node with name '" + name + "'  is't exist.");
     }
 }
 
-void Graph::set_relation(QString from, QString to, int weight)
-{
+void Graph::set_relation(QString from, QString to, int weight){
     try{
         Node* fromNode = findNodeByName(from);
         Node* toNode = findNodeByName(to);
@@ -161,23 +125,19 @@ void Graph::set_relation(QString from, QString to, int weight)
                                    edges_weights.end(), [&](const auto& elem) {
             return elem.first == fromNode;
         });
-
         const std::unordered_map<Node*, int>& innerMap = itFrom->second;
         auto relationIt = innerMap.find(const_cast<Node*>(toNode));
-
         if(relationIt == innerMap.end()){
             edges_weights[fromNode][toNode] = weight;
         }
         else{
             throw (NodeException("Relation already exist"));
         }
-
     }
     catch(NodeException ex){ } //TO DO
 }
 
-Graph::~Graph()
-{
+Graph::~Graph(){
     for (auto& pair : edges_weights)
     {
         pair.second.clear();
@@ -185,27 +145,23 @@ Graph::~Graph()
     edges_weights.clear();
 }
 
-Graph* Graph::getInstance()
-{
+Graph* Graph::getInstance(){
     if(instance == nullptr){
         instance = new Graph();
     }
     return instance;
 }
 
-void Graph::readtxt(QString filePath)
-{
+void Graph::readtxt(QString filePath){
     edges_weights.clear();
     std::string line;
     char lineSeparator = '\n',
             innerSeparator = ' ',
             coordinateSeparator = '(';
-
     int i;
     size_t pos = 0;
     std::ifstream in(filePath.toStdString());
     std::cout<<std::endl;
-
     if (in.is_open())
     {
         while (std::getline(in, line, lineSeparator))
@@ -216,21 +172,17 @@ void Graph::readtxt(QString filePath)
             int x, y;
             Node* ptrMainNode{nullptr};
             Node* ptrNeighborNode{nullptr};
-
             std::stringstream ss(line);
             std::string word;
             while (ss >> word) {    //extract word from the stream.
-
                 if(i == 0){     //way for node with coordinates (first elem in line)
                     nodename = QString::fromStdString(getSubstring(word, pos, '('));
                     x = std::stoi(getSubstring(word, pos, ','));
                     y = std::stoi(getSubstring(word, pos, ')'));
-
                     auto it = std::find_if(nodes.begin(),
                                            nodes.end(), [&](const Node* elem) {
                         return elem->name == nodename;
                     });
-
                     if (it != nodes.end()) {    //if node has already initialized
                         ptrMainNode = *it;
                         ptrMainNode->setX(x);
@@ -248,75 +200,54 @@ void Graph::readtxt(QString filePath)
                                            nodes.end(), [&](const Node* elem) {
                         return elem->name == nodename;
                     });
-
                     if (it != nodes.end()) {
                         ptrNeighborNode = *it;
                     }else{
                         ptrNeighborNode = new Node(nodename);
                         nodes.push_back(ptrNeighborNode);
                     }
-
                     edges_weights[ptrMainNode][ptrNeighborNode] = weight;
                 }
                 i++;
             }
             std::cout << std::endl;std::cout << std::endl;
-
         }
         std::cout << std::endl;
     }
-
     in.close();
-
     return;
 }
 
-void Graph::printGraph()
-{
+void Graph::printGraph(){
     for (auto& pair : edges_weights) {
-
         const Node* keyNode = pair.first;
         std::unordered_map<Node*, int>& innerMap = pair.second;
         QString message = "Vertex is " + keyNode->name + " coordinates("
                 + keyNode->getX() + ";" + keyNode->getY() + ")\t neighbors: ";
         std::cout<< message.toStdString();
-
         for (auto& innerPair : innerMap) {
-
             const Node* childNode = innerPair.first;
             int value = innerPair.second;
             message = "name:" + childNode->name + " coordinates("
                     + childNode->getX() + ";" + childNode->getY() +
                     ") " + " weight = " + value + "\n";
             std::cout<< message.toStdString();
-
         }
     }
 }
 
-QVector<QVector<QString> > Graph::getRelations()
-{
-
+QVector<QVector<QString> > Graph::getRelations(){
     QVector<QVector<QString> > result;
     for(auto& pair : edges_weights){
-
         const Node* keyNode = pair.first;
         inner_map innerMap = pair.second;
-
         for (auto& innerPair : innerMap) {
-
             const Node* childNode = innerPair.first;
             result.append({keyNode->name, childNode->name});
         }
     }
-
     return result;
-
 }
-
-
-
-
 
 
 

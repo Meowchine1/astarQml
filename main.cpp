@@ -7,8 +7,7 @@
 #include "tablemodel.h"
 #include "listmodel.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -39,7 +38,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<ListModel>("CustomListModel", 1, 0, "CustomListModel");
     ListModel* listModel = new ListModel();
     engine.rootContext()->setContextProperty("listModel", listModel);
-
 
     engine.load(url);
 

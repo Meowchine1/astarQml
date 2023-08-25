@@ -11,16 +11,14 @@
 
 Astar::Astar(){}
 
-void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph)
-{
+void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph){
     for (auto& pair : graph->get_edges_weights())
     {
         minWay[pair.first] = INT_MAX;
     }
 }
 
-QString Astar::restorePath(Node* start, Node* goal)
-{
+QString Astar::restorePath(Node* start, Node* goal){
     QString path;
     Node* ptrNode = goal;
     Node* ptrtemp{nullptr};
@@ -34,24 +32,22 @@ QString Astar::restorePath(Node* start, Node* goal)
     return path.remove(path.size() - 3, path.size());
 }
 
-QString Astar::run(Node* start, Node* goal, Graph* graph)
-{
+QString Astar::run(Node* start, Node* goal, Graph* graph){
     queue.push_back(start);
     fillMax(minWay, graph);
     minWay[start] = 0;
     Node* currentptr = {nullptr};
     while(!queue.empty())
     {
-       currentptr = queue.front(); queue.erase(queue.begin());
-       if(currentptr == goal)
-       {
-           return restorePath(start, goal);
-       }
-
-       visited.push_back(currentptr);
-       auto it = graph->get_edges_weights().find(const_cast<Node*>(currentptr));
-       if(it != graph->get_edges_weights().end())
-       {
+        currentptr = queue.front(); queue.erase(queue.begin());
+        if(currentptr == goal)
+        {
+            return restorePath(start, goal);
+        }
+        visited.push_back(currentptr);
+        auto it = graph->get_edges_weights().find(const_cast<Node*>(currentptr));
+        if(it != graph->get_edges_weights().end())
+        {
             for(auto& pair : graph->get_edges_weights(currentptr))
             {
                 Node* child = pair.first;
@@ -76,11 +72,9 @@ QString Astar::run(Node* start, Node* goal, Graph* graph)
                         queue.push_back(child);
                         std::sort(queue.begin(), queue.end());
                     }
-
                 }
             }
-       }
+        }
     }
-
     return "no path";
 }

@@ -7,8 +7,8 @@
 
 AppCore::AppCore(){}
 
-bool AppCore::createNodeRequest(QString name, QString x, QString y)
-{
+
+bool AppCore::createNodeRequest(QString name, QString x, QString y){
     Node* node = new Node (name, x.toInt(),y.toInt());
     try{
         graph->addNode(node);
@@ -23,26 +23,22 @@ bool AppCore::createNodeRequest(QString name, QString x, QString y)
     return true;
 }
 
-void AppCore::deleteNode(QString name)
-{
+void AppCore::deleteNode(QString name){
     graph->deleteNode(name);
     emit nodesChange(getNodes());
 }
 
-void AppCore::nodeNamesRequest()
-{
+void AppCore::nodeNamesRequest(){
     emit sendNodeNames(graph->getNodesNames());
 }
 
-void AppCore::readGraphFromTxtRequest(QString path)
-{
+void AppCore::readGraphFromTxtRequest(QString path){
     QString correctPath = path.split("file://").at(1);
     this->graph->readtxt(correctPath);
     emit nodesChange(getNodesNames());  //getNodesNames
 }
 
-bool AppCore::addRelationsRequest(QString from, QString to, int weight)
-{
+bool AppCore::addRelationsRequest(QString from, QString to, int weight){
     try{
         graph->set_relation(from, to, weight);
         return true;
@@ -53,8 +49,7 @@ bool AppCore::addRelationsRequest(QString from, QString to, int weight)
     }
 }
 
-QString AppCore::startAlgorithmRequest(QString from, QString to)
-{
+QString AppCore::startAlgorithmRequest(QString from, QString to){
     try{
         Node* fromNode = graph->findNodeByName(from);
         Node* toNode = graph->findNodeByName(to);
@@ -91,7 +86,6 @@ QVariantList AppCore::getRelations(){
     return result;
 }
 
-void AppCore::deleteRelation(QString from, QString to)
-{
+void AppCore::deleteRelation(QString from, QString to){
     graph->deleteRelation(from,  to);
 }

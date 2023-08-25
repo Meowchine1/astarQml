@@ -7,12 +7,10 @@
 #include "node.h"
 #include "graph.h"
 
-class Astar
-{
+class Astar{
 public:
     Astar();
     QString run(Node* start, Node* goal, Graph* graph);
-
 private:
     std::vector<Node*> queue;
     std::vector<Node*> visited;

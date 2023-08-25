@@ -231,17 +231,10 @@ ApplicationWindow {
         onAccepted: {
             path.text = this.fileUrl
         }
-        onRejected: {
-            console.warn("Canceled")
-            Qt.quit()
-        }
     }
 
     RelationsPage {
         id: fileRelationsPage
-           Component.onCompleted: {
-           console.warn("hello11")
-           }
     }
 
     RelationsPage{
@@ -307,7 +300,7 @@ ApplicationWindow {
                 }
                 RowLayout{
                     anchors.top: topRow.bottom
-                    spacing: 20
+                    spacing: 70
                     anchors.left: parent.left
                     anchors.leftMargin: middleMargin
                     Button{
@@ -315,13 +308,17 @@ ApplicationWindow {
                         font.pixelSize: 18
                         onClicked: {
                             var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
-                            minWay.text = minWay.text + shortestWay
+                            minWay.text = shortestWay
                         }
                     }
                     Text {
                         id: minWay
-                        text: qsTr("Algorithm's work result: ")
-
+                    }
+                    Label{
+                        font.pixelSize: middlefontSize
+                        anchors.bottom: minWay.top
+                        anchors.left: minWay.left
+                        text:"Algorithm's work result"
                     }
 
                 }
