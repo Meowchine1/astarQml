@@ -7,13 +7,12 @@
 
 AppCore::AppCore(){}
 
-
 bool AppCore::createNodeRequest(QString name, QString x, QString y){
     Node* node = new Node (name, x.toInt(),y.toInt());
     try{
         graph->addNode(node);
     }
-    catch(...){
+    catch(NodeException ex){
         return false;
     }
 
@@ -35,7 +34,7 @@ void AppCore::nodeNamesRequest(){
 void AppCore::readGraphFromTxtRequest(QString path){
     QString correctPath = path.split("file://").at(1);
     this->graph->readtxt(correctPath);
-    emit nodesChange(getNodesNames());  //getNodesNames
+    emit nodesChange(getNodesNames());
 }
 
 bool AppCore::addRelationsRequest(QString from, QString to, int weight){

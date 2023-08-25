@@ -155,6 +155,8 @@ BasePage{
         anchors.right: parent.right
         anchors.top: parent.top
 
+        property int removeLineIndex: -1
+
         RowLayout{
                   spacing: parent.width / 1.5
                   anchors.top: parent.horizontalCenter

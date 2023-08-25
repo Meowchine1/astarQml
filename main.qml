@@ -21,7 +21,6 @@ ApplicationWindow {
     property color grey: "#dadada"
 // COLOR END
 
-
     property int nodeSize: 50
     property int comboboxSize: 400
 
@@ -165,7 +164,6 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
-
         Item{
             width: parent.width / 2
             height: parent.height / 2
@@ -184,7 +182,6 @@ ApplicationWindow {
                 }
             }
         }
-
         Item{
             width: parent.width / 2
             height: parent.height / 2
@@ -199,10 +196,8 @@ ApplicationWindow {
                 anchors.topMargin: middleMargin
                 placeholderText: "Path to graph model"
                 implicitWidth: 300
-              //  font.pixelSize: 25
             }
         }
-
         Item{
             width: parent.width
             height: parent.height / 2
@@ -216,13 +211,12 @@ ApplicationWindow {
                 text: "Upload graph model"
                 onClicked: {
                     appCore.readGraphFromTxtRequest(path.text)
-                    stackView.push(fileRelationsPage)
+                    stackView.push(relationsPage)
                     appCore.nodeNamesRequest()
                 }
             }
         }
     }
-
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
@@ -231,10 +225,6 @@ ApplicationWindow {
         onAccepted: {
             path.text = this.fileUrl
         }
-    }
-
-    RelationsPage {
-        id: fileRelationsPage
     }
 
     RelationsPage{
@@ -247,14 +237,12 @@ ApplicationWindow {
         title: "A* algorithm"
         Item{
             anchors.fill: parent
-
             Rectangle{
                 width: parent.width / 1.3
                 height: parent.height / 1.3
                 anchors.centerIn: parent
                 radius: 5
                 color: grey
-
                 RowLayout{
                     anchors.left: parent.left
                     anchors.leftMargin: middleMargin
@@ -268,7 +256,6 @@ ApplicationWindow {
                             labelText: "from"
                             anchors.bottom: parent.top
                         }
-
                         ScrollBar.vertical: ScrollBar {
                             policy: ScrollBar.AsNeeded
                             active: true
@@ -287,7 +274,6 @@ ApplicationWindow {
                             labelText:"to"
                             anchors.bottom: parent.top
                         }
-
                         ScrollBar.vertical: ScrollBar {
                             policy: ScrollBar.AsNeeded
                             active: true
@@ -304,7 +290,7 @@ ApplicationWindow {
                     anchors.left: parent.left
                     anchors.leftMargin: middleMargin
                     Button{
-                        text: "Start alrgorithm"
+                        text: "Start algorithm"
                         font.pixelSize: 18
                         onClicked: {
                             var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
@@ -314,18 +300,14 @@ ApplicationWindow {
                     Text {
                         id: minWay
                     }
-                    Label{
+                    Label {
                         font.pixelSize: middlefontSize
                         anchors.bottom: minWay.top
                         anchors.left: minWay.left
                         text:"Algorithm's work result"
                     }
-
                 }
-
-
             }
         }
-
     }
 }
