@@ -10,17 +10,15 @@ import TableModel 1.0
 Rectangle{
     id: rect
     radius: 5
-
     TableView{
         id: tableview
         anchors.fill: parent
         columnSpacing: 3
         rowSpacing: 1
         clip: true
+        property int currentRow: 0
         model: tableModel
-        property int currentRow
         delegate: Rectangle{
-
             id: tableCell
             radius: 10
             border.color: grey
@@ -28,7 +26,6 @@ Rectangle{
             implicitWidth: rect.width / 3
             implicitHeight: 50
             color: (heading !== true && row === tableview.currentRow) ? Qt.lighter(grey) : (heading === true)? Qt.darker(grey) : grey
-
             Text{
                 font.pixelSize: middlefontSize
                 anchors.centerIn: parent
@@ -64,12 +61,27 @@ Rectangle{
         ToolTip.text: qsTr("Click on node row")
 
         onClicked: {
-
-            var nodeName = tableModel.getProperty(tableview.model.index(tableview.currentRow, 0))
-
-            tableview.currentRow = 0
-            appCore.deleteNode(nodeName);
+            if(tableview.currentRow !== 0){
+                var nodeName = tableModel.getProperty(tableview.model.index(tableview.currentRow, 0))
+                tableview.currentRow = 0
+                appCore.deleteNode(nodeName);
+            }
+            else{
+                messageDialog.text = "Empty response"
+                messageDialog.visible = true
+            }
         }
+    }
+
+    DialogItem {
+        id: messageDialog
+        visible: false
+        buttons: ['Ok']
+        dialog_width: parent.width
+        dialog_height: parent.height
+        color: "grey"
+        anchors.centerIn: parent
+        onClicked: visible = false
     }
 }
 
