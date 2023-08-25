@@ -30,7 +30,7 @@ public:
     inner_map get_edges_weights(Node* keyNode){ return edges_weights[keyNode]; }
     void readtxt(QString filePath);
     void addNode(Node* node);
-    void addNode(QString name, QString x, QString y);
+    void addNode(QString name, int x, int y);
     void deleteNode(QString name);
     void set_relation(QString from, QString to, int weight);
     void printGraph();

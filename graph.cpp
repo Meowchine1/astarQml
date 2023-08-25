@@ -24,22 +24,6 @@ void Graph::addNode(Node* node){
     }
 }
 
-void Graph::addNode(QString name, QString x, QString y){
-    auto it = std::find_if(nodes.begin(),
-                           nodes.end(), [&](const Node* elem) {
-        return elem->name == name;
-    });
-    if(it == nodes.end()){
-        Node node(name, x.toInt(), y.toInt());
-        edges_weights[&node] =
-                std::unordered_map<Node*, int>();
-        nodes.push_back(&node);
-    }
-    else{
-        throw NodeException("Node already exist.");
-    }
-}
-
 void Graph::deleteNode(QString name){
     Node* deleteNode = findNodeByName(name);
     auto nodesIt = std::find_if(nodes.begin(),
@@ -76,7 +60,7 @@ int Graph::get_edge_weight(const Node* keyNode, const Node* childNode){
 }
 
 QVector<QVector<QString>> Graph::getNodes(){
-    QVector<QVector<QString>> result {{}};
+    QVector<QVector<QString>> result;
     for(Node* node: nodes){
         result.append({node->name, QString::number(node->getX()), QString::number(node->getY())});
     }
@@ -84,7 +68,7 @@ QVector<QVector<QString>> Graph::getNodes(){
 }
 
 QVector<QString> Graph::getNodesNames(){
-    QVector<QString> result {};
+    QVector<QString> result;
     for(Node* node: nodes){
         result.append(node->name);
     }
@@ -223,14 +207,13 @@ void Graph::printGraph(){
         const Node* keyNode = pair.first;
         std::unordered_map<Node*, int>& innerMap = pair.second;
         QString message = "Vertex is " + keyNode->name + " coordinates("
-                + keyNode->getX() + ";" + keyNode->getY() + ")\t neighbors: ";
+                + QString::number(keyNode->getX()) + ";" + QString::number(keyNode->getY()) + ")\t neighbors: ";
         std::cout<< message.toStdString();
         for (auto& innerPair : innerMap) {
             const Node* childNode = innerPair.first;
             int value = innerPair.second;
-            message = "name:" + childNode->name + " coordinates("
-                    + childNode->getX() + ";" + childNode->getY() +
-                    ") " + " weight = " + value + "\n";
+            message = "name:" + childNode->name + " coordinates(" + QString::number(childNode->getX()) + ";"
+                    + QString::number(childNode->getY()) + ") " + " weight = " + QString::number(value) + "\n";
             std::cout<< message.toStdString();
         }
     }
