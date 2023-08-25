@@ -29,8 +29,8 @@ set (
     FORCE
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
+#find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
+find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 
 
 
@@ -42,34 +42,38 @@ set(HEADER node.h graph.h heuristic.h
 set(PROJECT_SOURCES ${CPP}  ${HEADER} qml.qrc
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(AstarGraphicApp
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET AstarGraphicApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(AstarGraphicApp SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(AstarGraphicApp
+add_executable(AstarGraphicApp
           ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+)
+
+#if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+#    qt_add_executable(AstarGraphicApp
+#        MANUAL_FINALIZATION
+#        ${PROJECT_SOURCES}
+#    )
+## Define target properties for Android with Qt 6 as:
+##    set_property(TARGET AstarGraphicApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+##                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+## For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+#else()
+#    if(ANDROID)
+#        add_library(AstarGraphicApp SHARED
+#            ${PROJECT_SOURCES}
+#        )
+## Define properties for Android with Qt 5 after find_package() calls as:
+##    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+#    else()
+#        add_executable(AstarGraphicApp
+#          ${PROJECT_SOURCES}
+#        )
+#    endif()
+#endif()
 
 target_link_libraries(AstarGraphicApp
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+  PRIVATE Qt5::Core Qt5::Quick)
 
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS QuickControls2)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::QuickControls2)
+find_package(Qt5 REQUIRED COMPONENTS QuickControls2)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::QuickControls2)
 
 set_target_properties(AstarGraphicApp PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
