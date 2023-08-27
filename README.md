@@ -6,17 +6,6 @@ This application is a student project realizing the functionality of:
 - building graph model by reading a build description in a text file.  
 - ✨Mininal path search with A* algorithm✨
 
-<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png" alt="Graph model scheme">
-
-<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/mainApp.png" alt="Main window">
-
-<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/modelCreation.png" alt="Nodes creating">
-
-<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/setRelations.png" alt="Relations setting ">
-
-<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png" alt="Algorithm work result">
-
-
 ![graph_model](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png)
 
 ![Main_window](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/mainApp.png)
@@ -25,7 +14,7 @@ This application is a student project realizing the functionality of:
 
 ![Relations_setting](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/setRelations.png)
 
-![Algorithm_work_result]https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png)
+![Algorithm_work_result](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png)
 
 ## Reading file format
 
