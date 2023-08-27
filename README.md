@@ -6,6 +6,8 @@ This application is a student project realizing the functionality of:
 - building graph model by reading a build description in a text file.  
 - ✨Mininal path search with A* algorithm✨
 
+<img src="model https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png">
+
 ## Reading file format
 File row template: <node name>(<x>,<y>) [{<child name>(<edje weight>), ...}] , where
 file row count = graph node count
