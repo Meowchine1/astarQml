@@ -167,8 +167,6 @@ BasePage{
         anchors.right: parent.right
         anchors.top: parent.top
 
-        property int removeLineIndex: -1
-
         RowLayout{
             spacing: parent.width / 1.5
             anchors.top: parent.horizontalCenter
@@ -188,6 +186,7 @@ BasePage{
                             anchors.centerIn: parent
                             text: model["name"]
                             color: Qt.lighter(grey)
+                            font.pixelSize: fontSize
                             elide: Text.ElideRight
                             width: parent.width
                             Component.onCompleted: {
@@ -196,7 +195,6 @@ BasePage{
                         }
                     }
                 }
-
             }
 
             ColumnLayout{ // Отображение узлов графа
@@ -206,6 +204,7 @@ BasePage{
                     id: toNodes
                     model: listModel
                     delegate: Rectangle {
+                        id: rect
                         width: nodeSize
                         height: nodeSize
                         radius: width*0.5
@@ -214,8 +213,9 @@ BasePage{
 
                         Text{
                             id: nodeText
-                            anchors.centerIn: parent
+                            anchors.centerIn: rect
                             text: model["name"]
+                            font.pixelSize: fontSize
                             color: Qt.lighter(grey)
                             elide: Text.ElideRight
                             width: parent.width
@@ -250,7 +250,7 @@ BasePage{
                             ctx.lineTo(model.targetX, model.targetY)
                             ctx.stroke()
                             ctx.moveTo(model.targetX, model.targetY)
-                            ctx.arc(model.targetX, model.targetY, 10, 0, 2 * Math.PI)
+                            ctx.arc(model.targetX, model.targetY, 5, 0, 2 * Math.PI)
                             ctx.fill();
                         }
                     }
@@ -312,5 +312,7 @@ BasePage{
         }
         return null
     }
+
+
 
 }
