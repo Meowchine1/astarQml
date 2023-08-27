@@ -6,16 +6,38 @@ This application is a student project realizing the functionality of:
 - building graph model by reading a build description in a text file.  
 - ✨Mininal path search with A* algorithm✨
 
-<img src="model https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png">
+<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png" alt="Graph model scheme">
+
+<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/mainApp.png" alt="Main window">
+
+<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/modelCreation.png" alt="Nodes creating">
+
+<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/setRelations.png" alt="Relations setting ">
+
+<img src="https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png" alt="Algorithm work result">
+
+
+![graph_model](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png)
+
+![Main_window](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/mainApp.png)
+
+![Nodes_creating](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/modelCreation.png)
+
+![Relations_setting](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/setRelations.png)
+
+![Algorithm_work_result]https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png)
 
 ## Reading file format
-File row template: <node name>(<x>,<y>) [{<child name>(<edje weight>), ...}] , where
+
+File row template: node_name(x,y) [{child_name(edje_weight), ...}] , where
+
 file row count = graph node count
+
 *You can find file example in input file directory of this project.*
 
 ## Building and installation
 ### Building and installing on ALT-Linux
-Build dependencies
+
 On ALT-Linux distributions all build dependencies can be installed with following command:
 
 ```
