@@ -85,6 +85,12 @@ QVariantList AppCore::getRelations(){
     return result;
 }
 
-void AppCore::deleteRelation(QString from, QString to){
-    graph->deleteRelation(from,  to);
+bool AppCore::deleteRelation(QString from, QString to){
+    try{
+        graph->deleteRelation(from,  to);
+        return true;
+    }
+    catch(NodeException ex){
+        return false;
+    }
 }

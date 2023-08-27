@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE
     QVariantList getRelations();
     Q_INVOKABLE
-    void deleteRelation(QString from, QString to);
+    bool deleteRelation(QString from, QString to);
 
 signals:
     void nodesChange(QVector<QString> nodes);

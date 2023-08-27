@@ -32,7 +32,6 @@ BasePage{
                     anchors.bottom: parent.top
                     labelText: "from"
                 }
-
             }
             ComboBox {
                 id:comboboxTo
@@ -87,13 +86,11 @@ BasePage{
                                 arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
                                                       targetX: toCoordinates.x, targetY: toCoordinates.y })
                             }
-                        }
-                        else{
+                        }else{
                             messageDialog.text = 'Relation between ' + from + ' and ' + to + " already exist";
                             messageDialog.visible = true
                         }
-                    }
-                    else{
+                    }else{
                         messageDialog.text = 'Weight should be an Integer value'
                         messageDialog.visible = true
                     }
@@ -101,7 +98,6 @@ BasePage{
             }
 
             Button{
-
                 id: deleteRelation
                 text:"Delete relation"
                 implicitWidth: 200
@@ -109,8 +105,28 @@ BasePage{
                 onClicked: {
                     var from = comboboxFrom.currentText
                     var to = comboboxTo.currentText
-                    appCore.deleteRelation(from, to);
 
+                    var fromCoordinates = getCoordinatesFromNodeByText(from)
+                    var toCoordinates = getCoordinatesToNodeByText(to)
+
+                    if(appCore.deleteRelation(from, to)){
+                        for(var i = 0; i < arrowModel.count; i++) {
+                            console.warn(arrowModel.get(i).x + " = " + fromCoordinates.x)
+                            console.warn(arrowModel.get(i).y + " = " + fromCoordinates.y)
+                            console.warn(arrowModel.get(i).targetX + " = " + toCoordinates.x)
+                            console.warn(arrowModel.get(i).targetY + " = " + toCoordinates.y)
+                            if (arrowModel.get(i).x === fromCoordinates.x
+                                    && arrowModel.get(i).y === fromCoordinates.y
+                                    && arrowModel.get(i).targetX === toCoordinates.x
+                                    && arrowModel.get(i).targetY === toCoordinates.y){
+                                console.warn("i find")
+                                arrowModel.remove(arrowModel.get(i))
+                            }
+                        }
+                    }else{
+                        messageDialog.text = 'Relation between ' + from + ' and ' + to + " unexist";
+                        messageDialog.visible = true
+                    }
                 }
             }
 
@@ -119,7 +135,6 @@ BasePage{
                 font.pixelSize: 12
                 text:"Загрузить отношения"
                 onClicked: {
-
                     var relations = appCore.getRelations();
                     for(var i = 0; i < relations.length; i+=2){
                         var from = relations[i]
@@ -139,9 +154,6 @@ BasePage{
 
                         arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
                                               targetX: toCoordinates.x, targetY: toCoordinates.y })
-
-
-
                     }
                 }
             }
@@ -158,62 +170,62 @@ BasePage{
         property int removeLineIndex: -1
 
         RowLayout{
-                  spacing: parent.width / 1.5
-                  anchors.top: parent.horizontalCenter
-                  anchors.margins: middleMargin
+            spacing: parent.width / 1.5
+            anchors.top: parent.horizontalCenter
+            anchors.margins: middleMargin
 
-                  ColumnLayout{ // Отображение узлов графа
-                      Repeater {
-                          id: fromNodes
-                          model: listModel
-                          delegate: Rectangle {
-                              width: nodeSize
-                              height: nodeSize
-                              radius: width*0.5
-                              color: grey
-                              opacity: 0.5
-                              Text{
-                                  anchors.centerIn: parent
-                                  text: model["name"]
-                                  color: Qt.lighter(grey)
-                                  elide: Text.ElideRight
-                                  width: parent.width
-                                  Component.onCompleted: {
-                                      win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
-                                  }
-                              }
-                          }
-                      }
+            ColumnLayout{ // Отображение узлов графа
+                Repeater {
+                    id: fromNodes
+                    model: listModel
+                    delegate: Rectangle {
+                        width: nodeSize
+                        height: nodeSize
+                        radius: width*0.5
+                        color: grey
+                        opacity: 0.5
+                        Text{
+                            anchors.centerIn: parent
+                            text: model["name"]
+                            color: Qt.lighter(grey)
+                            elide: Text.ElideRight
+                            width: parent.width
+                            Component.onCompleted: {
+                                win.repeaterFromNodes.push({text: text, item: fromNodes.itemAt(index)})
+                            }
+                        }
+                    }
+                }
 
-                  }
+            }
 
-                  ColumnLayout{ // Отображение узлов графа
-                      anchors.margins: defMargin
+            ColumnLayout{ // Отображение узлов графа
+                anchors.margins: defMargin
 
-                      Repeater {
-                          id: toNodes
-                          model: listModel
-                          delegate: Rectangle {
-                              width: nodeSize
-                              height: nodeSize
-                              radius: width*0.5
-                              color: grey
-                              opacity: 0.5
+                Repeater {
+                    id: toNodes
+                    model: listModel
+                    delegate: Rectangle {
+                        width: nodeSize
+                        height: nodeSize
+                        radius: width*0.5
+                        color: grey
+                        opacity: 0.5
 
-                              Text{
-                                  id: nodeText
-                                  anchors.centerIn: parent
-                                  text: model["name"]
-                                  color: Qt.lighter(grey)
-                                  elide: Text.ElideRight
-                                  width: parent.width
-                                  Component.onCompleted: {
-                                      win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
-                                  }
-                              }
-                          }
-                      }
-                  }
+                        Text{
+                            id: nodeText
+                            anchors.centerIn: parent
+                            text: model["name"]
+                            color: Qt.lighter(grey)
+                            elide: Text.ElideRight
+                            width: parent.width
+                            Component.onCompleted: {
+                                win.repeaterToNodes.push({text: text, item: toNodes.itemAt(index)})
+                            }
+                        }
+                    }
+                }
+            }
 
             ListModel {  // Список стрелок графа
                 id: arrowModel
@@ -275,9 +287,12 @@ BasePage{
         var item = findFromNodeByText(text)
         if (item !== null) {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
+            itemPosition.x += item.width
+            itemPosition.y += item.height / 2
+
             console.warn("FROM X = ", itemPosition.x)
             console.warn("FROM Y = ", itemPosition.y)
-            return {x: itemPosition.x + item.width /* / 2 */, y: itemPosition.y + item.height / 2 }
+            return {x: itemPosition.x, y: itemPosition.y}
         }
         return null
     }
@@ -286,9 +301,11 @@ BasePage{
         var item = findToNodeByText(text)
         if (item !== null) {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
-            console.warn("TO X = ", itemPosition.x + item.width / 2)
-            console.warn("TO Y = ", itemPosition.y + item.height / 2)
-            return {x: itemPosition.x /* + item.width  / 2 */  , y: itemPosition.y + item.height  / 2 }
+            itemPosition.y += item.height  / 2
+            //itemPosition.x += item.width  / 2
+            console.warn("TO X = ", itemPosition.x)
+            console.warn("TO Y = ", itemPosition.y)
+            return {x: itemPosition.x, y: itemPosition.y}
         }
         else{
             console.warn("Null")

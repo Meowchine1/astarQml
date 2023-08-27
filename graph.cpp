@@ -76,16 +76,27 @@ QVector<QString> Graph::getNodesNames(){
 }
 
 void Graph::deleteRelation(QString from, QString to){
-    Node* fromNode = findNodeByName(from);
-    Node* toNode = findNodeByName(to);
-    for(auto& pair: edges_weights){
-        const Node* parent = pair.first;
-        inner_map innerMap = pair.second;
-        auto childIt = innerMap.find(const_cast<Node*>(toNode));
+    try{
+        Node* fromNode = findNodeByName(from);
+        Node* toNode = findNodeByName(to);
+        auto itFrom = std::find_if(edges_weights.begin(),edges_weights.end(), [&](const auto& elem) {
+            return elem.first == fromNode;
+        });
+        std::unordered_map<Node*, int>& innerMap = itFrom->second;
+        auto childIt = std::find_if(innerMap.begin(), innerMap.end(), [&](const auto& elem){
+          return elem.first == toNode;
+        });
         if(childIt != innerMap.end()){
             innerMap.erase(childIt);
         }
+        else{
+            throw (NodeException("Relation unexist"));
+        }
     }
+    catch(NodeException ex){
+        throw (NodeException("Uncorrect nodes"));
+    } //TO DO
+
 }
 
 Node* Graph::findNodeByName(QString name){
