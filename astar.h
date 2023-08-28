@@ -6,11 +6,13 @@
 #include "astar.h"
 #include "node.h"
 #include "graph.h"
+#include "strongconnection.h"
 
 class Astar{
 public:
     Astar();
     QString run(Node* start, Node* goal, Graph* graph);
+    QString run(Node* start, Node* goal, StrongConnection* graph);
 private:
     std::vector<Node*> queue;
     std::vector<Node*> visited;

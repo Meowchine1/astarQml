@@ -19,6 +19,13 @@ void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph){
     }
 }
 
+void fillMax(std::unordered_map<Node*, int>& minWay, StrongConnection* graph){
+
+    for (int i = 0, j = 0; i < N; i++, j++) {
+        minWay[graph->mass[i][j]] = INT_MAX;
+    }
+}
+
 QString Astar::restorePath(Node* start, Node* goal){
     QString path;
     Node* ptrNode = goal;
@@ -73,6 +80,48 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
                         queue.push_back(child);
                         std::sort(queue.begin(), queue.end());
                     }
+                }
+            }
+        }
+    }
+    throw NodeException("No path");
+}
+
+QString Astar::run(Node *start, Node *goal, StrongConnection *graph)
+{
+    queue.push_back(start);
+    fillMax(minWay, graph);
+    minWay[start] = 0;
+    Node* currentptr = {nullptr};
+    while(!queue.empty())
+    {
+        currentptr = queue.front(); queue.erase(queue.begin());
+        if(currentptr == goal)
+        {
+            return restorePath(start, goal);
+        }
+        visited.push_back(currentptr);
+
+        for(Node* child : currentptr->children)
+        {
+            int pathWeight = 1;
+            int newWeight = minWay[currentptr] + pathWeight;
+            if(std::find(visited.begin(),visited.end(), child) == visited.end()
+                    || newWeight  < minWay[child])
+            {
+                parent[child] = currentptr;
+                minWay[child] = newWeight;
+                unsigned int heuristic = heuristic_Manhattan(child, goal);
+                child->setDistance(heuristic + pathWeight);
+
+                auto it = std::find(queue.begin(), queue.end(), child);
+                if (it != queue.end()) { // нужно перестроить вектор тк существующий в векторе узел изменился
+
+                    std::make_heap(queue.begin(), queue.end());
+                }
+                else{
+                    queue.push_back(child);
+                    std::sort(queue.begin(), queue.end());
                 }
             }
         }
