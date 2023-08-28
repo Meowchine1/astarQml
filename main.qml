@@ -10,16 +10,17 @@ import QtQuick.Controls.Material 2.12
 import TableModel 1.0
 import AppCore 1.0
 import CustomListModel 1.0
+import RandomModel 1.0
 
 ApplicationWindow {
 
-// COLOR START
+    // COLOR START
     Material.theme: Material.Dark
     Material.accent: Material.Pink
     Material.primary: Material.Grey
     Material.foreground: Material.Pink
     property color grey: "#dadada"
-// COLOR END
+    // COLOR END
 
     property int nodeSize: 50
     property int comboboxSize: 400
@@ -82,44 +83,91 @@ ApplicationWindow {
     BasePage {
         id: mainPage
         title: "Main page"
-            ColumnLayout{
-                id: btnLayout
-                anchors.centerIn: parent
+        ColumnLayout{
+            id: btnLayout
+            anchors.centerIn: parent
 
-                Button{
-                    id: manualbtn
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: btnWidth
-                    font.pixelSize: fontSize
-                    text: "Manual creating"
+            Button{
+                id: manualbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Manual creating"
 
-                    onClicked: {
-                        stackView.push(manualCreatingPage)
-                    }
-                }
-                Button{
-                    id: readbtn
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: btnWidth
-                    font.pixelSize: fontSize
-                    text: "Read txt file"
-                    onClicked: {
-                        stackView.push(readGraphPage)
-                    }
-                }
-
-                Button{
-                    id: exitbtn
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: btnWidth
-                    font.pixelSize: fontSize
-                    text: "Exit"
-                    onClicked: {
-                        win.close()
-                    }
+                onClicked: {
+                    stackView.push(manualCreatingPage)
                 }
             }
+            Button{
+                id: readbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Read txt file"
+                onClicked: {
+                    stackView.push(readGraphPage)
+                }
+            }
+
+            Button{
+                id: randombtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Random generation"
+                onClicked: {
+                    stackView.push(randomGraphPage)
+                }
+            }
+
+            Button{
+                id: exitbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Exit"
+                onClicked: {
+                    win.close()
+                }
+            }
+        }
     }
+
+    BasePage{
+        id:randomGraphPage
+        title: "Random graph"
+        visible: false
+        onButtonClicked: {
+            stackView.pop(mainPage);
+        }
+
+        Rectangle{
+            width: parent.width / 1.2
+            height: parent.height / 1.5
+            anchors.centerIn: parent
+
+            property int columnCount: parseInt(randomModel.columnCount)
+            property int rowCount: parseInt(randomModel.rowCount)
+
+
+            TableView{
+                anchors.fill: parent
+                model: randomModel
+                delegate: Rectangle{
+                    width: (rect.width - scroll.width) / columnCount
+                    height: rect.height / rowCount
+                    color: (emptyNode === true) ? "black" : "pink"
+
+                }
+                onModelChanged: {
+                       columnCount = randomModel.columnCount
+                       rowCount = randomModel.rowCount
+                   }
+
+            }
+        }
+    }
+
 
     BasePage {
         id: manualCreatingPage
@@ -128,17 +176,6 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
-//        Rectangle{
-//            height: parent.height / 2
-//            width: parent.width / 2
-//            TableView{
-//                model: tableModel
-//                delegate: Rectangle{
-//                }
-//            }
-//        }
-
-
         NodesTable {
             id: rect
             anchors.left: parent.left
@@ -149,7 +186,6 @@ ApplicationWindow {
             height: parent.height / 2
 
         }
-
         NodeCreationArea {
             id: createNodeBtn
             width: parent.width / 3
@@ -159,7 +195,6 @@ ApplicationWindow {
             anchors.leftMargin: middleMargin
             anchors.left: rect.right
         }
-
         NextBtn {
             onClicked: {
                 stackView.push(relationsPage)

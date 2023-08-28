@@ -6,6 +6,7 @@
 #include "appcore.h"
 #include "tablemodel.h"
 #include "listmodel.h"
+#include "randomgraphmodel.h"
 
 int main(int argc, char *argv[]){
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -38,6 +39,11 @@ int main(int argc, char *argv[]){
     qmlRegisterType<ListModel>("CustomListModel", 1, 0, "CustomListModel");
     ListModel* listModel = new ListModel();
     engine.rootContext()->setContextProperty("listModel", listModel);
+
+    qmlRegisterType<RandomGraphModel>("RandomModel", 1, 0, "RandomModel");
+    RandomGraphModel* randomModel = new RandomGraphModel();
+    engine.rootContext()->setContextProperty("randomModel", randomModel);
+
 
     engine.load(url);
 

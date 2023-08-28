@@ -11,6 +11,13 @@ private:
     unsigned int distance = 0;
 
 public:
+
+    // //// for random graph generation
+    bool isolated;
+    std::vector<Node*> children;
+    Node(int _x, int _y, bool _isolated): x(_x), y(_y), isolated(_isolated) {}
+    // ////
+
     const QString name; // unique
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
