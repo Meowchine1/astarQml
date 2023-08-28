@@ -8,6 +8,7 @@
 #include "node.h"
 #include "graph.h"
 #include "heuristic.h"
+#include "NodeException.h"
 
 Astar::Astar(){}
 
@@ -76,5 +77,5 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
             }
         }
     }
-    return "no path";
+    throw NodeException("No path");
 }

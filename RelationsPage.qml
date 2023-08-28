@@ -50,14 +50,13 @@ BasePage{
         height: parent.height/ 2
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        //anchors.leftMargin: middleMargin
         anchors.bottomMargin: middleMargin
         DialogItem {
             id: messageDialog
             z:1
             visible: false
             buttons: ['Ok']
-            dialog_width: parent.width  // TO DO change parent to win?
+            dialog_width: parent.width
             dialog_height: parent.height
             anchors.centerIn: parent
             color: "grey"
@@ -302,7 +301,6 @@ BasePage{
         if (item !== null) {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
             itemPosition.y += item.height  / 2
-            //itemPosition.x += item.width  / 2
             console.warn("TO X = ", itemPosition.x)
             console.warn("TO Y = ", itemPosition.y)
             return {x: itemPosition.x, y: itemPosition.y}
@@ -312,7 +310,4 @@ BasePage{
         }
         return null
     }
-
-
-
 }

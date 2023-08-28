@@ -128,15 +128,26 @@ ApplicationWindow {
         onButtonClicked: {
             stackView.pop(mainPage);
         }
+//        Rectangle{
+//            height: parent.height / 2
+//            width: parent.width / 2
+//            TableView{
+//                model: tableModel
+//                delegate: Rectangle{
+//                }
+//            }
+//        }
+
 
         NodesTable {
             id: rect
             anchors.left: parent.left
             anchors.top: parent.top
-            width: parent.width / 2
-            height: parent.height / 2
             anchors.topMargin: middleMargin
             anchors.leftMargin: middleMargin
+            width: parent.width / 2
+            height: parent.height / 2
+
         }
 
         NodeCreationArea {

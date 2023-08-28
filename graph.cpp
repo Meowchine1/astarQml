@@ -124,8 +124,7 @@ void Graph::set_relation(QString from, QString to, int weight){
         auto relationIt = innerMap.find(const_cast<Node*>(toNode));
         if(relationIt == innerMap.end()){
             edges_weights[fromNode][toNode] = weight;
-        }
-        else{
+        }else{
             throw (NodeException("Relation already exist"));
         }
     }
@@ -154,7 +153,6 @@ void Graph::readtxt(QString filePath){
             innerSeparator = ' ',
             coordinateSeparator = '(';
     int i;
-    size_t pos = 0;
     std::ifstream in(filePath.toStdString());
     std::cout<<std::endl;
     if (in.is_open())
@@ -171,9 +169,9 @@ void Graph::readtxt(QString filePath){
             std::string word;
             while (ss >> word) {    //extract word from the stream.
                 if(i == 0){     //way for node with coordinates (first elem in line)
-                    nodename = QString::fromStdString(getSubstring(word, pos, '('));
-                    x = std::stoi(getSubstring(word, pos, ','));
-                    y = std::stoi(getSubstring(word, pos, ')'));
+                    nodename = QString::fromStdString(popSubstring(word, '('));
+                    x = std::stoi(popSubstring(word, ','));
+                    y = std::stoi(popSubstring(word, ')'));
                     auto it = std::find_if(nodes.begin(),
                                            nodes.end(), [&](const Node* elem) {
                         return elem->name == nodename;
@@ -189,8 +187,8 @@ void Graph::readtxt(QString filePath){
                         nodes.push_back(ptrMainNode);
                     }
                 }else{      // for neighbors
-                    nodename =  QString::fromStdString(getSubstring(word, pos, '('));
-                    weight = std::stoi(getSubstring(word, pos, ')'));
+                    nodename =  QString::fromStdString(popSubstring(word,'('));
+                    weight = std::stoi(popSubstring(word, ')'));
                     auto it = std::find_if(nodes.begin(),
                                            nodes.end(), [&](const Node* elem) {
                         return elem->name == nodename;

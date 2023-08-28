@@ -16,11 +16,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const{
         return table.at(index.row()).at(index.column());
     }
     case HeadingRole:{
-        if(index.row() == 0){
-            return true;
-        }else{
-            return false;
-        }
+        return index.row() == 0;
     }
     default:{ break; }
     }

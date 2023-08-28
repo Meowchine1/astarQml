@@ -15,7 +15,6 @@ bool AppCore::createNodeRequest(QString name, QString x, QString y){
     catch(NodeException ex){
         return false;
     }
-
     emit nodesChange({node->name,
                       QString::number(node->getX()),
                       QString::number(node->getY())});
@@ -43,6 +42,7 @@ bool AppCore::addRelationsRequest(QString from, QString to, int weight){
         return true;
     }
     catch(NodeException& ex){
+        std::cout<< ex.getMessage().toStdString();
         qDebug();
         return false;
     }
@@ -55,8 +55,9 @@ QString AppCore::startAlgorithmRequest(QString from, QString to){
         QString minway = astar->run(fromNode, toNode, graph);
         return  minway;
     }
-    catch(...){
-        return "null";
+    catch(NodeException ex){
+        std::cout << ex.getMessage().toStdString();
+        return ex.getMessage();
     }
 }
 
@@ -74,14 +75,12 @@ QVariantList AppCore::getRelations(){
 
     QVector<QVector<QString> > relations =  graph->getRelations();
     QVariantList result;
-
     for (const auto& row : relations) {
         QVariantList rowData;
         for (const auto& cell : row) {
             result.append(cell);
         }
     }
-
     return result;
 }
 
@@ -91,6 +90,7 @@ bool AppCore::deleteRelation(QString from, QString to){
         return true;
     }
     catch(NodeException ex){
+        std::cout << ex.getMessage().toStdString();
         return false;
     }
 }

@@ -12,18 +12,19 @@ Rectangle{
     radius: 5
     TableView{
         id: tableview
-        anchors.fill: parent
-        columnSpacing: 3
-        rowSpacing: 1
-        clip: true
+        anchors.fill: rect
+        //columnSpacing: 3
+       // rowSpacing: 1
+        //clip: true
         property int currentRow: 0
         model: tableModel
         delegate: Rectangle{
             id: tableCell
-            radius: 10
-            border.color: grey
-            border.width: 2
-            implicitWidth: rect.width / 3
+            //radius: 10
+            //border.color: grey
+            ///border.width: 2
+            //width: (rect.width - scroll.width) / 3
+            implicitWidth: (rect.width - scroll.width) / 3
             implicitHeight: 50
             color: (heading !== true && row === tableview.currentRow) ? Qt.lighter(grey) : (heading === true)? Qt.darker(grey) : grey
             Text{
@@ -38,10 +39,9 @@ Rectangle{
                     tableview.currentRow = row
                 }
             }
-
-
         }
         ScrollBar.vertical: ScrollBar {
+            id: scroll
             policy: ScrollBar.AsNeeded
             active: true
             onActiveChanged: {
@@ -65,8 +65,7 @@ Rectangle{
                 var nodeName = tableModel.getProperty(tableview.model.index(tableview.currentRow, 0))
                 tableview.currentRow = 0
                 appCore.deleteNode(nodeName);
-            }
-            else{
+            }else{
                 messageDialog.text = "Empty response"
                 messageDialog.visible = true
             }
