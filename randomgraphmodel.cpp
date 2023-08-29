@@ -1,11 +1,10 @@
 #include "randomgraphmodel.h"
-#include "strongconnection.h"
 
 
 RandomGraphModel::RandomGraphModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    graph.createRandomNew();
+    graph->createRandomNew();
 
     int x = 5;
 }
@@ -31,12 +30,11 @@ QHash<int, QByteArray> RandomGraphModel::roleNames() const{
     roles[ActiveNode] = "activeNode";
     return roles;
 }
-
 QVariant RandomGraphModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {
     case EmptyNode: {
-        Node* node = graph.mass[index.row()][index.column()];
+        Node* node = graph->mass[index.row()][index.column()];
         return QVariant::fromValue(node->isolated);
     }
     case ActiveNode: {

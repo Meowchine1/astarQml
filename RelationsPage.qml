@@ -110,15 +110,10 @@ BasePage{
 
                     if(appCore.deleteRelation(from, to)){
                         for(var i = 0; i < arrowModel.count; i++) {
-                            console.warn(arrowModel.get(i).x + " = " + fromCoordinates.x)
-                            console.warn(arrowModel.get(i).y + " = " + fromCoordinates.y)
-                            console.warn(arrowModel.get(i).targetX + " = " + toCoordinates.x)
-                            console.warn(arrowModel.get(i).targetY + " = " + toCoordinates.y)
                             if (arrowModel.get(i).x === fromCoordinates.x
                                     && arrowModel.get(i).y === fromCoordinates.y
                                     && arrowModel.get(i).targetX === toCoordinates.x
                                     && arrowModel.get(i).targetY === toCoordinates.y){
-                                console.warn("i find")
                                 arrowModel.remove(arrowModel.get(i))
                             }
                         }
@@ -138,19 +133,8 @@ BasePage{
                     for(var i = 0; i < relations.length; i+=2){
                         var from = relations[i]
                         var to = relations[i+1]
-
-                        console.warn("from", from)
-                        console.warn("to", to)
-
                         var fromCoordinates = getCoordinatesFromNodeByText(from)
                         var toCoordinates = getCoordinatesToNodeByText(to)
-
-                        console.warn("fromCoordinates X", fromCoordinates.x)
-                        console.warn("fromCoordinates Y", fromCoordinates.y)
-
-                        console.warn("toCoordinates X", toCoordinates.x)
-                        console.warn("toCoordinates Y", toCoordinates.y)
-
                         arrowModel.append({ x: fromCoordinates.x, y: fromCoordinates.y,
                                               targetX: toCoordinates.x, targetY: toCoordinates.y })
                     }
@@ -257,13 +241,11 @@ BasePage{
             }
         }
     }
-
     NextBtn{
         onClicked: {
             stackView.push(astarPage)
         }
     }
-
     function findFromNodeByText(text) {
         for (var i = 0; i < win.repeaterFromNodes.length; i++) {
             if (win.repeaterFromNodes[i].text === text) {
@@ -288,9 +270,6 @@ BasePage{
             var itemPosition = item.mapToItem(graphWin, 0, 0)
             itemPosition.x += item.width
             itemPosition.y += item.height / 2
-
-            console.warn("FROM X = ", itemPosition.x)
-            console.warn("FROM Y = ", itemPosition.y)
             return {x: itemPosition.x, y: itemPosition.y}
         }
         return null
@@ -301,8 +280,6 @@ BasePage{
         if (item !== null) {
             var itemPosition = item.mapToItem(graphWin, 0, 0)
             itemPosition.y += item.height  / 2
-            console.warn("TO X = ", itemPosition.x)
-            console.warn("TO Y = ", itemPosition.y)
             return {x: itemPosition.x, y: itemPosition.y}
         }
         else{

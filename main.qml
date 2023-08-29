@@ -27,7 +27,7 @@ ApplicationWindow {
 
     id: win
     width: 1000
-    height: 480
+    height: 800
     visible: true
     title: qsTr("Graph algorithm")
 
@@ -133,41 +133,9 @@ ApplicationWindow {
         }
     }
 
-    BasePage{
-        id:randomGraphPage
-        title: "Random graph"
-        visible: false
-        onButtonClicked: {
-            stackView.pop(mainPage);
-        }
-
-        Rectangle{
-            width: parent.width / 1.2
-            height: parent.height / 1.5
-            anchors.centerIn: parent
-
-            property int columnCount: parseInt(randomModel.columnCount)
-            property int rowCount: parseInt(randomModel.rowCount)
-
-
-            TableView{
-                anchors.fill: parent
-                model: randomModel
-                delegate: Rectangle{
-                    width: (rect.width - scroll.width) / columnCount
-                    height: rect.height / rowCount
-                    color: (emptyNode === true) ? "black" : "pink"
-
-                }
-                onModelChanged: {
-                       columnCount = randomModel.columnCount
-                       rowCount = randomModel.rowCount
-                   }
-
-            }
-        }
+    RandomGraphPage {
+        id: randomGraphPage
     }
-
 
     BasePage {
         id: manualCreatingPage

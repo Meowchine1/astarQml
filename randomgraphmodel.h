@@ -30,7 +30,7 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 private:
-    StrongConnection graph;
+    StrongConnection* graph = StrongConnection::getInstance();
 };
 
 #endif // RADOMGRAPHMODEL_H

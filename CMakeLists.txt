@@ -35,7 +35,7 @@ find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 
 
 set(CPP main.cpp node.cpp graph.cpp astar.cpp
-     appcore.cpp tablemodel.cpp listmodel.cpp randomgraphmodel.cpp)
+     appcore.cpp tablemodel.cpp listmodel.cpp randomgraphmodel.cpp strongconnection.cpp)
 set(HEADER node.h graph.h heuristic.h
     splitter.h astar.h appcore.h tablemodel.h listmodel.h NodeException.h randomgraphmodel.h strongconnection.h)
 

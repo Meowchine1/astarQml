@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <QString>
+#include <QVariant>
 
 #include "astar.h"
 #include "node.h"
@@ -38,6 +39,21 @@ QString Astar::restorePath(Node* start, Node* goal){
     }
     path = start->name + " -> " + path;
     return path.remove(path.size() - 3, path.size());
+}
+
+
+QVariantList Astar::restorePathWithCoordinates(Node* start, Node* goal){
+    QVariantList path;
+    Node* ptrNode = goal;
+    Node* ptrtemp{nullptr};
+    while (ptrNode != start)
+    {
+        path.append(QVariant(ptrNode->getX())); path.append(QVariant(ptrNode->getY()));
+        ptrtemp = parent[ptrNode];
+        ptrNode = ptrtemp;
+    }
+    path.append(QVariant(start->getX())); path.append(QVariant(start->getY()));
+    return path;
 }
 
 QString Astar::run(Node* start, Node* goal, Graph* graph){
@@ -87,7 +103,7 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
     throw NodeException("No path");
 }
 
-QString Astar::run(Node *start, Node *goal, StrongConnection *graph)
+QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
 {
     queue.push_back(start);
     fillMax(minWay, graph);
@@ -98,7 +114,7 @@ QString Astar::run(Node *start, Node *goal, StrongConnection *graph)
         currentptr = queue.front(); queue.erase(queue.begin());
         if(currentptr == goal)
         {
-            return restorePath(start, goal);
+            return restorePathWithCoordinates(start, goal);
         }
         visited.push_back(currentptr);
 

@@ -7,9 +7,10 @@
         <file>NodeCreationArea.qml</file>
         <file>RelationsPage.qml</file>
         <file>GraphNodes.qml</file>
-<file>CustomLabel.qml</file>
-<file>DialogItem.qml</file>
-<file>CustomInputField.qml</file>
-<file>NextBtn.qml</file>
+        <file>CustomLabel.qml</file>
+        <file>DialogItem.qml</file>
+        <file>CustomInputField.qml</file>
+        <file>NextBtn.qml</file>
+        <file>RandomGraphPage.qml</file>
     </qresource>
 </RCC>
