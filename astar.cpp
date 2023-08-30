@@ -37,6 +37,7 @@ QString Astar::restorePath(Node* start, Node* goal){
         ptrtemp = parent[ptrNode];
         ptrNode = ptrtemp;
     }
+    parent.clear();
     path = start->name + " -> " + path;
     return path.remove(path.size() - 3, path.size());
 }
@@ -52,6 +53,7 @@ QVariantList Astar::restorePathWithCoordinates(Node* start, Node* goal){
         ptrtemp = parent[ptrNode];
         ptrNode = ptrtemp;
     }
+    parent.clear();
     path.append(QVariant(start->getX())); path.append(QVariant(start->getY()));
     return path;
 }
@@ -66,6 +68,10 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
         currentptr = queue.front(); queue.erase(queue.begin());
         if(currentptr == goal)
         {
+            queue.clear();
+            minWay.clear();
+            visited.clear();
+            minWay.clear();
             return restorePath(start, goal);
         }
         visited.push_back(currentptr);
@@ -100,6 +106,11 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
             }
         }
     }
+    queue.clear();
+    minWay.clear();
+    visited.clear();
+    minWay.clear();
+    parent.clear();
     throw NodeException("No path");
 }
 
@@ -114,6 +125,10 @@ QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
         currentptr = queue.front(); queue.erase(queue.begin());
         if(currentptr == goal)
         {
+            queue.clear();
+            minWay.clear();
+            visited.clear();
+            minWay.clear();
             return restorePathWithCoordinates(start, goal);
         }
         visited.push_back(currentptr);
@@ -121,14 +136,15 @@ QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
         for(Node* child : currentptr->children)
         {
             int pathWeight = 1;
-            int newWeight = minWay[currentptr] + pathWeight;
+            unsigned int heuristic = heuristic_Manhattan(child, goal);
+            int newWeight = minWay[currentptr] + heuristic;
             if(std::find(visited.begin(),visited.end(), child) == visited.end()
                     || newWeight  < minWay[child])
             {
                 parent[child] = currentptr;
                 minWay[child] = newWeight;
-                unsigned int heuristic = heuristic_Manhattan(child, goal);
-                child->setDistance(heuristic + pathWeight);
+
+                child->setDistance(heuristic);
 
                 auto it = std::find(queue.begin(), queue.end(), child);
                 if (it != queue.end()) { // нужно перестроить вектор тк существующий в векторе узел изменился
@@ -142,5 +158,10 @@ QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
             }
         }
     }
+    queue.clear();
+    minWay.clear();
+    visited.clear();
+    minWay.clear();
+    parent.clear();
     throw NodeException("No path");
 }
