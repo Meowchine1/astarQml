@@ -1,4 +1,3 @@
-
 import QtQuick 2.15
 import QtQuick.Controls 2.15 // HorizontalHeaderView
 import QtQuick 2.12  //tableview
@@ -12,12 +11,15 @@ import TableModel 1.0
 import AppCore 1.0
 import CustomListModel 1.0
 
-Button{
-    text: "NEXT STEP"
-    anchors.bottom: parent.bottom;
-    anchors.right: parent.right
-    anchors.margins: defMargin
-    width: 200
-    font.pixelSize: fontSize
+Repeater {
+    id: fromNodes
+    model: listModel
+    delegate: Rectangle {
+        width: 50
+        height: 50
+        radius: width*0.5
+        color: grey
+        opacity: 0.5
 
+    }
 }

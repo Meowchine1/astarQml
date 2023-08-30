@@ -11,9 +11,15 @@ import TableModel 1.0
 import AppCore 1.0
 import CustomListModel 1.0
 import RandomModel 1.0
+import Base 1.0
+import Pages 1.0
 
 ApplicationWindow {
-
+    id: win
+    width: 1000
+    height: 800
+    visible: true
+    title: qsTr("Graph algorithm")
     // COLOR START
     Material.theme: Material.Dark
     Material.accent: Material.Pink
@@ -21,37 +27,27 @@ ApplicationWindow {
     Material.foreground: Material.Pink
     property color grey: "#dadada"
     // COLOR END
-
-    property int nodeSize: 50
-    property int comboboxSize: 400
-
-    id: win
-    width: 1000
-    height: 800
-    visible: true
-    title: qsTr("Graph algorithm")
-
     property var repeaterFromNodes: []
     property var repeaterToNodes: []
-
     property int defMargin: 10
     property int defSpacing: 100
     property int middleMargin: 50
-
     property int btnWidth: 400
-
     property int fontSize: 25
     property int middlefontSize: 18
+    property int nodeSize: 50
+    property int comboboxSize: 400
 
     function isInt(input) {
         var intRegex = /^\d{1,10}$/
         return intRegex.test(input)
     }
-
     function isEmpty(input) {
         var emptyRegex = /^\s*$/
         return emptyRegex.test(input)
     }
+    function popPage(){ stackView.pop(); }
+
     header: ToolBar{
         height: 50
         ToolButton{
@@ -71,257 +67,35 @@ ApplicationWindow {
             text: stackView.currentItem.title
         }
     }
-
-    function popPage(){ stackView.pop(); }
-
     StackView{
         id: stackView
         anchors.fill: parent
         initialItem: mainPage
     }
 
-    BasePage {
+
+
+    MainPage {
         id: mainPage
-        title: "Main page"
-        ColumnLayout{
-            id: btnLayout
-            anchors.centerIn: parent
-
-            Button{
-                id: manualbtn
-                Layout.fillWidth: true
-                Layout.preferredWidth: btnWidth
-                font.pixelSize: fontSize
-                text: "Manual creating"
-
-                onClicked: {
-                    stackView.push(manualCreatingPage)
-                }
-            }
-            Button{
-                id: readbtn
-                Layout.fillWidth: true
-                Layout.preferredWidth: btnWidth
-                font.pixelSize: fontSize
-                text: "Read txt file"
-                onClicked: {
-                    stackView.push(readGraphPage)
-                }
-            }
-
-            Button{
-                id: randombtn
-                Layout.fillWidth: true
-                Layout.preferredWidth: btnWidth
-                font.pixelSize: fontSize
-                text: "Random generation"
-                onClicked: {
-                    stackView.push(randomGraphPage)
-                }
-            }
-
-            Button{
-                id: exitbtn
-                Layout.fillWidth: true
-                Layout.preferredWidth: btnWidth
-                font.pixelSize: fontSize
-                text: "Exit"
-                onClicked: {
-                    win.close()
-                }
-            }
-        }
     }
 
     RandomGraphPage {
         id: randomGraphPage
     }
 
-    BasePage {
+    ManualCreatingPage {
         id: manualCreatingPage
-        title: "Manual creating"
-        visible: false
-        onButtonClicked: {
-            stackView.pop(mainPage);
-        }
-        NodesTable {
-            id: rect
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.topMargin: middleMargin
-            anchors.leftMargin: middleMargin
-            width: parent.width / 2
-            height: parent.height / 2
-
-        }
-        NodeCreationArea {
-            id: createNodeBtn
-            width: parent.width / 3
-            height: parent.height / 2
-            anchors.top: parent.top
-            anchors.topMargin: middleMargin
-            anchors.leftMargin: middleMargin
-            anchors.left: rect.right
-        }
-        NextBtn {
-            onClicked: {
-                stackView.push(relationsPage)
-                appCore.nodeNamesRequest()
-            }
-        }
     }
 
-    BasePage {
+    ReadGraphPage {
         id: readGraphPage
-        title: "Read graph"
-        visible: false
-        onButtonClicked: {
-            stackView.pop(mainPage);
-        }
-        Item{
-            width: parent.width / 2
-            height: parent.height / 2
-            anchors.left: parent.left
-            anchors.top: parent.top
-            Button {
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.leftMargin: middleMargin
-                anchors.topMargin: middleMargin
-                implicitWidth: 300
-                font.pixelSize: 25
-                text: "Open File Manager"
-                onClicked: {
-                    fileDialog.open();
-                }
-            }
-        }
-        Item{
-            width: parent.width / 2
-            height: parent.height / 2
-            anchors.right: parent.right
-            anchors.top: parent.top
-
-            CustomInputField{
-                id: path
-                readonly: true
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.topMargin: middleMargin
-                placeholderText: "Path to graph model"
-                implicitWidth: 300
-            }
-        }
-        Item{
-            width: parent.width
-            height: parent.height / 2
-            anchors.bottom: parent.bottom
-            Button{
-                anchors.centerIn: parent
-                anchors.topMargin: defMargin
-                implicitWidth: 400
-                font.pixelSize: 20
-                visible: path.text != ""
-                text: "Upload graph model"
-                onClicked: {
-                    appCore.readGraphFromTxtRequest(path.text)
-                    stackView.push(relationsPage)
-                    appCore.nodeNamesRequest()
-                }
-            }
-        }
-    }
-    FileDialog {
-        id: fileDialog
-        title: "Please choose a file"
-        folder: shortcuts.home
-        nameFilters: [ "Txt files (*.txt )"]
-        onAccepted: {
-            path.text = this.fileUrl
-        }
     }
 
     RelationsPage{
         id: relationsPage
     }
 
-    BasePage{
+    AstarPage {
         id: astarPage
-        visible: false
-        title: "A* algorithm"
-        Item{
-            anchors.fill: parent
-            Rectangle{
-                width: parent.width / 1.3
-                height: parent.height / 1.3
-                anchors.centerIn: parent
-                radius: 5
-                color: grey
-                RowLayout{
-                    anchors.left: parent.left
-                    anchors.leftMargin: middleMargin
-                    id: topRow
-                    ComboBox {
-                        id:startNode
-                        width: comboboxSize
-                        model: listModel
-                        textRole: "name"
-                        CustomLabel{
-                            labelText: "from"
-                            anchors.bottom: parent.top
-                        }
-                        ScrollBar.vertical: ScrollBar {
-                            policy: ScrollBar.AsNeeded
-                            active: true
-                            onActiveChanged: {
-                                if (!active)
-                                    active = true;
-                            }
-                        }
-                    }
-                    ComboBox {
-                        id:finishNode
-                        width: comboboxSize
-                        model: listModel
-                        textRole: "name"
-                        CustomLabel{
-                            labelText:"to"
-                            anchors.bottom: parent.top
-                        }
-                        ScrollBar.vertical: ScrollBar {
-                            policy: ScrollBar.AsNeeded
-                            active: true
-                            onActiveChanged: {
-                                if (!active)
-                                    active = true;
-                            }
-                        }
-                    }
-                }
-                RowLayout{
-                    anchors.top: topRow.bottom
-                    spacing: 70
-                    anchors.left: parent.left
-                    anchors.leftMargin: middleMargin
-                    Button{
-                        text: "Start algorithm"
-                        font.pixelSize: 18
-                        onClicked: {
-                            var shortestWay = appCore.startAlgorithmRequest(startNode.currentText, finishNode.currentText)
-                            minWay.text = shortestWay
-                        }
-                    }
-                    Text {
-                        id: minWay
-                    }
-                    Label {
-                        font.pixelSize: middlefontSize
-                        anchors.bottom: minWay.top
-                        anchors.left: minWay.left
-                        text:"Algorithm's work result"
-                    }
-                }
-            }
-        }
     }
 }

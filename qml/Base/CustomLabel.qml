@@ -8,7 +8,6 @@ import QtQuick.Shapes 1.12
 import QtQuick.Controls.Material 2.12
 
 import TableModel 1.0
-import AppModule.Impl 1.0
 import AppCore 1.0
 import CustomListModel 1.0
 

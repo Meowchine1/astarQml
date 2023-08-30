@@ -5,18 +5,14 @@ import QtQuick.Controls 1.3 as OldControls
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.3
 
-import Graph 1.0
-
 Rectangle {
     id: table
-
     required property var model
     required property var columnWidths
 
     function columnWidthProvider(column) {
         return columnWidths[column]
     }
-
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -27,7 +23,6 @@ Rectangle {
             height: 30
             Layout.fillWidth: true
             boundsBehavior:Flickable.StopAtBounds
-
             delegate: Rectangle {
                 id: columnHeader
                 color: "#eee"
@@ -79,8 +74,8 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
-            boundsBehavior:Flickable.StopAtBounds
-            columnWidthProvider: table.columnWidthProvider
+//            boundsBehavior:Flickable.StopAtBounds
+//            columnWidthProvider: table.columnWidthProvider
             model: table.model
 
             ScrollBar.vertical: ScrollBar {

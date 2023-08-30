@@ -2,3 +2,11 @@ module Base
 CustomInputField 1.0 CustomInputField.qml
 CustomLabel 1.0 CustomLabel.qml
 DialogItem 1.0 DialogItem.qml
+NextBtn 1.0 NextBtn.qml
+GraphNodes 1.0 GraphNodes.qml
+NodeCreationArea 1.0 NodeCreationArea.qml
+NodesTable 1.0 NodesTable.qml
+ResizableColumnsTableView 1.0 ResizableColumnsTableView.qml
+MenuButton 1.0 MenuButton.qml
+MenuCard 1.0  MenuCard.qml
+MenuStack 1.0 MenuStack.qml

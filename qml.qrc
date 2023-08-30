@@ -1,16 +1,26 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>BasePage.qml</file>
         <file>test.qml</file>
-        <file>NodesTable.qml</file>
-        <file>NodeCreationArea.qml</file>
-        <file>RelationsPage.qml</file>
-        <file>GraphNodes.qml</file>
-        <file>CustomLabel.qml</file>
-        <file>DialogItem.qml</file>
-        <file>CustomInputField.qml</file>
-        <file>NextBtn.qml</file>
-        <file>RandomGraphPage.qml</file>
+        <file>qml/Pages/MainPage.qml</file>
+        <file>qml/Pages/RandomGraphPage.qml</file>
+        <file>qml/Pages/BasePage.qml</file>
+        <file>qml/Pages/RelationsPage.qml</file>
+		<file>qml/Pages/ManualCreatingPage.qml</file>
+ 		<file>qml/Pages/AstarPage.qml</file>
+		<file>qml/Pages/ReadGraphPage.qml</file>
+		<file>qml/Pages/qmldir</file>
+        <file>qml/Base/CustomLabel.qml</file>
+        <file>qml/Base/CustomInputField.qml</file>
+        <file>qml/Base/DialogItem.qml</file>
+        <file>qml/Base/NextBtn.qml</file>
+		<file>qml/Base/NodesTable.qml</file>
+		<file>qml/Base/NodeCreationArea.qml</file>
+		<file>qml/Base/GraphNodes.qml</file>
+		<file>qml/Base/ResizableColumnsTableView.qml</file>
+		<file>qml/Base/MenuButton.qml</file>
+		<file>qml/Base/MenuStack.qml</file>
+		<file>qml/Base/MenuCard.qml</file>
+        <file>qml/Base/qmldir</file> 
     </qresource>
 </RCC>

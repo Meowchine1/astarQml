@@ -10,6 +10,7 @@ import QtQuick.Controls.Material 2.12
 import TableModel 1.0
 import AppCore 1.0
 import CustomListModel 1.0
+import Base 1.0
 
 BasePage{
     id: relationsPage

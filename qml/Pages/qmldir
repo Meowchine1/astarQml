@@ -1,0 +1,8 @@
+module Page
+MainPage 1.0 MainPage.qml
+BasePage 1.0 BasePage.qml
+RandomGraphPage 1.0  RandomGraphPage.qml
+RelationsPage 1.0 RelationsPage.qml 
+ManualCreatingPage 1.0 ManualCreatingPage.qml
+ReadGraphPage 1.0 ReadGraphPage.qml
+AstarPage 1.0 AstarPage.qml
