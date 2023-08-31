@@ -20,7 +20,13 @@ public:
     const QString name; // unique
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
-    ~Node();
+    ~Node(){
+        if (children.capacity()>0){
+            for (Node* child : children) {
+                delete child;
+            }
+        }
+    }
 
     Node(const Node&) = delete;
     Node& operator=(const Node&) = delete;
