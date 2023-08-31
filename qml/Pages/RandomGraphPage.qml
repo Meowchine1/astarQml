@@ -30,12 +30,10 @@ BasePage{
             property int finishRow: -1
             property int finishColumn: -1
             property ListModel highlightedCells: ListModel {
-                // Define the properties of the model
                 ListElement { row: -1; column: -1 }
             }
             anchors.fill: parent
             model: randomModel
-            boundsBehavior: Flickable.StopAtBounds
             interactive: false
             delegate: Rectangle{
                 id: cell
@@ -44,31 +42,33 @@ BasePage{
                 border.width: 1
                 border.color: "blue"
                 color:{
-                        for (var i = 0; i < tableview.highlightedCells.count; i++) {
-                            if (tableview.highlightedCells.get(i).row === row && tableview.highlightedCells.get(i).column === column) {
-                                return "skyblue";
-                            }
+                    for (var i = 0; i < tableview.highlightedCells.count; i++) {
+                        if (tableview.highlightedCells.get(i).row === row && tableview.highlightedCells.get(i).column === column) {
+                            return "skyblue";
                         }
+                    }
                     return (emptyNode === true) ? "black" :
-                    (row === tableview.startRow && column === tableview.startColumn)? "green":
-                    (row === tableview.finishRow && column === tableview.finishColumn)? "red":"pink"
+                                                  (row === tableview.startRow && column === tableview.startColumn)? "green":
+                                                                                                                    (row === tableview.finishRow && column === tableview.finishColumn)? "red":"pink"
                 }
                 MouseArea{
                     id:mouseArea
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     anchors.fill: parent
                     onClicked: {
-                        if (mouse.button === Qt.RightButton && !(row === tableview.finishRow & column === tableview.finishColumn)) {
+                        if(row.color !== "black"){
+                            if ( mouse.button === Qt.RightButton && !(row === tableview.finishRow & column === tableview.finishColumn)) {
 
-                            tableview.finishRow = row
-                            tableview.finishColumn = column
-                            if (tableview.highlightedCells.count > 0) { tableview.highlightedCells.clear() }
-                        }
-                        else{
-                            if(!(row === tableview.startRow & column === tableview.startColumn)){
-                                tableview.startRow = row
-                                tableview.startColumn = column
+                                tableview.finishRow = row
+                                tableview.finishColumn = column
                                 if (tableview.highlightedCells.count > 0) { tableview.highlightedCells.clear() }
+                            }
+                            else{
+                                if(!(row === tableview.startRow & column === tableview.startColumn)){
+                                    tableview.startRow = row
+                                    tableview.startColumn = column
+                                    if (tableview.highlightedCells.count > 0) { tableview.highlightedCells.clear() }
+                                }
                             }
                         }
                     }
@@ -82,7 +82,7 @@ BasePage{
         anchors.left: rect.left
         anchors.bottomMargin: middleMargin
         font.pixelSize: fontSize
-        text: "Left mouse press -- choose start node. Right -- finsh "
+        text: "Left mouse press -- choose start node. Right -- finsh. Green cell - start, red - finish "
         color: "white"
     }
     Button{
@@ -110,14 +110,16 @@ BasePage{
                     }
                 }
                 else{
-
-                    messageDialog.text = "Clear map"
+                    messageDialog.text = "Choose start and finish nodes"
                     messageDialog.visible = true
                 }
             }
+            else{
+                messageDialog.text = "Clear map"
+                messageDialog.visible = true
+            }
         }
     }
-
     Button{
         id: clear
         text: "clear map"
@@ -130,6 +132,18 @@ BasePage{
             tableview.startColumn = -1
             tableview.finishRow = -1
             tableview.finishColumn = -1
+
+        }
+
+    }
+    Button{
+        id: resetGraph
+        text: "reset graph"
+        anchors.top: clear.bottom
+        anchors.left: clear.left
+        anchors.topMargin: defMargin
+        onClicked:{
+            randomModel.resetGraph();
 
         }
 

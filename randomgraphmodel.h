@@ -10,7 +10,6 @@ class RandomGraphModel : public QAbstractTableModel
 {
     Q_OBJECT
 
-
     enum TableRoles{
         EmptyNode = Qt::UserRole + 1,
         ActiveNode
@@ -29,6 +28,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     QHash<int, QByteArray> roleNames() const;
+
+    void resetGraph();
 private:
     StrongConnection* graph = StrongConnection::getInstance();
 };

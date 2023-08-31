@@ -30,6 +30,11 @@ QHash<int, QByteArray> RandomGraphModel::roleNames() const{
     roles[ActiveNode] = "activeNode";
     return roles;
 }
+
+void RandomGraphModel::resetGraph()
+{
+    graph->createRandomNew();
+}
 QVariant RandomGraphModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {
