@@ -4,7 +4,6 @@
 
 using NodePtr = std::unique_ptr<Node>;
 
-
 StrongConnection* StrongConnection::instance = nullptr;
 
 void StrongConnection::createRandomNew(){
