@@ -4,6 +4,7 @@
 #include <string>
 #include <QString>
 #include <QVariant>
+#include <bits/stdc++.h>
 
 #include "astar.h"
 #include "node.h"
@@ -100,7 +101,7 @@ QString Astar::run(Node* start, Node* goal, Graph* graph){
                     }
                     else{
                         queue.push_back(child);
-                        std::sort(queue.begin(), queue.end());
+                        std::sort(queue.begin(), queue.end(),NodeComparator());
                     }
                 }
             }
@@ -153,7 +154,8 @@ QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
                 }
                 else{
                     queue.push_back(child);
-                    std::sort(queue.begin(), queue.end());
+
+                    std::sort(queue.begin(), queue.end(), NodeComparator());
                 }
             }
         }
@@ -165,3 +167,5 @@ QVariantList Astar::run(Node *start, Node *goal, StrongConnection *graph)
     parent.clear();
     throw NodeException("No path");
 }
+
+
