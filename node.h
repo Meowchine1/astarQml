@@ -2,6 +2,8 @@
 #define NODE_H
 #include <QString>
 #include <QObject>
+#include <memory>
+
 #define UNDEFINED 1435483
 
 class Node{
@@ -13,16 +15,17 @@ private:
 public:
     // for random graph generation
     bool isolated;
-    std::vector<Node*> children;
+    std::vector<std::unique_ptr<Node>> children;
     Node(int _x, int _y, bool _isolated): x(_x), y(_y), isolated(_isolated) {}
     //
 
+    Node(){};
     const QString name; // unique
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
     ~Node(){
         if (children.capacity()>0){
-            for (Node* child : children) {
+            for (auto child : children) {
                 delete child;
             }
         }
@@ -31,9 +34,9 @@ public:
     Node(const Node&) = delete;
     Node& operator=(const Node&) = delete;
 
-    bool operator()(const Node* a, const Node* b) const {
-        return a->distance< b->distance;
-    }
+//    bool operator()(const Node* a, const Node* b) const {
+//        return a->distance< b->distance;
+//    }
 
     int getX() const {return x;}
     int getY() const {return y;}
@@ -63,6 +66,12 @@ struct NodeComparator
     bool operator ()(const Node* a, const Node* b)
     {
         return a->getDistance() < b->getDistance();
+    }
+};
+
+struct NodeDeleter {
+    void operator()(Node* ptr) {
+        delete[] ptr;
     }
 };
 

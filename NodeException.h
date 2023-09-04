@@ -2,7 +2,7 @@
 #define NODEEXCEPTION_H
 
 #include <QString>
-#endif // NODEEXCEPTION_H
+
 class NodeException {
 
 public:
@@ -12,3 +12,5 @@ public:
 private:
    QString msg_;
 };
+
+#endif // NODEEXCEPTION_H

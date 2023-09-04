@@ -1,6 +1,5 @@
 #include "randomgraphmodel.h"
 
-
 RandomGraphModel::RandomGraphModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -35,6 +34,7 @@ void RandomGraphModel::resetGraph()
 {
     graph->createRandomNew();
 }
+
 QVariant RandomGraphModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {

@@ -1,21 +1,9 @@
 #include <iostream>
 #include <time.h>
+
 #include "strongconnection.h"
 
-using NodePtr = std::unique_ptr<Node>;
-
 StrongConnection* StrongConnection::instance = nullptr;
-
-void StrongConnection::createRandomNew(){
-   srand(time(NULL));
-   for (int i = 0; i< N; i++){
-       for(int j = 0; j < N; j++){
-           float p = (float)rand() / (float)RAND_MAX;
-           mass[i][j] =  std::unique_ptr<Node>(new Node(i, j, (p > 0.7)));
-       }
-   }
-   addRandomRelation();
-}
 
 StrongConnection* StrongConnection::getInstance(){
    if(instance == nullptr){
@@ -24,15 +12,17 @@ StrongConnection* StrongConnection::getInstance(){
    return instance;
 }
 
-NodePtr StrongConnection::getNode(int row, int column){
-   return mass[row][column];
+ std::unique_ptr<Node> StrongConnection::getNode(int row, int column){
+
+   std::unique_ptr<Node> node = std::move(mass[row * N + column]);
+   return node;
 }
 
 void StrongConnection::addRandomRelation(){
-   NodePtr node_0_0 = mass[0][0];
+   NodePtr node_0_0 = std::move(mass[0][0]);
    if(!node_0_0->isolated){
-       NodePtr rightChild = mass[0][1];
-       NodePtr bottomChild = mass[1][0];
+       NodePtr rightChild = std::move(mass[0][1]);
+       NodePtr bottomChild = std::move(mass[1][0]);
        if(!rightChild->isolated){
            node_0_0->children.push_back(rightChild);
        }
