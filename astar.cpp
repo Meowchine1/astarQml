@@ -22,9 +22,8 @@ void fillMax(std::unordered_map<Node*, int>& minWay, Graph* graph){
 }
 
 void fillMax(std::unordered_map<Node*, int>& minWay, StrongConnection* graph){
-
     for (int i = 0, j = 0; i < N; i++, j++) {
-        minWay[graph->mass[i][j]] = INT_MAX;
+        minWay[graph->getNode(i, j)] = INT_MAX;
     }
 }
 
@@ -42,7 +41,6 @@ QString Astar::restorePath(Node* start, Node* goal){
     path = start->name + " -> " + path;
     return path.remove(path.size() - 3, path.size());
 }
-
 
 QVariantList Astar::restorePathWithCoordinates(Node* start, Node* goal){
     QVariantList path;

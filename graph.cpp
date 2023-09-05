@@ -7,13 +7,19 @@
 #include "graph.h"
 #include "NodeException.h"
 
+// For text graph relations used map collection contains:
+//      key:children
+//      value:edje weight
+// Collection located in graph model
+
 Graph* Graph::instance = nullptr;
 
 void Graph::addNode(Node* node){
     auto it = std::find_if(nodes.begin(),
-                           nodes.end(), [&](const Node* elem) {
+                           nodes.end(), [=](const Node* elem) {
         return elem->name == node->name;
     });
+
     if(it == nodes.end())
     {
         edges_weights[node] = std::unordered_map<Node*, int>();
@@ -21,13 +27,14 @@ void Graph::addNode(Node* node){
     }
     else{
         throw NodeException("Node already exist.");
+
     }
 }
 
 void Graph::deleteNode(QString name){
     Node* deleteNode = findNodeByName(name);
     auto nodesIt = std::find_if(nodes.begin(),
-                                nodes.end(), [&](const Node* elem){
+                                nodes.end(), [=](const Node* elem){
         return elem == deleteNode;
     });
     auto edgesIt = edges_weights.find(const_cast<Node*>(deleteNode));

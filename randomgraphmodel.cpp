@@ -1,12 +1,7 @@
 #include "randomgraphmodel.h"
 
 RandomGraphModel::RandomGraphModel(QObject *parent)
-    : QAbstractTableModel(parent)
-{
-    graph->createRandomNew();
-
-    int x = 5;
-}
+    : QAbstractTableModel(parent){}
 
 QVariant RandomGraphModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -32,14 +27,16 @@ QHash<int, QByteArray> RandomGraphModel::roleNames() const{
 
 void RandomGraphModel::resetGraph()
 {
-    graph->createRandomNew();
+    beginResetModel();
+    graph->reset();
+    endResetModel();
 }
 
 QVariant RandomGraphModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {
-    case EmptyNode: {
-        Node* node = graph->mass[index.row()][index.column()];
+    case EmptyNode:{
+        Node* node = graph->getNode(index.row(), index.column());
         return QVariant::fromValue(node->isolated);
     }
     case ActiveNode: {

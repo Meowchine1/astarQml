@@ -15,14 +15,13 @@ private:
 public:
     // for random graph generation
     bool isolated;
-    std::vector<std::unique_ptr<Node>> children;
+    std::vector<Node*> children;
     Node(int _x, int _y, bool _isolated): x(_x), y(_y), isolated(_isolated) {}
     //
-
-    Node(){};
     const QString name; // unique
     Node(const QString _name);
     Node(const QString _name, int _x, int _y);
+    Node(){}
     ~Node(){
         if (children.capacity()>0){
             for (auto child : children) {

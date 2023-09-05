@@ -29,6 +29,7 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    Q_INVOKABLE
     void resetGraph();
 private:
     StrongConnection* graph = StrongConnection::getInstance();

@@ -37,8 +37,8 @@ BasePage{
             interactive: false
             delegate: Rectangle{
                 id: cell
-                implicitWidth: rect.width / (randomModel.columnCount() + 1)
-                implicitHeight: rect.height / (randomModel.rowCount() + 1)
+                implicitWidth: rect.width / (randomModel.columnCount())
+                implicitHeight: rect.height / (randomModel.rowCount())
                 border.width: 1
                 border.color: "blue"
                 color:{
@@ -144,9 +144,7 @@ BasePage{
         anchors.topMargin: defMargin
         onClicked:{
             randomModel.resetGraph();
-
         }
-
     }
 
     DialogItem {
