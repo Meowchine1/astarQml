@@ -3,7 +3,6 @@
 
 #include <queue>
 
-#include "astar.h"
 #include "node.h"
 #include "graph.h"
 #include "strongconnection.h"

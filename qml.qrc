@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>qml/main.qml</file>
         <file>test.qml</file>
         <file>qml/Pages/MainPage.qml</file>
         <file>qml/Pages/RandomGraphPage.qml</file>

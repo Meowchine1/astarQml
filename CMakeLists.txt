@@ -14,6 +14,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QT ${QT_VERSION_MAJOR} widgets)
 
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
 # Make Qt Creator aware of where the QML modules live
 set (_QML_IMPORT_PATHS "")
 
@@ -33,13 +35,16 @@ set (
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 
 
+file(GLOB SOURCE_FILES "application/*.cpp" "application/*.h" "uiModels/*.cpp" "uiModels/*.h" "resourses/*.png")
 
-set(CPP main.cpp node.cpp graph.cpp astar.cpp
-     appcore.cpp tablemodel.cpp listmodel.cpp randomgraphmodel.cpp strongconnection.cpp)
-set(HEADER node.h graph.h heuristic.h
-    splitter.h astar.h appcore.h tablemodel.h listmodel.h NodeException.h randomgraphmodel.h strongconnection.h)
+#set(CPP main.cpp node.cpp graph.cpp astar.cpp
+#     appcore.cpp tablemodel.cpp listmodel.cpp randomgraphmodel.cpp strongconnection.cpp)
+#set(HEADER node.h graph.h heuristic.h
+#    splitter.h astar.h appcore.h tablemodel.h listmodel.h NodeException.h randomgraphmodel.h strongconnection.h)
 
-set(PROJECT_SOURCES ${CPP}  ${HEADER} qml.qrc
+
+
+set(PROJECT_SOURCES ${SOURCE_FILES} qml.qrc
 )
 
 add_executable(AstarGraphicApp

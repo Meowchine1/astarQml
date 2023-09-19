@@ -4,8 +4,8 @@
 #include <QAbstractTableModel>
 #include<QVector>
 
-#include "node.h"
-#include "strongconnection.h"
+#include "application/node.h"
+#include "application/strongconnection.h"
 class RandomGraphModel : public QAbstractTableModel
 {
     Q_OBJECT

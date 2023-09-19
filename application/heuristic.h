@@ -1,9 +1,9 @@
 #ifndef HEURISTIC_H
 #define HEURISTIC_H
 
-#include "node.h"
-
 #include <cmath>
+
+#include "node.h"
 
 int heuristic_Manhattan(Node *v1, Node *v2){
     return abs(v1->getX() - v2->getX()) + abs(v1->getY() - v2->getY());

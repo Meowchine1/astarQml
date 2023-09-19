@@ -1,6 +1,5 @@
 #ifndef NODEEXCEPTION_H
 #define NODEEXCEPTION_H
-
 #include <QString>
 
 class NodeException {

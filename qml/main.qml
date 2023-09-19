@@ -38,6 +38,13 @@ ApplicationWindow {
     property int nodeSize: 50
     property int comboboxSize: 400
 
+    Component.onCompleted: {
+         if (Qt.platform.os === "linux") {
+             var iconPath = Qt.resolvedUrl("resourses/icon16.png");
+             Qt.application.setWindowIcon(QIcon.fromUrl(iconPath));
+         }
+     }
+
     function isInt(input) {
         var intRegex = /^\d{1,10}$/
         return intRegex.test(input)

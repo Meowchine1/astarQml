@@ -2,11 +2,17 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QtGui/QIcon>
+
 
 #include "appcore.h"
-#include "tablemodel.h"
-#include "listmodel.h"
-#include "randomgraphmodel.h"
+#include "uiModels/tablemodel.h"
+#include "uiModels/listmodel.h"
+#include "uiModels/randomgraphmodel.h"
+
+//#include "tablemodel.h"
+//#include "listmodel.h"
+//#include "randomgraphmodel.h"
 
 int main(int argc, char *argv[]){
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -20,8 +26,10 @@ int main(int argc, char *argv[]){
     qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("Material"));
     qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", QByteArray("Dark"));
 
+    QString iconPath = QCoreApplication::applicationDirPath() + "/resourses/icon16.png";
+    app.setWindowIcon(QIcon(iconPath));
     engine.addImportPath(":/qml");
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
