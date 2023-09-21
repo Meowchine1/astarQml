@@ -18,8 +18,10 @@ ApplicationWindow {
     id: win
     width: 1000
     height: 800
+    minimumHeight: 700
+    minimumWidth: 700
     visible: true
-    title: qsTr("Graph algorithm")
+    title: qsTr("Graph emulator")
     // COLOR START
     Material.theme: Material.Dark
     Material.accent: Material.Pink
@@ -38,12 +40,16 @@ ApplicationWindow {
     property int nodeSize: 50
     property int comboboxSize: 400
 
-    Component.onCompleted: {
-         if (Qt.platform.os === "linux") {
-             var iconPath = Qt.resolvedUrl("resourses/icon16.png");
-             Qt.application.setWindowIcon(QIcon.fromUrl(iconPath));
-         }
-     }
+    Item {
+        anchors.fill: win
+        focus: true
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Q && event.modifiers === Qt.ControlModifier) {
+                win.close()
+            }
+        }
+    }
 
     function isInt(input) {
         var intRegex = /^\d{1,10}$/
@@ -74,13 +80,27 @@ ApplicationWindow {
             text: stackView.currentItem.title
         }
     }
+
+    menuBar: MenuBar {
+            Menu {
+                title: qsTr("&Graph")
+                Action { text: qsTr("&New") }
+                Action { text: qsTr("&Open") }
+                Action { text: qsTr("&Autogeneration") }
+                MenuSeparator { }
+                Action { text: qsTr("&Quit") }
+            }
+            Menu {
+                title: qsTr("&Help")
+                Action { text: qsTr("&About") }
+            }
+        }
+
     StackView{
         id: stackView
         anchors.fill: parent
         initialItem: mainPage
     }
-
-
 
     MainPage {
         id: mainPage
