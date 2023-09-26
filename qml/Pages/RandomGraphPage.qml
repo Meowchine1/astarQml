@@ -176,6 +176,8 @@ BasePage{
                     text: "reset graph"
                     onClicked:{
                         randomModel.resetGraph();
+                        tableview.highlightedCells.clear()
+
                     }
                 }
                 Button{

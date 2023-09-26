@@ -16,52 +16,59 @@ import Base 1.0
 BasePage {
     id: mainPage
     title: "Main page"
-    ColumnLayout{
-        id: btnLayout
+    Rectangle{
+        width: parent.width /2
+        height: parent.height /2
+        border.color: borderColor
+        border.width: 2
+        radius: radiusValue
         anchors.centerIn: parent
+        ColumnLayout{
+            anchors.centerIn: parent
+            Button{
+                id: manualbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Manual creating"
 
-        Button{
-            id: manualbtn
-            Layout.fillWidth: true
-            Layout.preferredWidth: btnWidth
-            font.pixelSize: fontSize
-            text: "Manual creating"
-
-            onClicked: {
-                stackView.push(manualCreatingPage)
+                onClicked: {
+                    stackView.push(manualCreatingPage)
+                }
             }
-        }
-        Button{
-            id: readbtn
-            Layout.fillWidth: true
-            Layout.preferredWidth: btnWidth
-            font.pixelSize: fontSize
-            text: "Read txt file"
-            onClicked: {
-                stackView.push(readGraphPage)
+            Button{
+                id: readbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Read txt file"
+                onClicked: {
+                    stackView.push(readGraphPage)
+                }
             }
-        }
 
-        Button{
-            id: randombtn
-            Layout.fillWidth: true
-            Layout.preferredWidth: btnWidth
-            font.pixelSize: fontSize
-            text: "Random generation"
-            onClicked: {
-                stackView.push(randomGraphPage)
+            Button{
+                id: randombtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Random generation"
+                onClicked: {
+                    stackView.push(randomGraphPage)
+                }
             }
-        }
 
-        Button{
-            id: exitbtn
-            Layout.fillWidth: true
-            Layout.preferredWidth: btnWidth
-            font.pixelSize: fontSize
-            text: "Exit"
-            onClicked: {
-                win.close()
+            Button{
+                id: exitbtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Exit"
+                onClicked: {
+                    win.close()
+                }
             }
         }
     }
+
 }
