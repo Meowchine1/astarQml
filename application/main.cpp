@@ -24,7 +24,9 @@ int main(int argc, char *argv[]){
 
     QQuickStyle::setStyle("Material");
     qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("Material"));
-    qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", QByteArray("Dark"));
+   // qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", QByteArray("Light"));
+
+    qputenv("QT_QUICK_CONTROLS_CONF", QByteArray("qrc:/qml/qtquickcontrols2.conf"));
 
     QString iconPath = QCoreApplication::applicationDirPath() + "/resourses/icon16.png";
     app.setWindowIcon(QIcon(iconPath));

@@ -10,3 +10,4 @@ ResizableColumnsTableView 1.0 ResizableColumnsTableView.qml
 MenuButton 1.0 MenuButton.qml
 MenuCard 1.0  MenuCard.qml
 MenuStack 1.0 MenuStack.qml
+MessageDialog 1.0 MessageDialog.qml

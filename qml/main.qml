@@ -23,10 +23,11 @@ ApplicationWindow {
     visible: true
     title: qsTr("Graph emulator")
     // COLOR START
-    Material.theme: Material.Dark
-    Material.accent: Material.Pink
-    Material.primary: Material.Grey
-    Material.foreground: Material.Pink
+    Material.theme: isLight? Material.Light : Material.Dark
+    Material.accent: Material.Grey
+    property var backgroundColor: Material.color(Material.Grey, 2)
+    property var borderColor: Material.color(Material.Grey, 5)
+    property var focusedBorderColor: Material.color(Material.LightBlue, 5)
     property color grey: "#dadada"
     // COLOR END
     property var repeaterFromNodes: []
@@ -39,15 +40,29 @@ ApplicationWindow {
     property int middlefontSize: 18
     property int nodeSize: 50
     property int comboboxSize: 400
+    property int radiusValue: 5
+    property bool isLight: true
+
 
     Item {
         anchors.fill: win
         focus: true
-
         Keys.onPressed: {
             if (event.key === Qt.Key_Q && event.modifiers === Qt.ControlModifier) {
                 win.close()
             }
+        }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        folder: shortcuts.home
+        nameFilters: [ "Txt files (*.txt )"]
+        onAccepted: {
+            appCore.readGraphFromTxtRequest(this.fileUrl)
+            stackView.push(relationsPage)
+            appCore.nodeNamesRequest()
         }
     }
 
@@ -82,19 +97,44 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
-            Menu {
-                title: qsTr("&Graph")
-                Action { text: qsTr("&New") }
-                Action { text: qsTr("&Open") }
-                Action { text: qsTr("&Autogeneration") }
-                MenuSeparator { }
-                Action { text: qsTr("&Quit") }
+        Menu {
+            title: qsTr("&Graph")
+            Action { text: qsTr("&New")
+                onTriggered: {stackView.push(manualCreatingPage)}
             }
-            Menu {
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
+            Action { text: qsTr("&Open")
+                onTriggered: {
+                    fileDialog.open();
+                }
+            }
+            Action { text: qsTr("&Autogeneration")
+                onTriggered: {stackView.push(randomGraphPage)}
+            }
+            MenuSeparator { }
+            Action { text: qsTr("&Quit")
+                onTriggered: {win.close()}
             }
         }
+        Menu {
+            title: qsTr("&Settings")
+            Menu { title: qsTr("&Theme")
+                Action{text: qsTr("&Dark")
+                onTriggered: {
+                   isLight = false
+                }}
+                Action{text: qsTr("&Light")
+                onTriggered: {
+                    isLight = true
+                }}
+            }
+        }
+        Menu {
+            title: qsTr("&Help")
+            Action { text: qsTr("&About")
+                onTriggered: {}
+            }
+        }
+    }
 
     StackView{
         id: stackView
