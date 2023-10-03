@@ -8,13 +8,12 @@ This application is a student project realizing the functionality of:
 
 !["Graph model"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/graphPicture.png)
 
-!["Start window"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/mainApp.png)
 
-!["Nodes creating"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/modelCreation.png)
+!["Graph vizualization"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/randomGraph.png)
 
-!["Relations creating"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/setRelations.png)
+!["Custom graph"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/customGraph.png)
 
-!["A* algorithm work result"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/result.png)
+!["A* algorithm work result"](https://github.com/Meowchine1/astarQml/blob/main/inputFiles/algWithCustomGraph.png)
 
 ## Reading file format
 File row template: <node name>(<x>,<y>) [{<child name>(<edje weight>), ...}] , where
