@@ -19,6 +19,9 @@ public:
     int getColCount() { return N; }
     void print();
     void reset();
+    void emptyGraph();
+    void addEmptyNode(int i, int j);
+    void deleteEmptyNode(int i, int j);
     static StrongConnection* getInstance();
     Node* getNode(int row, int column);
 
@@ -30,6 +33,7 @@ private:
     static StrongConnection* instance;
     StrongConnection();
     void addRandomRelation();
+    void clearRelations();
 };
 
 #endif // STRONGCONNECTION_H

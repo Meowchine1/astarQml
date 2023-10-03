@@ -32,6 +32,27 @@ void RandomGraphModel::resetGraph()
     endResetModel();
 }
 
+void RandomGraphModel::emptyGraph()
+{
+    beginResetModel();
+    graph->emptyGraph();
+    endResetModel();
+}
+
+void RandomGraphModel::addEmptyNode(int i, int j)
+{
+    beginResetModel();
+    graph->addEmptyNode(i, j);
+    endResetModel();
+}
+
+void RandomGraphModel::deleteEmptyNode(int i, int j)
+{
+    beginResetModel();
+    graph->deleteEmptyNode(i, j);
+    endResetModel();
+}
+
 QVariant RandomGraphModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {

@@ -10,9 +10,11 @@
 class Astar{
 public:
     Astar();
-    QString run(Node* start, Node* goal, Graph* graph);
+
     QVariantList run(Node* start, Node* goal, StrongConnection* graph);
     QVariantList restorePathWithCoordinates(Node *start, Node *goal);
+    std::vector<Node*> getVisited();
+
 private:
     std::vector<Node*> queue;
     std::vector<Node*> visited;

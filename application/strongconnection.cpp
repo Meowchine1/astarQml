@@ -29,6 +29,34 @@ void StrongConnection::reset(){
     addRandomRelation();
 }
 
+void StrongConnection::emptyGraph()
+{
+    for (int i = 0; i < N; i++){
+        for (int j = 0 ; j< N; j++){
+            Node* uniqueNode = mass[i*N+j].get();
+            uniqueNode->children.clear();
+            uniqueNode->isolated = false;
+        }
+    }
+    addRandomRelation();
+}
+
+void StrongConnection::addEmptyNode(int i, int j)
+{
+    Node* uniqueNode = mass[i*N+j].get();
+    uniqueNode->children.clear();
+    uniqueNode->isolated = true;
+    addRandomRelation();
+}
+
+void StrongConnection::deleteEmptyNode(int i, int j)
+{
+    Node* uniqueNode = mass[i*N+j].get();
+    uniqueNode->children.clear();
+    uniqueNode->isolated = false;
+    addRandomRelation();
+}
+
 Node* StrongConnection::getNode(int row, int column){
    return mass[row * N + column].get();
 }
@@ -44,7 +72,10 @@ StrongConnection::StrongConnection(){
     addRandomRelation();
 }
 
+
+
 void StrongConnection::addRandomRelation(){
+    clearRelations();
     Node* node_0_0 = mass[0].get();
     if(!node_0_0->isolated){
         Node* rightChild = mass[1].get();
@@ -187,6 +218,16 @@ void StrongConnection::addRandomRelation(){
                     node->children.push_back(node3);
                 }
             }
+        }
+    }
+}
+
+void StrongConnection::clearRelations()
+{
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            Node* node = mass[i * N + j].get();
+            node->children.clear();
         }
     }
 }

@@ -31,6 +31,16 @@ public:
 
     Q_INVOKABLE
     void resetGraph();
+
+    Q_INVOKABLE
+    void emptyGraph();
+
+    Q_INVOKABLE
+    void addEmptyNode(int i, int j);
+
+    Q_INVOKABLE
+    void deleteEmptyNode(int i, int j);
+
 private:
     StrongConnection* graph = StrongConnection::getInstance();
 };
