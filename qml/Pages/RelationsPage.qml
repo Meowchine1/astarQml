@@ -144,12 +144,16 @@ BasePage{
         }
     }
 
-    Item {
+    Rectangle {
         id: graphWin
         width: parent.width/ 2
         height: parent.height/ 1.2
         anchors.right: parent.right
         anchors.top: parent.top
+        anchors.margins: defMargin
+        border.width: 2
+        border.color: borderColor
+        radius: radiusValue
 
         RowLayout{
             spacing: parent.width / 1.5

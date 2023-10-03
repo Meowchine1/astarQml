@@ -10,6 +10,8 @@ import TableModel 1.0
 Rectangle{
     id: rect
     radius: 5
+    border.width: 2
+    border.color: borderColor
     TableView{
         id: tableview
         anchors.fill: rect

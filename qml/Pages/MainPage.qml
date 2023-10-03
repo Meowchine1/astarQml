@@ -26,6 +26,16 @@ BasePage {
         ColumnLayout{
             anchors.centerIn: parent
             Button{
+                id: randombtn
+                Layout.fillWidth: true
+                Layout.preferredWidth: btnWidth
+                font.pixelSize: fontSize
+                text: "Random generation"
+                onClicked: {
+                    stackView.push(randomGraphPage)
+                }
+            }
+            Button{
                 id: manualbtn
                 Layout.fillWidth: true
                 Layout.preferredWidth: btnWidth
@@ -46,18 +56,6 @@ BasePage {
                     stackView.push(readGraphPage)
                 }
             }
-
-            Button{
-                id: randombtn
-                Layout.fillWidth: true
-                Layout.preferredWidth: btnWidth
-                font.pixelSize: fontSize
-                text: "Random generation"
-                onClicked: {
-                    stackView.push(randomGraphPage)
-                }
-            }
-
             Button{
                 id: exitbtn
                 Layout.fillWidth: true
